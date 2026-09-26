@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>WMS 3D — Fernando Gregório</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     Design tokens — sistema "Void" (portfolio-design-system)
+     ============================================================ */
+  :root, :root:not([data-theme="light"]), :root[data-theme="dark"] {
+    --color-void-black: #000000;
+    --color-ghost-white: #ffffff;
+    --color-ash-border: #4d4d4d;
+    --color-smoke: #808080;
+    --color-fog: #999999;
+    --color-pale-mist: #c6c6c6;
+    --color-dusk-violet: #343755;
+    --color-dusk-violet-bright: #4b5080;
+
+    --font-nbarchitekt: 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-times: 'Times New Roman', Georgia, serif;
+
+    --radius-ghost: 5px;
+    --radius-cards: 12px;
+    --radius-pill: 500px;
+
+    --status-el: #3b6fb5;
+    --status-ep: #e8a33d;
+    --status-ec: #c1440e;
+    --status-eb: #6b7280;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color-void-black);
+    overflow: hidden;
+    font-family: var(--font-times);
+    color: var(--color-ghost-white);
+  }
+
+  #canvas-host {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+  }
+
+  #canvas-host canvas { display: block; }
+
+  /* ---------- Overlay chrome — ghost, whisper-thin ---------- */
+
+  .chrome {
+    position: fixed;
+    z-index: 10;
+    font-family: var(--font-nbarchitekt);
+  }
+
+  .brand {
+    top: 18px;
+    left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    pointer-events: none;
+  }
+  .brand .name {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-ghost-white);
+  }
+  .brand .role {
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--color-pale-mist);
+  }
+
+  .nav {
+    top: 18px;
+    right: 18px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    max-width: 60vw;
+  }
+
+  .ghost-btn {
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.6);
+    border-radius: var(--radius-ghost);
+    padding: 5px 10px;
+    font-family: var(--font-nbarchitekt);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ghost-white);
+    cursor: pointer;
+    transition: background 0.25s ease, border-color 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .ghost-btn:hover, .ghost-btn.active {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.9);
+  }
+
+  .pill-btn {
+    background: rgba(0,0,0,0.333);
+    border: none;
+    border-radius: var(--radius-pill);
+    padding: 4px 18px;
+    font-family: var(--font-nbarchitekt);
+    font-size: 12px;
+    font-weight: 700;
+    color: #000;
+    background-color: var(--color-pale-mist);
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+  .pill-btn.active {
+    background-color: var(--color-dusk-violet-bright);
+    color: var(--color-ghost-white);
+  }
+  .pill-btn:hover { transform: translateY(-1px); }
+
+  #demo-badge {
+    top: 54px;
+    left: 18px;
+    background: rgba(232,163,61,0.16);
+    border: 1px solid #e8a33d;
+    color: #ffcf85;
+    font-family: var(--font-nbarchitekt);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: var(--radius-ghost);
+    pointer-events: none;
+  }
+
+  .ghost-btn#btn-tour.active {
+    background: var(--color-dusk-violet-bright);
+    border-color: var(--color-dusk-violet-bright);
+  }
+
+  /* ---------- Ghost cards ---------- */
+
+  .ghost-card {
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid var(--color-ash-border);
+    border-radius: var(--radius-cards);
+  }
+
+  /* Intro / about panel */
+  #about-panel {
+    top: 92px;
+    left: 18px;
+    width: min(360px, calc(100vw - 36px));
+    padding: 20px 22px;
+    display: none;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+  #about-panel.open { display: block; }
+  #about-panel h1 {
+    font-family: var(--font-nbarchitekt);
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+    color: var(--color-ghost-white);
+  }
+  #about-panel .sub {
+    font-family: var(--font-nbarchitekt);
+    font-size: 10px;
+    color: var(--color-pale-mist);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+  }
+  #about-panel p {
+    font-family: var(--font-times);
+    font-size: 14px;
+    line-height: 1.72;
+    color: var(--color-ghost-white);
+    margin: 0 0 12px 0;
+  }
+  #about-panel .stack {
+    font-family: var(--font-nbarchitekt);
+    font-size: 10px;
+    color: var(--color-pale-mist);
+    letter-spacing: 0.03em;
+    line-height: 1.9;
+  }
+  #about-panel .stack b { color: var(--color-ghost-white); font-weight: 700; }
+
+  /* Legend / coloring mode panel */
+  #legend-panel {
+    bottom: 18px;
+    right: 18px;
+    padding: 14px 16px;
+    width: 200px;
+  }
+  #legend-panel .title {
+    font-family: var(--font-nbarchitekt);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-pale-mist);
+    margin-bottom: 8px;
+  }
+  .mode-row { display: flex; gap: 6px; margin-bottom: 12px; }
+  .mode-row .pill-btn { flex: 1; padding: 4px 8px; font-size: 10px; text-align: center; }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-nbarchitekt);
+    font-size: 11px;
+    color: var(--color-ghost-white);
+    padding: 3px 0;
+  }
+  .legend-dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .legend-count { margin-left: auto; color: var(--color-pale-mist); }
+
+  /* Summary / KPI panel */
+  #stats-panel {
+    bottom: 18px;
+    left: 18px;
+    padding: 14px 18px;
+    display: flex;
+    gap: 22px;
+  }
+  .stat {
+    font-family: var(--font-nbarchitekt);
+  }
+  .stat .num {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-ghost-white);
+    line-height: 1.1;
+  }
+  .stat .label {
+    font-size: 9px;
+    color: var(--color-pale-mist);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  /* Detail panel — appears on click */
+  #detail-panel {
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%);
+    width: min(280px, calc(100vw - 36px));
+    padding: 20px 22px;
+    display: none;
+  }
+  #detail-panel.open { display: block; }
+  #detail-panel .addr {
+    font-family: var(--font-nbarchitekt);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-ghost-white);
+  }
+  #detail-panel .status-tag {
+    display: inline-block;
+    font-family: var(--font-nbarchitekt);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    margin: 8px 0 14px 0;
+    color: #000;
+  }
+  #detail-panel .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-family: var(--font-times);
+    font-size: 13px;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(77,77,77,0.5);
+  }
+  #detail-panel .row:last-of-type { border-bottom: none; }
+  #detail-panel .row .k { color: var(--color-pale-mist); }
+  #detail-panel .row .v { color: var(--color-ghost-white); text-align: right; }
+  #detail-panel .close-btn {
+    margin-top: 14px;
+    width: 100%;
+  }
+  #detail-panel .empty-msg {
+    font-family: var(--font-times);
+    font-size: 13px;
+    color: var(--color-pale-mist);
+    line-height: 1.7;
+  }
+
+  /* Loading veil */
+  #loading {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    background: var(--color-void-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    transition: opacity 0.6s ease;
+  }
+  #loading .mark {
+    font-family: var(--font-nbarchitekt);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-pale-mist);
+  }
+  #loading .bar {
+    width: 140px;
+    height: 1px;
+    background: var(--color-ash-border);
+    position: relative;
+    overflow: hidden;
+  }
+  #loading .bar::after {
+    content: '';
+    position: absolute;
+    left: -40%;
+    top: 0; bottom: 0;
+    width: 40%;
+    background: var(--color-pale-mist);
+    animation: sweep 1.1s ease-in-out infinite;
+  }
+  @keyframes sweep {
+    0% { left: -40%; }
+    100% { left: 100%; }
+  }
+
+  /* Hint */
+  #hint {
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-nbarchitekt);
+    font-size: 10px;
+    color: var(--color-fog);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.6s ease;
+  }
+
+  /* Lista de endereços */
+  #list-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    background: rgba(0,0,0,0.72);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+  }
+  #list-backdrop.open { display: flex; }
+  #list-panel {
+    width: min(1000px, 100%);
+    height: min(720px, 100%);
+    display: flex;
+    flex-direction: column;
+    padding: 22px 24px;
+    background: rgba(5,5,6,0.92);
+  }
+  #list-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  #list-header h1 {
+    font-family: var(--font-nbarchitekt);
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+  }
+  #list-header .sub {
+    font-family: var(--font-nbarchitekt);
+    font-size: 10px;
+    color: var(--color-pale-mist);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  #list-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  #list-search {
+    flex: 1;
+    min-width: 200px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--color-ash-border);
+    border-radius: var(--radius-ghost);
+    padding: 7px 12px;
+    font-family: var(--font-nbarchitekt);
+    font-size: 12px;
+    color: var(--color-ghost-white);
+    outline: none;
+  }
+  #list-search:focus { border-color: var(--color-pale-mist); }
+  #list-search::placeholder { color: var(--color-smoke); }
+  #list-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+  #list-filters .pill-btn { padding: 4px 12px; font-size: 10px; }
+  #list-table-wrap {
+    flex: 1;
+    overflow: auto;
+    border: 1px solid var(--color-ash-border);
+    border-radius: var(--radius-ghost);
+  }
+  #list-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-nbarchitekt);
+    font-size: 12px;
+  }
+  #list-table thead th {
+    position: sticky;
+    top: 0;
+    background: #0a0a0b;
+    text-align: left;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-pale-mist);
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--color-ash-border);
+    white-space: nowrap;
+  }
+  #list-table tbody td {
+    padding: 7px 12px;
+    border-bottom: 1px solid rgba(77,77,77,0.35);
+    color: var(--color-ghost-white);
+    white-space: nowrap;
+  }
+  #list-table tbody tr.empty-row td { color: var(--color-smoke); }
+  #list-table tbody tr:hover { background: rgba(255,255,255,0.035); }
+  #list-table .st-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; }
+
+  @media (max-width: 640px) {
+    #list-backdrop { padding: 0; }
+    #list-panel { width: 100%; height: 100%; border-radius: 0; padding: 16px; }
+    #list-table { font-size: 11px; }
+  }
+
+  @media (max-width: 640px) {
+    #stats-panel { display: none; }
+    #legend-panel { width: 168px; padding: 10px 12px; }
+    #about-panel { top: 90px; width: calc(100vw - 28px); }
+    #detail-panel { top: auto; bottom: 18px; transform: none; width: calc(100vw - 28px); right: 14px; }
+    #hint { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #loading .bar::after { animation: none; }
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-thumb { background: var(--color-ash-border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="mark">Carregando câmaras CF03 e CF05…</div>
+  <div class="bar"></div>
+</div>
+
+<div id="canvas-host"></div>
+
+<div class="chrome brand">
+  <span class="name">Fernando Gregório</span>
+  <span class="role">WMS 3D · Ocupação de Armazém</span>
+</div>
+
+<div class="chrome nav">
+  <button class="ghost-btn" id="btn-about">Sobre o projeto</button>
+  <button class="ghost-btn" id="btn-list">Lista de endereços</button>
+  <button class="ghost-btn" id="btn-tour">Simular empilhadeira</button>
+  <button class="ghost-btn" id="btn-reset">Recentrar câmera</button>
+</div>
+
+<div class="chrome" id="demo-badge">Dados de demonstração</div>
+
+<div class="chrome ghost-card" id="about-panel">
+  <h1>WMS 3D — Motor de Visualização de Armazém</h1>
+  <div class="sub">Projeto pessoal · Fernando Gregório</div>
+  <p>
+    Essa é uma demonstração da arquitetura que desenvolvi para representar, em 3D, a ocupação
+    real de um armazém integrado a um WMS/SAP. A planta física (ruas, racks, corredores, docas)
+    é descrita como uma grade 2D e transformada matematicamente em coordenadas de mundo.
+  </p>
+  <p>
+    A demo tem <b style="color:var(--color-ghost-white)">duas câmaras frias lado a lado</b>,
+    porque o sistema real trabalha com dois tipos de armazenagem: <b style="color:var(--color-ghost-white)">CF03
+    — rack</b> (estrutura porta-pallet fixa, endereço <code>CFn-rua-linha-nível-prof-face</code>, ex.:
+    <code>CF3-05-01-4-1-A</code>) e <b style="color:var(--color-ghost-white)">CF05 — blocado</b>
+    (pilha direto no chão, sem estrutura, endereço <code>Rua-Bloco-Nível-Posição</code>, ex.:
+    <code>R01-05-3-B</code>).
+  </p>
+  <p>
+    No blocado eu também reproduzi de propósito um comportamento real do sistema: quando o
+    operador retira o palete de um nível de baixo, o nível de cima às vezes não é rebaixado no
+    banco — a posição continua "ocupada" no endereço antigo e aparece <b style="color:#ff8a6b">flutuando</b>
+    na cena (contorno vermelho). Não é bug da demo — é a réplica de uma falha real de operação
+    que ainda preciso corrigir no sistema de produção.
+  </p>
+  <p>
+    O estado de ocupação (livre, parcial, cheio, bloqueado) é agregado por endereço, e a cor de
+    cada posição pode ser recalculada por status, produto ou validade — sem alterar a geometria
+    da cena. Os dados de lote, produto e cliente são
+    <b style="color:var(--color-ghost-white)">fictícios</b>, gerados no front-end só para esta
+    demonstração — a arquitetura de domínio (grade → cena → ocupação) é a mesma do sistema real.
+  </p>
+  <p>
+    A carga também muda de forma por tipo de embalagem: sacaria vira um empilhado de sacos,
+    big bag vira um único fardo com o topo amarrado, e insumos químicos viram um tote/IBC —
+    o registro de cargas (<i>cargoRegistry</i>) é o ponto de extensão real pra novos tipos.
+  </p>
+  <p>
+    As ruas ficam identificadas no início de cada corredor (ex: CF03 · RUA 01), e o botão
+    <b style="color:var(--color-ghost-white)">"Simular empilhadeira"</b> assume o ponto de vista
+    de uma empilhadeira percorrendo os corredores da câmara rack — a mesma rota usada no modo
+    apresentação do sistema real.
+  </p>
+  <div class="stack">
+    <b>Camadas:</b> domain (puro) → data (repositórios) → interaction (câmera) → render (Three.js)<br/>
+    <b>Stack:</b> TypeScript · Three.js · React · Supabase (produção)<br/>
+    <b>Multi-tenant:</b> tema e coloração configuráveis por cliente
+  </div>
+</div>
+
+<div class="chrome ghost-card" id="stats-panel">
+  <div class="stat"><div class="num" id="stat-total">—</div><div class="label">Endereços</div></div>
+  <div class="stat"><div class="num" id="stat-ocup">—</div><div class="label">Ocupação</div></div>
+</div>
+
+<div class="chrome ghost-card" id="legend-panel">
+  <div class="title">Colorir por</div>
+  <div class="mode-row">
+    <button class="pill-btn active" data-mode="status">Status</button>
+    <button class="pill-btn" data-mode="produto">Produto</button>
+    <button class="pill-btn" data-mode="validade">Validade</button>
+  </div>
+  <div id="legend-items"></div>
+</div>
+
+<div class="chrome ghost-card" id="detail-panel">
+  <div id="detail-content"></div>
+  <button class="ghost-btn close-btn" id="btn-close-detail">Fechar</button>
+</div>
+
+<div class="chrome" id="hint">Arraste para girar · Clique em uma posição</div>
+
+<div id="list-backdrop">
+  <div class="ghost-card" id="list-panel">
+    <div id="list-header">
+      <div>
+        <h1>Endereços — Câmara <span id="list-camara"></span></h1>
+        <div class="sub" id="list-count"></div>
+      </div>
+      <button class="ghost-btn" id="btn-close-list">Fechar ✕</button>
+    </div>
+    <div id="list-toolbar">
+      <input id="list-search" type="text" placeholder="Buscar por endereço, produto, lote ou cliente…" />
+      <div id="list-filters">
+        <button class="pill-btn active" data-status="">Todos</button>
+        <button class="pill-btn" data-status="EL">Livre</button>
+        <button class="pill-btn" data-status="EP">Parcial</button>
+        <button class="pill-btn" data-status="EC">Cheio</button>
+        <button class="pill-btn" data-status="EB">Bloqueado</button>
+      </div>
+    </div>
+    <div id="list-table-wrap">
+      <table id="list-table">
+        <thead>
+          <tr>
+            <th>Endereço</th><th>Cliente</th><th>Produto</th><th>Lote</th>
+            <th>Fabricação</th><th>Vencimento</th><th>Qtd.</th><th>Peso (kg)</th>
+          </tr>
+        </thead>
+        <tbody id="list-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ============================================================
+     1) DOMÍNIO — porta simplificada do WarehouseModel real
+        (mesmo raciocínio: grade 2D -> cena 3D em coordenadas de
+        mundo, sem nenhuma dependência de Three aqui dentro)
+     ============================================================ */
+
+  var STATUS_COLOR = {
+    EL: 0x3b6fb5,
+    EP: 0xe8a33d,
+    EC: 0xc1440e,
+    EB: 0x6b7280
+  };
+  var STATUS_LABEL = { EL: 'Livre', EP: 'Parcial', EC: 'Cheio', EB: 'Bloqueado' };
+
+  var CAMARA_RACK = {
+    tipo: 'RACK',
+    camaraId: '3',
+    blocks: 4,                 // blocos de rack costas-com-costas, separados por corredor de picking
+    aisleLength: 12,           // nº de vãos (linhas) por rua — escala de demo, não a contagem real da instalação
+    escalaM: 2.416,            // vão (2.294) + montante (0.122) — módulo padrão de porta-pallet
+    costasM: 0.8,              // vão de costas entre as duas fileiras de um mesmo bloco
+    corredorLargura: 4.6,      // rua de picking — larga o bastante pra empilhadeira manobrar
+    corredorTransversal: 5.2,  // corredor principal nas duas pontas (troca de rua por aqui)
+    // nível 1 apoia direto no piso; do nível 2 em diante sobe em passo fixo —
+    // mesmo formato de salto de um projeto real de porta-pallet (nivelY)
+    rack: { niveis: 6, passoNivelM: 2.0, saltoNivel2M: 2.6, baseNivelM: 0, profundidade: 1, faces: ['A'], paleteAlturaM: 1.1 }
+  };
+
+  // Câmara fria 2: blocado normal — sem estrutura de rack, pilhas de big bag
+  // direto no chão, endereço no formato Rua-Bloco-Nível-Posição.
+  var CAMARA_BLOC = {
+    tipo: 'BLOCADO',
+    camaraId: '5',
+    blocks: 3,
+    aisleLength: 8,
+    escalaM: 1.9,              // footprint maior — pilha de bag ocupa mais chão que um vão de rack
+    costasM: 0.7,              // vão de costas entre as duas fileiras de um mesmo bloco
+    corredorLargura: 4.6,
+    corredorTransversal: 5.0,
+    bloc: { niveis: 3, alturaNivelM: 1.05, posicoes: ['A', 'B'] }
+  };
+
+  function pad2(n) { return String(n).padStart(2, '0'); }
+
+  /**
+   * Layout em blocos: PAREDE | CORREDOR | [RACK COSTAS RACK CORREDOR] × blocks | PAREDE
+   * Cada bloco = duas fileiras costas-com-costas, com um pequeno vão de costas
+   * entre elas (sem posição, só estrutura) — dá espaço real pro rótulo de cada
+   * rua e evita que as duas fileiras leiam como "coladas".
+   */
+  function buildColPattern(blocks) {
+    var pattern = ['PAREDE', 'CORREDOR'];
+    for (var b = 0; b < blocks; b++) {
+      pattern.push('RACK');
+      pattern.push('COSTAS');
+      pattern.push('RACK');
+      pattern.push('CORREDOR');
+    }
+    pattern.push('PAREDE');
+    return pattern;
+  }
+
+  /**
+   * Grade com LARGURA VARIÁVEL: colunas/linhas de rack mantêm o vão padrão,
+   * mas colunas de corredor (rua) e as duas linhas de corredor transversal
+   * (perto do portão e da doca) ficam mais largas — dão espaço real pra
+   * empilhadeira circular e trocar de rua sem cruzar por dentro do rack.
+   */
+  function buildCells(cfg) {
+    var colPattern = buildColPattern(cfg.blocks);
+    var cols = colPattern.length;
+    var costasM = cfg.costasM || 0.6;
+    var colWidths = colPattern.map(function (k) {
+      return k === 'CORREDOR' ? cfg.corredorLargura : (k === 'COSTAS' ? costasM : cfg.escalaM);
+    });
+    var colOffsets = []; var accX = 0;
+    colWidths.forEach(function (w) { colOffsets.push(accX); accX += w; });
+
+    var rowKinds = ['PAREDE', 'CROSSCORREDOR'];
+    for (var i = 0; i < cfg.aisleLength; i++) rowKinds.push('RACKROW');
+    rowKinds.push('CROSSCORREDOR', 'PAREDE');
+    var rows = rowKinds.length;
+    var rowHeights = rowKinds.map(function (k) {
+      return k === 'CROSSCORREDOR' ? cfg.corredorTransversal : cfg.escalaM;
+    });
+    var rowOffsets = []; var accZ = 0;
+    rowHeights.forEach(function (h) { rowOffsets.push(accZ); accZ += h; });
+
+    var portaoCol = 2, docaCol = cols - 3;
+    var ruaSeq = {}, nextRua = 1;
+    var linhaSeq = {}, nextLinha = 1;
+    rowKinds.forEach(function (k, gy) { if (k === 'RACKROW') linhaSeq[gy] = nextLinha++; });
+
+    var cells = [];
+    for (var gy = 0; gy < rows; gy++) {
+      for (var gx = 0; gx < cols; gx++) {
+        var colKind = colPattern[gx];
+        var rowKind = rowKinds[gy];
+        var type, rua = null, linha = null;
+
+        if (colKind === 'PAREDE' || colKind === 'COSTAS') {
+          type = 'PAREDE'; // vão de costas também vira "parede" (não é desenhado, não é endereçável)
+        } else if (rowKind === 'PAREDE') {
+          var isPortao = gy === 0 && (gx === portaoCol || gx === portaoCol + 1);
+          var isDoca = gy === rows - 1 && (gx === docaCol || gx === docaCol - 1);
+          type = isPortao ? 'PORTAO' : (isDoca ? 'DOCA' : 'PAREDE');
+        } else if (rowKind === 'CROSSCORREDOR' || colKind === 'CORREDOR') {
+          type = 'CORREDOR'; // corredor transversal abre a linha INTEIRA, mesmo sob colunas de rack
+        } else {
+          type = 'POSICAO';
+          if (ruaSeq[gx] == null) ruaSeq[gx] = nextRua++;
+          rua = ruaSeq[gx];
+          linha = linhaSeq[gy];
+        }
+        cells.push({ gx: gx, gy: gy, type: type, rua: rua, linha: linha });
+      }
+    }
+    return { cells: cells, cols: cols, rows: rows, colWidths: colWidths, colOffsets: colOffsets, rowHeights: rowHeights, rowOffsets: rowOffsets };
+  }
+
+  function structureKindOf(type, chamberKind) {
+    switch (type) {
+      case 'POSICAO': return chamberKind; // 'RACK' ou 'BLOCO', conforme a câmara
+      case 'CORREDOR': return 'CORREDOR';
+      case 'PAREDE': return 'PAREDE';
+      case 'PORTAO': return 'PORTAO';
+      case 'DOCA': return 'DOCA';
+      default: return null;
+    }
+  }
+
+  function alturaRack(rack) {
+    var topoNivel = nivelY(rack.niveis, rack);
+    return topoNivel + rack.paleteAlturaM + 0.4;
+  }
+  function nivelY(nivel, rack) {
+    // pos.world.y é tratado como o CENTRO da carga (buildPositionMeshes faz
+    // y - size.h/2 pra plantar o fundo do palete). No nível 1 isso precisa
+    // ser metade da altura do palete, senão a carga afunda visualmente pra
+    // dentro do piso e só aparece "achatada" pela metade de cima.
+    if (nivel <= 1) return rack.baseNivelM + rack.paleteAlturaM / 2;
+    var salto = rack.saltoNivel2M != null ? rack.saltoNivel2M : rack.passoNivelM;
+    return rack.baseNivelM + salto + rack.passoNivelM * (nivel - 2);
+  }
+
+  // Câmara blocada: sem estrutura fixa — pilha de bags direto no chão,
+  // cada nível apoiado literalmente no nível de baixo (fisicamente).
+  function alturaBloc(bloc) {
+    return bloc.alturaNivelM * bloc.niveis + 0.4;
+  }
+  function nivelYBloc(nivel, bloc) {
+    return bloc.alturaNivelM * (nivel - 0.5);
+  }
+
+  // Endereço no padrão do sistema real: armazém-câmara-rua-linha-nível-profundidade-face
+  function expandirPosicoes(cell, center, rack, camaraNum) {
+    var out = [];
+    var profPasso = rack.profundidade > 0 ? center.d / rack.profundidade : center.d;
+    for (var nivel = 1; nivel <= rack.niveis; nivel++) {
+      for (var prof = 1; prof <= rack.profundidade; prof++) {
+        for (var f = 0; f < rack.faces.length; f++) {
+          var face = rack.faces[f];
+          var id = camaraNum + ':' + cell.gx + ':' + cell.gy + ':' + nivel + ':' + prof + ':' + face;
+          var endereco = 'CF' + camaraNum + '-' + pad2(cell.rua) + '-' + pad2(cell.linha) + '-' + nivel + '-' + prof + '-' + face;
+          var zProf = center.z - center.d / 2 + profPasso * (prof - 0.5);
+          out.push({
+            id: id,
+            endereco: endereco,
+            world: { x: center.x, y: nivelY(nivel, rack), z: zProf },
+            size: { w: center.w * 0.82, h: rack.paleteAlturaM, d: profPasso * 0.82 },
+            rua: cell.rua,
+            linha: cell.linha,
+            nivel: nivel,
+            profundidade: prof,
+            face: face,
+            tipoCamara: 'RACK'
+          });
+        }
+      }
+    }
+    return out;
+  }
+
+  // Endereço da câmara blocada: Rua-Bloco-Nível-Posição (ex.: R01-05-3-B)
+  function expandirPosicoesBloc(cell, center, bloc, camaraNum) {
+    var out = [];
+    var posicoes = bloc.posicoes;
+    var wSub = center.w / posicoes.length;
+    for (var pi = 0; pi < posicoes.length; pi++) {
+      var letra = posicoes[pi];
+      var xSub = center.x - center.w / 2 + wSub * (pi + 0.5);
+      for (var nivel = 1; nivel <= bloc.niveis; nivel++) {
+        var id = 'B' + camaraNum + ':' + cell.gx + ':' + cell.gy + ':' + nivel + ':' + letra;
+        var endereco = 'R' + pad2(cell.rua) + '-' + pad2(cell.linha) + '-' + nivel + '-' + letra;
+        out.push({
+          id: id,
+          endereco: endereco,
+          world: { x: xSub, y: nivelYBloc(nivel, bloc), z: center.z },
+          size: { w: wSub * 0.8, h: bloc.alturaNivelM, d: center.d * 0.8 },
+          rua: cell.rua,
+          linha: cell.linha,
+          nivel: nivel,
+          profundidade: 1,
+          face: letra,
+          tipoCamara: 'BLOCADO'
+        });
+      }
+    }
+    return out;
+  }
+
+  function buildSceneModel(cfg) {
+    var built = buildCells(cfg);
+    var cells = built.cells;
+    var structure = [];
+    var positions = [];
+    var isRack = cfg.tipo === 'RACK';
+    var chamberKind = isRack ? 'RACK' : 'BLOCO';
+    var hTop = isRack ? alturaRack(cfg.rack) : alturaBloc(cfg.bloc);
+
+    for (var i = 0; i < cells.length; i++) {
+      var cell = cells[i];
+      var w = built.colWidths[cell.gx];
+      var d = built.rowHeights[cell.gy];
+      var x = built.colOffsets[cell.gx] + w / 2;
+      var z = built.rowOffsets[cell.gy] + d / 2;
+      var kind = structureKindOf(cell.type, chamberKind);
+      if (kind != null) {
+        var h = (kind === 'RACK' || kind === 'PAREDE') ? hTop
+              : (kind === 'PORTAO' || kind === 'DOCA') ? 3.0
+              : 0.02; // CORREDOR e BLOCO ficam rentes ao piso
+        structure.push({ kind: kind, world: { x: x, y: h / 2, z: z }, size: { w: w, h: h, d: d }, gx: cell.gx, gy: cell.gy });
+      }
+      if (cell.type === 'POSICAO') {
+        var expanded = isRack
+          ? expandirPosicoes(cell, { x: x, z: z, w: w, d: d }, cfg.rack, cfg.camaraId)
+          : expandirPosicoesBloc(cell, { x: x, z: z, w: w, d: d }, cfg.bloc, cfg.camaraId);
+        for (var k = 0; k < expanded.length; k++) positions.push(expanded[k]);
+      }
+    }
+
+    var totalW = built.colOffsets[built.cols - 1] + built.colWidths[built.cols - 1];
+    var totalD = built.rowOffsets[built.rows - 1] + built.rowHeights[built.rows - 1];
+    var bounds = { w: totalW, h: hTop, d: totalD };
+    return { bounds: bounds, structure: structure, positions: positions, grid: built };
+  }
+
+  /* ============================================================
+     2) DADOS FAKE — ocupação simulada (equivalente ao occupancy.ts
+        real, mas alimentado por dados fictícios no front)
+     ============================================================ */
+
+  var PRODUTOS = [
+    { codigo: 'SOJ', nome: 'Soja em grãos', tipo: 'BAG', embalagem: 'Big Bag', sigla: 'SJ', cor2: 0x2f5f2a },
+    { codigo: 'MIL', nome: 'Milho', tipo: 'SAC', embalagem: 'Sacaria', sigla: 'ML', cor2: 0xb8860b },
+    { codigo: 'FEJ', nome: 'Feijão', tipo: 'SAC', embalagem: 'Sacaria', sigla: 'FG', cor2: 0x7a2e2e },
+    { codigo: 'SOR', nome: 'Sorgo', tipo: 'BAG', embalagem: 'Big Bag', sigla: 'SG', cor2: 0x8a6d1f },
+    { codigo: 'AFO', nome: 'Ácido Fosfórico', tipo: 'IBC', embalagem: 'IBC · Insumo líquido', sigla: 'QI', cor2: 0x2b5f8a },
+    { codigo: 'SAM', nome: 'Sulfato de Amônio', tipo: 'IBC', embalagem: 'IBC · Insumo líquido', sigla: 'QI', cor2: 0x5a3d8a },
+    { codigo: 'FER', nome: 'Fertilizante NPK', tipo: 'CX', embalagem: 'Caixaria', sigla: 'FX', cor2: 0x555555 }
+  ];
+  var CLIENTES = [
+    { codigo: 22, nome: 'Agro Vale Ltda' },
+    { codigo: 28, nome: 'Cooperativa Central' },
+    { codigo: 39, nome: 'Nutriquímica S.A.' },
+    { codigo: 41, nome: 'Fazenda Bom Sucesso' },
+    { codigo: 55, nome: 'Insumos Cerrado' }
+  ];
+  function fmtCliente(c) { return c.codigo + ' · ' + c.nome; }
+
+  function gerarLote(produto) {
+    var n1 = String(100 + Math.floor(Math.random() * 900));
+    var n2 = String(Math.floor(Math.random() * 9999)).padStart(4, '0');
+    var letra = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+    return n1 + produto.sigla + n2 + letra;
+  }
+
+  function corPorChave(chave) {
+    var s = String(chave || '-');
+    var h = 0;
+    for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+    var hue = h % 360;
+    return hslToHex(hue, 55, 55);
+  }
+  function hslToHex(h, s, l) {
+    s /= 100; l /= 100;
+    var c = (1 - Math.abs(2 * l - 1)) * s;
+    var x = c * (1 - Math.abs((h / 60) % 2 - 1));
+    var m = l - c / 2, r = 0, g = 0, b = 0;
+    if (h < 60) { r = c; g = x; b = 0; }
+    else if (h < 120) { r = x; g = c; b = 0; }
+    else if (h < 180) { r = 0; g = c; b = x; }
+    else if (h < 240) { r = 0; g = x; b = c; }
+    else if (h < 300) { r = x; g = 0; b = c; }
+    else { r = c; g = 0; b = x; }
+    var to = function (v) { return Math.round((v + m) * 255); };
+    return (to(r) << 16) | (to(g) << 8) | to(b);
+  }
+  function corPorValidade(dias) {
+    if (dias == null) return 0x94a3b8;
+    if (dias < 0) return 0xb91c1c;
+    if (dias <= 30) return 0xe8a33d;
+    return 0x3f9142;
+  }
+
+  var PESO_UNITARIO = { BAG: 1050, SAC: 52, IBC: 980, CX: 24 };
+
+  function fmtPeso(v) {
+    return v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function buildFakeOccupancy(positions) {
+    var byId = new Map();
+    var porStatus = { EL: 0, EP: 0, EC: 0, EB: 0 };
+    for (var i = 0; i < positions.length; i++) {
+      var pos = positions[i];
+      var r = Math.random();
+      var status = r < 0.30 ? 'EL' : r < 0.56 ? 'EP' : r < 0.86 ? 'EC' : 'EB';
+      porStatus[status]++;
+      var palete = null;
+      if (status === 'EP' || status === 'EC') {
+        var produto = PRODUTOS[Math.floor(Math.random() * PRODUTOS.length)];
+        var dias = Math.floor(-8 + Math.random() * 210);
+        var venc = new Date(Date.now() + dias * 86400000);
+        var fabricacao = new Date(venc.getTime() - (420 + Math.random() * 260) * 86400000);
+        var qtd = status === 'EC' ? Math.floor(8 + Math.random() * 18) : Math.floor(1 + Math.random() * 8);
+        var peso = qtd * (PESO_UNITARIO[produto.tipo] || 40) * (0.94 + Math.random() * 0.12);
+        palete = {
+          produto: produto,
+          lote: gerarLote(produto),
+          qtd: qtd,
+          peso: peso,
+          dias: dias,
+          venc: venc,
+          fabricacao: fabricacao,
+          cliente: CLIENTES[Math.floor(Math.random() * CLIENTES.length)]
+        };
+      }
+      byId.set(pos.id, { address: pos.id, status: status, palete: palete });
+    }
+    var total = positions.length;
+    var ocupados = porStatus.EP + porStatus.EC;
+    return { byId: byId, summary: { total: total, porStatus: porStatus, ocupacaoPct: total ? (ocupados / total) * 100 : 0 } };
+  }
+
+  function corPosicao(occ, mode) {
+    if (occ.status === 'EL') return null;
+    if (occ.status === 'EB') return STATUS_COLOR.EB;
+    if (mode === 'produto') return corPorChave(occ.palete.produto.codigo);
+    if (mode === 'validade') return corPorValidade(occ.palete.dias);
+    return STATUS_COLOR[occ.status];
+  }
+
+  // Cor secundária — no modo "produto" usa a cor de marca do próprio produto;
+  // nos outros modos deriva um tom mais escuro da cor primária (mesma lógica
+  // de faixa/costura do sistema real, sem precisar de um 2º dado por status).
+  function escurecer(hex, fator) {
+    var r = (hex >> 16) & 255, g = (hex >> 8) & 255, b = hex & 255;
+    r = Math.round(r * (1 - fator)); g = Math.round(g * (1 - fator)); b = Math.round(b * (1 - fator));
+    return (r << 16) | (g << 8) | b;
+  }
+  // No modo "produto" o corpo fica claro/creme (igual ao padrão do sistema real)
+  // e a cor do produto vira só a faixa — destaca melhor do que o saco inteiro
+  // pintado. Nos modos status/validade o corpo inteiro continua tingido (é o
+  // ponto desses modos: leitura rápida por cor).
+  var COR_CORPO_PADRAO = 0xEAE6DC;
+  function coresCarga(occ, mode, hexBase) {
+    if (mode === 'produto') {
+      return { primaria: COR_CORPO_PADRAO, secundaria: occ.palete.produto.cor2 != null ? occ.palete.produto.cor2 : hexBase };
+    }
+    return { primaria: hexBase, secundaria: escurecer(hexBase, 0.35) };
+  }
+
+  // Câmara blocada: ocupação simulada por PILHA (rua-bloco-posição), de baixo
+  // pra cima — fisicamente, um nível só devia existir se o de baixo existe.
+  // Só que, no sistema real, quando o operador retira o palete de um nível
+  // inferior o nível de cima às vezes não é atualizado — e a posição de cima
+  // continua "ocupada" no banco, aparecendo flutuando no 3D. Replicado aqui de
+  // propósito, em algumas pilhas marcadas, pra deixar o comportamento visível.
+  function buildFakeOccupancyBloc(positions, bloc) {
+    var byId = new Map();
+    var porStatus = { EL: 0, EP: 0, EC: 0, EB: 0 };
+    var PRODUTOS_BLOC = PRODUTOS.filter(function (p) { return p.tipo === 'BAG' || p.tipo === 'SAC'; });
+
+    var pilhas = {};
+    positions.forEach(function (p) {
+      var k = p.rua + '|' + p.linha + '|' + p.face;
+      (pilhas[k] = pilhas[k] || []).push(p);
+    });
+    var pilhaKeys = Object.keys(pilhas);
+    var numFlutuantes = Math.min(6, Math.max(2, Math.floor(pilhaKeys.length * 0.18)));
+    var embaralhadas = pilhaKeys.slice().sort(function () { return Math.random() - 0.5; });
+    var flutuantesSet = {};
+    for (var f = 0; f < numFlutuantes; f++) flutuantesSet[embaralhadas[f]] = true;
+
+    pilhaKeys.forEach(function (k) {
+      var stack = pilhas[k].slice().sort(function (a, b) { return a.nivel - b.nivel; });
+      var niveis = stack.length;
+      var alturaOcupada = Math.floor(Math.random() * (niveis + 1)); // 0..niveis, de baixo pra cima
+
+      var produto = PRODUTOS_BLOC[Math.floor(Math.random() * PRODUTOS_BLOC.length)];
+      var cliente = CLIENTES[Math.floor(Math.random() * CLIENTES.length)];
+      var lote = gerarLote(produto);
+      var fabricacao = new Date(Date.now() - (30 + Math.random() * 300) * 86400000);
+      var venc = new Date(fabricacao.getTime() + (180 + Math.random() * 300) * 86400000);
+
+      var ocupadoNivel = {};
+      for (var n = 1; n <= alturaOcupada; n++) ocupadoNivel[n] = true;
+
+      if (flutuantesSet[k] && alturaOcupada >= 1 && alturaOcupada < niveis) {
+        // retira um nível inferior sem baixar o(s) nível(is) de cima — a falha real
+        var nivelRemovido = 1 + Math.floor(Math.random() * alturaOcupada);
+        delete ocupadoNivel[nivelRemovido];
+        ocupadoNivel[Math.min(alturaOcupada + 1, niveis)] = true;
+      }
+
+      stack.forEach(function (pos) {
+        var ocupado = !!ocupadoNivel[pos.nivel];
+        var status = ocupado ? (Math.random() < 0.25 ? 'EP' : 'EC') : 'EL';
+        porStatus[status]++;
+        var palete = null;
+        if (ocupado) {
+          var dias = Math.round((venc.getTime() - Date.now()) / 86400000);
+          var qtd = status === 'EC' ? Math.floor(8 + Math.random() * 10) : Math.floor(1 + Math.random() * 6);
+          var peso = qtd * (PESO_UNITARIO[produto.tipo] || 40) * (0.94 + Math.random() * 0.12);
+          palete = { produto: produto, lote: lote, qtd: qtd, peso: peso, dias: dias, venc: venc, fabricacao: fabricacao, cliente: cliente };
+        }
+        var flutuando = false;
+        if (ocupado && pos.nivel > 1 && !ocupadoNivel[pos.nivel - 1]) flutuando = true;
+        byId.set(pos.id, { address: pos.id, status: status, palete: palete, flutuando: flutuando });
+      });
+    });
+
+    var total = positions.length;
+    var ocupados = porStatus.EP + porStatus.EC;
+    return { byId: byId, summary: { total: total, porStatus: porStatus, ocupacaoPct: total ? (ocupados / total) * 100 : 0 } };
+  }
+
+  /* ============================================================
+     3) THREE.JS — render da cena a partir do modelo + ocupação
+     ============================================================ */
+
+  var modelA = buildSceneModel(CAMARA_RACK);   // câmara 3 · rack
+  var modelB = buildSceneModel(CAMARA_BLOC);   // câmara 5 · blocado
+
+  var WALL_GAP = 3.0; // parede divisória + vão de acesso entre as duas câmaras
+  var offsetX = modelA.bounds.w + WALL_GAP;
+  modelB.structure.forEach(function (s) { s.world.x += offsetX; });
+  modelB.positions.forEach(function (p) { p.world.x += offsetX; });
+  modelB.grid.colOffsets = modelB.grid.colOffsets.map(function (v) { return v + offsetX; });
+
+  var alturaDivisoria = Math.max(modelA.bounds.h, modelB.bounds.h);
+  var profundidadeMax = Math.max(modelA.bounds.d, modelB.bounds.d);
+
+  var model = {
+    bounds: { w: modelA.bounds.w + WALL_GAP + modelB.bounds.w, h: alturaDivisoria, d: profundidadeMax },
+    structure: modelA.structure.concat(modelB.structure),
+    positions: modelA.positions.concat(modelB.positions),
+    grid: modelA.grid
+  };
+
+  var occA = buildFakeOccupancy(modelA.positions);
+  var occB = buildFakeOccupancyBloc(modelB.positions, CAMARA_BLOC.bloc);
+  var occupancy = { byId: new Map(), summary: { total: 0, porStatus: { EL: 0, EP: 0, EC: 0, EB: 0 }, ocupacaoPct: 0 } };
+  [occA, occB].forEach(function (o) {
+    o.byId.forEach(function (v, k) { occupancy.byId.set(k, v); });
+    occupancy.summary.total += o.summary.total;
+    ['EL', 'EP', 'EC', 'EB'].forEach(function (s) { occupancy.summary.porStatus[s] += o.summary.porStatus[s]; });
+  });
+  occupancy.summary.ocupacaoPct = occupancy.summary.total
+    ? ((occupancy.summary.porStatus.EP + occupancy.summary.porStatus.EC) / occupancy.summary.total) * 100
+    : 0;
+
+  var host = document.getElementById('canvas-host');
+  var scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x000000);
+  scene.fog = new THREE.Fog(0x000000, 22, 95);
+
+  var camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 300);
+  var center = new THREE.Vector3(model.bounds.w / 2, model.bounds.h * 0.28, model.bounds.d / 2);
+  camera.position.set(center.x + model.bounds.w * 0.95, model.bounds.h * 1.05, center.z + model.bounds.d * 1.25);
+
+  var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  host.appendChild(renderer.domElement);
+
+  var controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.target.copy(center);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.06;
+  controls.minDistance = 6;
+  controls.maxDistance = 70;
+  controls.maxPolarAngle = Math.PI * 0.49;
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 0.5;
+
+  // Luz mínima — a cena é quase toda hairline no escuro
+  scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+  var key = new THREE.DirectionalLight(0xffffff, 0.5);
+  key.position.set(model.bounds.w * 0.6, model.bounds.h * 2, model.bounds.d * 0.3);
+  scene.add(key);
+  var rim = new THREE.PointLight(0x5b5fa0, 0.6, model.bounds.w * 3);
+  rim.position.set(center.x, model.bounds.h * 1.6, center.z);
+  scene.add(rim);
+
+  // Piso — concreto industrial, com grade e uma faixa de circulação clara
+  var floorMat = new THREE.MeshStandardMaterial({ color: 0x141416, roughness: 0.95, metalness: 0.02 });
+  var floorGeo = new THREE.PlaneGeometry(model.bounds.w * 1.15, model.bounds.d * 1.15);
+  var floor = new THREE.Mesh(floorGeo, floorMat);
+  floor.rotation.x = -Math.PI / 2;
+  floor.position.set(center.x, -0.005, center.z);
+  scene.add(floor);
+
+  var grid = new THREE.GridHelper(Math.max(model.bounds.w, model.bounds.d) * 1.2, 40, 0x3a3a3d, 0x232326);
+  grid.position.set(center.x, 0, center.z);
+  scene.add(grid);
+
+  // Corredores marcados no piso — zona cinza delimitada por borda, igual
+  // à demarcação de rua de um armazém real (uma zona contínua por rua,
+  // outra para cada corredor transversal nas pontas).
+  var zoneFillMat = new THREE.MeshBasicMaterial({ color: 0x53535c, transparent: true, opacity: 0.7 });
+  var zoneEdgeMat = new THREE.LineBasicMaterial({ color: 0xf2c94c, transparent: true, opacity: 0.85 });
+  function markCorridorZone(cx, cz, w, d, y, larguraFator) {
+    var fw = larguraFator != null ? larguraFator : 0.96;
+    var plane = new THREE.Mesh(new THREE.PlaneGeometry(w * fw, d * 0.98), zoneFillMat);
+    plane.rotation.x = -Math.PI / 2;
+    plane.position.set(cx, y, cz);
+    scene.add(plane);
+    var border = new THREE.Mesh(new THREE.BoxGeometry(w * fw, 0.01, d * 0.98));
+    var edges = new THREE.EdgesGeometry(border.geometry);
+    var lines = new THREE.LineSegments(edges, zoneEdgeMat);
+    lines.position.set(cx, y + 0.003, cz);
+    scene.add(lines);
+  }
+  function pintarZonasCorredor(cfg, builtGrid) {
+    var colKindPattern = buildColPattern(cfg.blocks);
+    var totalW = builtGrid.colOffsets[builtGrid.cols - 1] + builtGrid.colWidths[builtGrid.cols - 1];
+    var totalD = builtGrid.rowOffsets[builtGrid.rows - 1] + builtGrid.rowHeights[builtGrid.rows - 1];
+    var cxCentro = builtGrid.colOffsets[0] + totalW / 2;
+    builtGrid.colWidths.forEach(function (w, gx) {
+      // colunas de corredor (rua de picking) — faixa mais estreita DENTRO da
+      // rua, com margem pra cada lado (padrão real: a marcação não vai até
+      // a borda do rack, fica como uma pista de circulação demarcada)
+      if (colKindPattern[gx] !== 'CORREDOR') return;
+      var cx = builtGrid.colOffsets[gx] + w / 2;
+      markCorridorZone(cx, totalD / 2, w, totalD * 0.985, 0.006, 0.58);
+    });
+    [1, builtGrid.rows - 2].forEach(function (gy) {
+      // corredores transversais nas duas pontas — esses seguem cheios,
+      // são o corredor principal
+      var d = builtGrid.rowHeights[gy];
+      var cz = builtGrid.rowOffsets[gy] + d / 2;
+      markCorridorZone(cxCentro, cz, totalW * 0.99, d, 0.005);
+    });
+  }
+  pintarZonasCorredor(CAMARA_RACK, modelA.grid);
+  pintarZonasCorredor(CAMARA_BLOC, modelB.grid);
+
+  /* --- Estrutura de rack: postes (azul-marinho) + vigas (laranja/vermelho) --- */
+  var POST_COLOR = 0x2b3568;    // mesmo azul usado no sistema real de etiquetas (AZUL)
+  var BEAM_COLOR = 0xcf5417;    // laranja/vermelho de viga de porta-pallet
+  var postMat = new THREE.MeshStandardMaterial({ color: POST_COLOR, roughness: 0.35, metalness: 0.55 });
+  var beamMat = new THREE.MeshStandardMaterial({ color: BEAM_COLOR, roughness: 0.4, metalness: 0.35, emissive: BEAM_COLOR, emissiveIntensity: 0.08 });
+  var wallEdgeMat = new THREE.LineBasicMaterial({ color: 0x3a3a3a, transparent: true, opacity: 0.45 });
+  var doorEdgeMat = new THREE.LineBasicMaterial({ color: 0xc6c6c6, transparent: true, opacity: 0.8 });
+
+  var unitBoxGeo = new THREE.BoxGeometry(1, 1, 1);
+
+  function addWireBox(el, mat) {
+    var edges = new THREE.EdgesGeometry(unitBoxGeo);
+    var lines = new THREE.LineSegments(edges, mat);
+    lines.scale.set(el.size.w * 0.96, el.size.h, el.size.d * 0.96);
+    lines.position.set(el.world.x, el.world.y, el.world.z);
+    scene.add(lines);
+  }
+
+  function addRackBay(el) {
+    var e = CAMARA_RACK.escalaM;
+    var rack = CAMARA_RACK.rack;
+    var postW = e * 0.06;
+    var y0 = 0;
+    var topY = el.size.h;
+    // 4 postes verticais nos cantos do vão
+    [-1, 1].forEach(function (sx) {
+      [-1, 1].forEach(function (sz) {
+        var post = new THREE.Mesh(unitBoxGeo, postMat);
+        post.scale.set(postW, topY, postW);
+        post.position.set(el.world.x + sx * (e * 0.42), topY / 2, el.world.z + sz * (e * 0.42));
+        scene.add(post);
+      });
+    });
+    // vigas horizontais em cada nível (borda frontal do vão — o suficiente
+    // pra ler como porta-pallet sem duplicar geometria em cada bay)
+    for (var nivel = 1; nivel <= rack.niveis; nivel++) {
+      var y = nivelY(nivel, rack) - rack.paleteAlturaM * 0.15;
+      var beam = new THREE.Mesh(unitBoxGeo, beamMat);
+      beam.scale.set(e * 0.86, e * 0.045, postW * 1.1);
+      beam.position.set(el.world.x, y, el.world.z + e * 0.42);
+      scene.add(beam);
+    }
+  }
+
+  // Câmara blocada: sem estrutura — só a demarcação do piso de cada bloco
+  // (pallet/pilha), igual à demarcação real de posição blocada no chão.
+  var blocTileMat = new THREE.MeshBasicMaterial({ color: 0x3a3f33, transparent: true, opacity: 0.55 });
+  var blocEdgeMat = new THREE.LineBasicMaterial({ color: 0x6a6a70, transparent: true, opacity: 0.5 });
+  function addBlocoFloor(el) {
+    var tile = new THREE.Mesh(new THREE.PlaneGeometry(el.size.w * 0.94, el.size.d * 0.94), blocTileMat);
+    tile.rotation.x = -Math.PI / 2;
+    tile.position.set(el.world.x, 0.008, el.world.z);
+    scene.add(tile);
+    var edges = new THREE.EdgesGeometry(new THREE.BoxGeometry(el.size.w * 0.94, 0.01, el.size.d * 0.94));
+    var lines = new THREE.LineSegments(edges, blocEdgeMat);
+    lines.position.set(el.world.x, 0.012, el.world.z);
+    scene.add(lines);
+  }
+
+  model.structure.forEach(function (el) {
+    if (el.kind === 'CORREDOR') return; // corredor fica implícito (vazio) — não desenha
+    if (el.kind === 'RACK') { addRackBay(el); return; }
+    if (el.kind === 'BLOCO') { addBlocoFloor(el); return; }
+    if (el.kind === 'PAREDE') return; // sem parede visível — atrapalhava a leitura da cena
+    var mat = (el.kind === 'PORTAO' || el.kind === 'DOCA') ? doorEdgeMat : wallEdgeMat;
+    addWireBox(el, mat);
+  });
+
+  /* --- Texturas procedurais (canvas) — mesma técnica do sistema real,
+     sem nenhum asset externo e sem marca de terceiros --- */
+  var _texCache = {};
+  function mkTex(nome, desenha, repeat) {
+    if (_texCache[nome]) return _texCache[nome];
+    var cv = document.createElement('canvas');
+    cv.width = 256; cv.height = 256;
+    desenha(cv.getContext('2d'));
+    var t = new THREE.CanvasTexture(cv);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.repeat.set(repeat || 1, repeat || 1);
+    _texCache[nome] = t;
+    return t;
+  }
+  function texRafia() {
+    return mkTex('rafia', function (c) {
+      c.fillStyle = '#ffffff'; c.fillRect(0, 0, 256, 256);
+      c.strokeStyle = 'rgba(0,0,0,0.16)'; c.lineWidth = 2;
+      for (var i = 0; i < 256; i += 7) {
+        c.beginPath(); c.moveTo(i, 0); c.lineTo(i, 256); c.stroke();
+        c.beginPath(); c.moveTo(0, i); c.lineTo(256, i); c.stroke();
+      }
+    }, 2);
+  }
+  function texTecido() {
+    return mkTex('tecido', function (c) {
+      c.fillStyle = '#ffffff'; c.fillRect(0, 0, 256, 256);
+      c.strokeStyle = 'rgba(0,0,0,0.10)'; c.lineWidth = 1;
+      for (var i = 0; i < 256; i += 5) { c.beginPath(); c.moveTo(i, 0); c.lineTo(i, 256); c.stroke(); }
+      for (var k = 0; k < 500; k++) {
+        c.fillStyle = 'rgba(0,0,0,' + (0.02 + Math.random() * 0.05) + ')';
+        c.fillRect(Math.random() * 256, Math.random() * 256, 2, 2);
+      }
+    }, 1.4);
+  }
+  function texMadeira() {
+    return mkTex('madeira', function (c) {
+      c.fillStyle = '#ffffff'; c.fillRect(0, 0, 256, 256);
+      for (var i = 0; i < 256; i += 3) {
+        c.strokeStyle = 'rgba(0,0,0,' + (0.05 + Math.random() * 0.12) + ')';
+        c.lineWidth = 1 + Math.random();
+        c.beginPath(); c.moveTo(0, i + Math.random() * 2); c.lineTo(256, i + Math.random() * 2); c.stroke();
+      }
+    }, 1);
+  }
+
+  // Identidade de 2 cores por produto — corpo + faixa impressa, igual à
+  // técnica do sistema real (texMarca): cor primária preenche o corpo,
+  // cor secundária vira faixa/costura, não um tom liso só.
+  function hexToCss(h) { return '#' + ('000000' + (h >>> 0).toString(16)).slice(-6); }
+  var _texMarcaCache = {};
+  function texMarca(tipo, hex1, hex2) {
+    var key = tipo + '|' + hex1 + '|' + hex2;
+    if (_texMarcaCache[key]) return _texMarcaCache[key];
+    var S = 256;
+    var cv = document.createElement('canvas');
+    cv.width = S; cv.height = S;
+    var x = cv.getContext('2d');
+    var c1 = hexToCss(hex1), c2 = hexToCss(hex2);
+    x.fillStyle = c1; x.fillRect(0, 0, S, S);
+    if (tipo === 'SAC') {
+      // saca: faixa horizontal larga no meio + trama de ráfia + costuras
+      x.fillStyle = c2; x.fillRect(0, S * 0.34, S, S * 0.32);
+      x.strokeStyle = 'rgba(0,0,0,0.12)'; x.lineWidth = 1;
+      for (var i = 0; i < S; i += 7) {
+        x.beginPath(); x.moveTo(i, 0); x.lineTo(i, S); x.stroke();
+        x.beginPath(); x.moveTo(0, i); x.lineTo(S, i); x.stroke();
+      }
+      x.strokeStyle = 'rgba(0,0,0,0.35)'; x.lineWidth = 3;
+      x.beginPath(); x.moveTo(0, 5); x.lineTo(S, 5); x.stroke();
+      x.beginPath(); x.moveTo(0, S - 5); x.lineTo(S, S - 5); x.stroke();
+    } else if (tipo === 'BAG') {
+      // big bag: tecido claro + faixa superior + costuras verticais, na cor 2
+      x.fillStyle = c2; x.fillRect(0, 0, S, S * 0.14);
+      x.strokeStyle = 'rgba(0,0,0,0.1)'; x.lineWidth = 1;
+      for (var j = 0; j < S; j += 5) { x.beginPath(); x.moveTo(j, 0); x.lineTo(j, S); x.stroke(); }
+      x.strokeStyle = c2; x.lineWidth = 3;
+      [S * 0.16, S * 0.5, S * 0.84].forEach(function (px) {
+        x.beginPath(); x.moveTo(px, S * 0.14); x.lineTo(px, S); x.stroke();
+      });
+    } else {
+      // caixa / outros: faixa inferior discreta
+      x.fillStyle = c2; x.fillRect(0, S * 0.72, S, S * 0.1);
+    }
+    var t = new THREE.CanvasTexture(cv);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    _texMarcaCache[key] = t;
+    return t;
+  }
+
+  /* --- Fábrica de cargas: BAG / SAC / IBC / CX — geometria própria por tipo,
+     igual à do sistema real (Mapa3D.jsx), em coordenadas relativas (0..1) --- */
+  var unitCylGeo = new THREE.CylinderGeometry(0.5, 0.5, 1, 14);
+  var bagBodyGeo = new THREE.CylinderGeometry(0.62, 0.5, 1, 4, 1);
+  bagBodyGeo.rotateY(Math.PI / 4); // prisma de 4 faces — silhueta de big bag, não cilindro liso
+  var handleGeo = new THREE.BoxGeometry(0.07, 1, 0.07);
+  var sacGeoA = new THREE.BoxGeometry(0.46, 1, 0.92);
+  var sacGeoB = new THREE.BoxGeometry(0.92, 1, 0.46);
+  var ibcRingGeo = new THREE.BoxGeometry(0.96, 0.05, 0.96);
+
+  var palletMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.92, metalness: 0.0, map: texMadeira() });
+  var matAlca = new THREE.MeshStandardMaterial({ color: 0x2f5fa8, roughness: 0.85, metalness: 0.0 });
+  var matGaiola = new THREE.MeshStandardMaterial({ color: 0xb4bcc6, roughness: 0.3, metalness: 0.9 });
+  var matTampa = new THREE.MeshStandardMaterial({ color: 0x2b3038, roughness: 0.5, metalness: 0.35 });
+
+  function corpoMat(tipo, hex, hex2) {
+    var h2 = hex2 != null ? hex2 : hex;
+    var opts = { color: 0xffffff, emissive: hex, emissiveIntensity: 0.05 };
+    if (tipo === 'SAC') { opts.roughness = 0.95; opts.metalness = 0.0; opts.map = texMarca('SAC', hex, h2); }
+    else if (tipo === 'BAG') { opts.roughness = 0.88; opts.metalness = 0.0; opts.map = texMarca('BAG', hex, h2); }
+    else if (tipo === 'IBC') { opts.color = hex; opts.roughness = 0.2; opts.metalness = 0.05; opts.transparent = true; opts.opacity = 0.92; }
+    else { opts.roughness = 0.78; opts.metalness = 0.02; opts.map = texMarca('CX', hex, h2); }
+    return new THREE.MeshStandardMaterial(opts);
+  }
+
+  function buildCargoGroup(tipo, hex, hex2) {
+    var g = new THREE.Group();
+    var mat = corpoMat(tipo, hex, hex2);
+    var pick = [];
+
+    var pallet = new THREE.Mesh(unitBoxGeo, palletMat);
+    pallet.scale.set(0.94, 0.08, 0.94);
+    pallet.position.y = 0.04;
+    g.add(pallet);
+
+    if (tipo === 'BAG') {
+      var body = new THREE.Mesh(bagBodyGeo, mat);
+      body.scale.set(0.86, 0.72, 0.86);
+      body.position.y = 0.08 + 0.36;
+      g.add(body); pick.push(body);
+      // 4 alças, uma em cada canto — igual ao big bag real
+      [[-0.22, -0.22], [0.22, -0.22], [-0.22, 0.22], [0.22, 0.22]].forEach(function (o) {
+        var h = new THREE.Mesh(handleGeo, matAlca);
+        h.scale.set(1, 0.16, 1);
+        h.position.set(o[0], 0.08 + 0.72 + 0.06, o[1]);
+        g.add(h);
+      });
+    } else if (tipo === 'SAC') {
+      var layers = 2, lh = 0.24;
+      for (var i = 0; i < layers; i++) {
+        var dy = 0.08 + lh * (i + 0.5);
+        if (i % 2 === 0) {
+          var a1 = new THREE.Mesh(sacGeoA, mat); a1.scale.set(1, lh * 0.85, 1); a1.position.set(-0.23, dy, 0); g.add(a1); pick.push(a1);
+          var a2 = new THREE.Mesh(sacGeoA, mat); a2.scale.set(1, lh * 0.85, 1); a2.position.set(0.23, dy, 0); g.add(a2); pick.push(a2);
+        } else {
+          var b1 = new THREE.Mesh(sacGeoB, mat); b1.scale.set(1, lh * 0.85, 1); b1.position.set(0, dy, -0.23); g.add(b1); pick.push(b1);
+          var b2 = new THREE.Mesh(sacGeoB, mat); b2.scale.set(1, lh * 0.85, 1); b2.position.set(0, dy, 0.23); g.add(b2); pick.push(b2);
+        }
+      }
+    } else if (tipo === 'IBC') {
+      var tank = new THREE.Mesh(unitBoxGeo, mat);
+      tank.scale.set(0.86, 0.76, 0.86);
+      tank.position.y = 0.08 + 0.38;
+      g.add(tank); pick.push(tank);
+      [-0.22, 0.2].forEach(function (dy) {
+        var ring = new THREE.Mesh(ibcRingGeo, matGaiola);
+        ring.position.y = 0.08 + 0.38 + dy;
+        g.add(ring);
+      });
+      var cap = new THREE.Mesh(unitCylGeo, matTampa);
+      cap.scale.set(0.3, 0.08, 0.3);
+      cap.position.y = 0.08 + 0.76 + 0.05;
+      g.add(cap);
+    } else {
+      var box = new THREE.Mesh(unitBoxGeo, mat);
+      box.scale.set(0.9, 0.86, 0.9);
+      box.position.y = 0.08 + 0.43;
+      g.add(box); pick.push(box);
+    }
+    g.userData.pickTargets = pick;
+    return g;
+  }
+
+  // Posições ocupadas — carga real por tipo, colorida pelo modo ativo
+  var cargoGroups = [];
+  var pelletMeshes = []; // sub-meshes "clicáveis", achatados p/ raycasting
+  var coloringMode = 'status';
+
+  // Seleção — marca a posição clicada com um contorno, até trocar ou fechar
+  var selectionMesh = null;
+  var selectedPositionId = null;
+  var selectionEdgeMat = new THREE.LineBasicMaterial({ color: 0x40e8ff, transparent: true, opacity: 0.95 });
+  var selectionFillMat = new THREE.MeshBasicMaterial({ color: 0x40e8ff, transparent: true, opacity: 0.12, side: THREE.DoubleSide });
+  function setSelection(positionId) {
+    clearSelection();
+    var pos = model.positions.find(function (p) { return p.id === positionId; });
+    if (!pos) return;
+    selectedPositionId = positionId;
+    var group = new THREE.Group();
+    var cy = pos.world.y - pos.size.h * 0.08; // acompanha o centro visual da carga (ver buildPositionMeshes)
+    var boxGeo = new THREE.BoxGeometry(pos.size.w * 1.06, pos.size.h * 1.1, pos.size.d * 1.06);
+    group.add(new THREE.Mesh(boxGeo, selectionFillMat));
+    group.add(new THREE.LineSegments(new THREE.EdgesGeometry(boxGeo), selectionEdgeMat));
+    group.position.set(pos.world.x, cy, pos.world.z);
+    scene.add(group);
+    selectionMesh = group;
+  }
+  function clearSelection() {
+    if (selectionMesh) { scene.remove(selectionMesh); selectionMesh = null; }
+    selectedPositionId = null;
+  }
+
+  function buildPositionMeshes() {
+    cargoGroups.forEach(function (g) { scene.remove(g); });
+    cargoGroups = [];
+    pelletMeshes = [];
+
+    model.positions.forEach(function (pos) {
+      var occ = occupancy.byId.get(pos.id);
+      var hex = corPosicao(occ, coloringMode);
+      if (hex == null) return;
+
+      if (occ.status === 'EB') {
+        var mat = new THREE.MeshStandardMaterial({ color: hex, roughness: 0.7, metalness: 0.1, emissive: hex, emissiveIntensity: 0.1 });
+        var marker = new THREE.Mesh(unitBoxGeo, mat);
+        marker.scale.set(pos.size.w * 0.7, pos.size.h * 0.14, pos.size.d * 0.7);
+        marker.position.set(pos.world.x, pos.world.y - pos.size.h * 0.42, pos.world.z);
+        marker.userData.positionId = pos.id;
+        scene.add(marker);
+        cargoGroups.push(marker);
+        pelletMeshes.push(marker);
+        return;
+      }
+
+      var subCount = (pos.tipoCamara === 'RACK' && occ.status === 'EC') ? 2 : 1;
+      var cores = coresCarga(occ, coloringMode, hex);
+      for (var j = 0; j < subCount; j++) {
+        var grp = buildCargoGroup(occ.palete.produto.tipo, cores.primaria, cores.secundaria);
+        var wScale = subCount === 2 ? pos.size.w * 0.42 : pos.size.w * 0.8;
+        grp.scale.set(wScale, pos.size.h * 0.92, pos.size.d * 0.75);
+        var xOff = subCount === 2 ? (j === 0 ? -pos.size.w * 0.23 : pos.size.w * 0.23) : 0;
+        grp.position.set(pos.world.x + xOff, pos.world.y - pos.size.h / 2, pos.world.z);
+        (grp.userData.pickTargets || []).forEach(function (m) { m.userData.positionId = pos.id; });
+        scene.add(grp);
+        cargoGroups.push(grp);
+        pelletMeshes = pelletMeshes.concat(grp.userData.pickTargets || []);
+      }
+
+      // Réplica proposital do bug real: nível ocupado sem apoio embaixo —
+      // contorno vermelho tracejado marca visualmente a posição "flutuante".
+      if (occ.flutuando) {
+        var warnEdges = new THREE.EdgesGeometry(new THREE.BoxGeometry(pos.size.w * 0.92, pos.size.h * 1.02, pos.size.d * 0.92));
+        var warnLines = new THREE.LineSegments(warnEdges, new THREE.LineBasicMaterial({ color: 0xff5a3c, transparent: true, opacity: 0.9 }));
+        warnLines.position.set(pos.world.x, pos.world.y, pos.world.z);
+        scene.add(warnLines);
+        cargoGroups.push(warnLines);
+      }
+    });
+  }
+  buildPositionMeshes();
+
+  /* --- Rótulos de rua (sprites) no início de cada corredor --- */
+  function makeRuaSprite(text) {
+    var fontPx = 30;
+    var font = 'bold ' + fontPx + 'px "Space Grotesk", sans-serif';
+    var mctx = document.createElement('canvas').getContext('2d');
+    mctx.font = font;
+    var textW = mctx.measureText(text).width;
+    var padX = 26, padY = 18;
+    var cw = Math.ceil(textW + padX * 2);
+    var ch = fontPx + padY * 2;
+    var cv = document.createElement('canvas');
+    cv.width = cw; cv.height = ch;
+    var x = cv.getContext('2d');
+    x.fillStyle = 'rgba(0,0,0,0.68)';
+    x.fillRect(0, 0, cw, ch);
+    x.strokeStyle = '#4d4d4d'; x.lineWidth = 2; x.strokeRect(1, 1, cw - 2, ch - 2);
+    x.fillStyle = '#ffffff';
+    x.font = font;
+    x.textAlign = 'center'; x.textBaseline = 'middle';
+    x.fillText(text, cw / 2, ch / 2 + 1);
+    var sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(cv), transparent: true }));
+    var worldH = 0.72;
+    sp.scale.set(worldH * (cw / ch), worldH, 1);
+    return sp;
+  }
+  function renderRuaLabelsFor(builtGrid, topY, prefixo) {
+    // pega, pra cada rua, a coluna gx e a linha inicial (menor gy) pra plantar o rótulo
+    var byRua = {};
+    builtGrid.cells.forEach(function (c) {
+      if (c.type !== 'POSICAO') return;
+      if (!byRua[c.rua] || c.gy < byRua[c.rua].gy) byRua[c.rua] = c;
+    });
+    Object.keys(byRua).forEach(function (rua) {
+      var c = byRua[rua];
+      var x = builtGrid.colOffsets[c.gx] + builtGrid.colWidths[c.gx] / 2;
+      var z = builtGrid.rowOffsets[c.gy] + builtGrid.rowHeights[c.gy] / 2;
+      var sprite = makeRuaSprite(prefixo + pad2(Number(rua)));
+      sprite.position.set(x, topY + 0.9, z);
+      scene.add(sprite);
+    });
+  }
+  renderRuaLabelsFor(modelA.grid, alturaRack(CAMARA_RACK.rack), 'CF03 · RUA ');
+  renderRuaLabelsFor(modelB.grid, alturaBloc(CAMARA_BLOC.bloc), 'CF05 · RUA ');
+
+  /* ============================================================
+     3b) EMPILHADEIRA — montada por primitivas (portado do sistema
+         real, criarEmpilhadeira()), sem dependência de assets
+     ============================================================ */
+  function criarEmpilhadeira() {
+    var g = new THREE.Group();
+    var corpo = new THREE.MeshStandardMaterial({ color: 0xf2a516, roughness: 0.45, metalness: 0.35 });
+    var escuro = new THREE.MeshStandardMaterial({ color: 0x24262b, roughness: 0.6, metalness: 0.4 });
+    var metal = new THREE.MeshStandardMaterial({ color: 0x9aa3ad, roughness: 0.3, metalness: 0.9 });
+    var vidro = new THREE.MeshStandardMaterial({ color: 0x9fd4ff, roughness: 0.1, metalness: 0.1, transparent: true, opacity: 0.35 });
+
+    function add(geo, mat, x, y, z) {
+      var m = new THREE.Mesh(geo, mat);
+      m.position.set(x, y, z);
+      g.add(m);
+      return m;
+    }
+
+    add(new THREE.BoxGeometry(1.15, 0.62, 1.9), corpo, 0, 0.62, -0.15);
+    add(new THREE.BoxGeometry(1.05, 0.55, 0.6), escuro, 0, 1.05, -0.95);
+    add(new THREE.BoxGeometry(0.55, 0.45, 0.5), escuro, 0, 1.15, -0.35);
+    [[-0.5, 0.35], [0.5, 0.35], [-0.5, -0.85], [0.5, -0.85]].forEach(function (p) {
+      add(new THREE.BoxGeometry(0.07, 1.25, 0.07), metal, p[0], 1.62, p[1]);
+    });
+    add(new THREE.BoxGeometry(1.2, 0.07, 1.35), vidro, 0, 2.24, -0.25);
+
+    [-0.42, 0.42].forEach(function (sx) {
+      add(new THREE.BoxGeometry(0.1, 2.5, 0.12), metal, sx, 1.25, 0.92);
+    });
+
+    var garfos = new THREE.Group();
+    var placa = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.5, 0.06), escuro);
+    placa.position.set(0, 0.3, 0.86);
+    garfos.add(placa);
+    [-0.28, 0.28].forEach(function (sx) {
+      var dente = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.06, 1.05), metal);
+      dente.position.set(sx, 0.08, 1.35);
+      garfos.add(dente);
+    });
+    g.add(garfos);
+
+    var geoRoda = new THREE.CylinderGeometry(0.3, 0.3, 0.22, 16);
+    var rodas = [];
+    [[-0.6, 0.5], [0.6, 0.5], [-0.55, -0.85], [0.55, -0.85]].forEach(function (p) {
+      var r = new THREE.Mesh(geoRoda, escuro);
+      r.position.set(p[0], 0.3, p[1]);
+      r.rotation.z = Math.PI / 2;
+      g.add(r);
+      rodas.push(r);
+    });
+
+    g.userData = { garfos: garfos, rodas: rodas };
+    g.scale.setScalar(1.15); // um pouco maior — lê melhor na escala do demo
+    return g;
+  }
+
+  var empilhadeira = criarEmpilhadeira();
+  empilhadeira.visible = false;
+  scene.add(empilhadeira);
+
+  // Rota em zigue-zague: desce/sobe cada rua de picking (colunas CORREDOR
+  // reais) e troca de rua sempre pelos corredores TRANSVERSAIS abertos nas
+  // pontas (gy=1 e gy=rows-2) — nunca cruzando por dentro do rack.
+  var corridorXs = [];
+  var colPatternRua = buildColPattern(CAMARA_RACK.blocks);
+  colPatternRua.forEach(function (kind, gx) {
+    if (kind === 'CORREDOR') corridorXs.push(model.grid.colOffsets[gx] + model.grid.colWidths[gx] / 2);
+  });
+  var gyFront = 1, gyBack = model.grid.rows - 2;
+  var zFront = model.grid.rowOffsets[gyFront] + model.grid.rowHeights[gyFront] / 2;
+  var zBack = model.grid.rowOffsets[gyBack] + model.grid.rowHeights[gyBack] / 2;
+  var rota = [];
+  corridorXs.forEach(function (x, i) {
+    var ida = i % 2 === 0;
+    rota.push(new THREE.Vector3(x, 0, ida ? zFront : zBack));
+    rota.push(new THREE.Vector3(x, 0, ida ? zBack : zFront));
+  });
+  var tourCurva = new THREE.CatmullRomCurve3(rota, false, 'catmullrom', 0.015);
+  var tourAtivo = false;
+  var tourU = 0;
+  var tourGarfo = 0;
+  var pA = new THREE.Vector3();
+  var pB = new THREE.Vector3();
+  var alvoCam = new THREE.Vector3();
+  var alturaOlhoTour = alturaRack(CAMARA_RACK.rack) * 0.34;
+
+  function passoTour(dt) {
+    var comprimento = tourCurva.getLength() || 1;
+    var veloc = 5.5;
+    tourU = (tourU + (veloc * dt) / comprimento) % 1;
+    tourCurva.getPointAt(tourU, pA);
+    tourCurva.getPointAt((tourU + 0.006) % 1, pB);
+
+    empilhadeira.position.set(pA.x, 0, pA.z);
+    empilhadeira.lookAt(pB.x, 0, pB.z);
+
+    var giro = veloc * dt * 3.2;
+    empilhadeira.userData.rodas.forEach(function (r) { r.rotation.x -= giro; });
+    tourGarfo += dt * 0.8;
+    empilhadeira.userData.garfos.position.y = Math.max(0, 0.5 + Math.sin(tourGarfo) * 0.45);
+
+    var dir = pB.clone().sub(pA).normalize();
+    camera.position.set(pA.x - dir.x * 8, alturaOlhoTour, pA.z - dir.z * 8);
+    alvoCam.set(pA.x + dir.x * 6, alturaOlhoTour * 0.55, pA.z + dir.z * 6);
+    camera.lookAt(alvoCam);
+  }
+
+  /* ============================================================
+     4) UI — legenda, KPIs, seleção de posição
+     ============================================================ */
+
+  var legendItemsEl = document.getElementById('legend-items');
+  function renderLegend() {
+    var s = occupancy.summary;
+    var items = [
+      { key: 'EL', label: 'Livre', color: '#3b6fb5', count: s.porStatus.EL },
+      { key: 'EP', label: 'Parcial', color: '#e8a33d', count: s.porStatus.EP },
+      { key: 'EC', label: 'Cheio', color: '#c1440e', count: s.porStatus.EC },
+      { key: 'EB', label: 'Bloqueado', color: '#6b7280', count: s.porStatus.EB }
+    ];
+    if (coloringMode === 'status') {
+      legendItemsEl.innerHTML = items.map(function (it) {
+        return '<div class="legend-item"><span class="legend-dot" style="background:' + it.color + '"></span>' +
+          it.label + '<span class="legend-count">' + it.count + '</span></div>';
+      }).join('');
+    } else if (coloringMode === 'produto') {
+      legendItemsEl.innerHTML = PRODUTOS.map(function (p) {
+        var hex = '#' + corPorChave(p.codigo).toString(16).padStart(6, '0');
+        return '<div class="legend-item"><span class="legend-dot" style="background:' + hex + '"></span>' + p.nome + '</div>';
+      }).join('');
+    } else {
+      legendItemsEl.innerHTML =
+        '<div class="legend-item"><span class="legend-dot" style="background:#b91c1c"></span>Vencido</div>' +
+        '<div class="legend-item"><span class="legend-dot" style="background:#e8a33d"></span>Próx. 30 dias</div>' +
+        '<div class="legend-item"><span class="legend-dot" style="background:#3f9142"></span>Dentro do prazo</div>';
+    }
+  }
+
+  function renderStats() {
+    var s = occupancy.summary;
+    document.getElementById('stat-total').textContent = s.total;
+    document.getElementById('stat-ocup').textContent = s.ocupacaoPct.toFixed(0) + '%';
+  }
+
+  renderLegend();
+  renderStats();
+
+  document.querySelectorAll('.mode-row .pill-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.mode-row .pill-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      coloringMode = btn.getAttribute('data-mode');
+      buildPositionMeshes();
+      renderLegend();
+    });
+  });
+
+  // Painel "sobre"
+  var aboutPanel = document.getElementById('about-panel');
+  document.getElementById('btn-about').addEventListener('click', function () {
+    aboutPanel.classList.toggle('open');
+    this.classList.toggle('active');
+  });
+
+  // Recentrar câmera
+  document.getElementById('btn-reset').addEventListener('click', function () {
+    setTour(false);
+    controls.reset();
+    controls.autoRotate = true;
+  });
+
+  // Simular empilhadeira — câmera assume o ponto de vista de perseguição
+  var btnTour = document.getElementById('btn-tour');
+  function setTour(ativo) {
+    tourAtivo = ativo;
+    btnTour.classList.toggle('active', ativo);
+    btnTour.textContent = ativo ? 'Parar simulação' : 'Simular empilhadeira';
+    empilhadeira.visible = ativo;
+    controls.enabled = !ativo;
+    if (!ativo) { controls.autoRotate = false; controls.update(); }
+  }
+  btnTour.addEventListener('click', function () { setTour(!tourAtivo); });
+
+  /* ---------- Lista de endereços — todas as posições, ocupadas ou não ---------- */
+  var STATUS_HEX = { EL: '#3b6fb5', EP: '#e8a33d', EC: '#c1440e', EB: '#6b7280' };
+
+  var allRows = model.positions
+    .slice()
+    .sort(function (a, b) {
+      return a.rua - b.rua || a.linha - b.linha || a.nivel - b.nivel || a.profundidade - b.profundidade;
+    })
+    .map(function (pos) {
+      var occ = occupancy.byId.get(pos.id);
+      var p = occ.palete;
+      return {
+        endereco: pos.endereco,
+        status: occ.status,
+        cliente: p ? fmtCliente(p.cliente) : '—',
+        produto: p ? p.produto.nome : '—',
+        lote: p ? p.lote : '—',
+        fabricacao: p ? fmtData(p.fabricacao) : '—',
+        vencimento: p ? fmtData(p.venc) : '—',
+        qtd: p ? p.qtd : 0,
+        peso: p ? fmtPeso(p.peso) : '—',
+        searchBlob: (pos.endereco + ' ' + (p ? p.produto.nome + ' ' + p.lote + ' ' + fmtCliente(p.cliente) : '')).toLowerCase()
+      };
+    });
+
+  var listBackdrop = document.getElementById('list-backdrop');
+  var listTbody = document.getElementById('list-tbody');
+  var listSearch = document.getElementById('list-search');
+  var listCount = document.getElementById('list-count');
+  var listStatusFilter = '';
+  document.getElementById('list-camara').textContent = CAMARA_RACK.camaraId + ' (rack) e ' + CAMARA_BLOC.camaraId + ' (blocado)';
+
+  function renderList() {
+    var q = listSearch.value.trim().toLowerCase();
+    var rows = allRows.filter(function (r) {
+      if (listStatusFilter && r.status !== listStatusFilter) return false;
+      if (q && r.searchBlob.indexOf(q) === -1) return false;
+      return true;
+    });
+    listCount.textContent = rows.length + ' de ' + allRows.length + ' endereços';
+    listTbody.innerHTML = rows.map(function (r) {
+      var empty = r.status === 'EL' ? ' class="empty-row"' : '';
+      return '<tr' + empty + '>' +
+        '<td><span class="st-dot" style="background:' + STATUS_HEX[r.status] + '"></span>' + r.endereco + '</td>' +
+        '<td>' + r.cliente + '</td>' +
+        '<td>' + r.produto + '</td>' +
+        '<td>' + r.lote + '</td>' +
+        '<td>' + r.fabricacao + '</td>' +
+        '<td>' + r.vencimento + '</td>' +
+        '<td>' + r.qtd + '</td>' +
+        '<td>' + r.peso + '</td>' +
+        '</tr>';
+    }).join('');
+  }
+
+  document.getElementById('btn-list').addEventListener('click', function () {
+    listBackdrop.classList.add('open');
+    renderList();
+  });
+  document.getElementById('btn-close-list').addEventListener('click', function () {
+    listBackdrop.classList.remove('open');
+  });
+  listBackdrop.addEventListener('click', function (e) {
+    if (e.target === listBackdrop) listBackdrop.classList.remove('open');
+  });
+  listSearch.addEventListener('input', renderList);
+  document.querySelectorAll('#list-filters .pill-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('#list-filters .pill-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      listStatusFilter = btn.getAttribute('data-status');
+      renderList();
+    });
+  });
+
+  // Detalhe da posição selecionada
+  var raycaster = new THREE.Raycaster();
+  var pointer = new THREE.Vector2();
+  var detailPanel = document.getElementById('detail-panel');
+  var detailContent = document.getElementById('detail-content');
+
+  function fmtData(d) {
+    return d.toLocaleDateString('pt-BR');
+  }
+
+  function showDetail(positionId) {
+    var occ = occupancy.byId.get(positionId);
+    var pos = model.positions.find(function (p) { return p.id === positionId; });
+    var statusColor = { EL: '#3b6fb5', EP: '#e8a33d', EC: '#c1440e', EB: '#6b7280' }[occ.status];
+    var html = '<div class="addr">' + pos.endereco + '</div>';
+    html += '<span class="status-tag" style="background:' + statusColor + '">' + STATUS_LABEL[occ.status] + '</span>';
+    if (pos.tipoCamara === 'BLOCADO') {
+      html += '<div class="row"><span class="k">Câmara</span><span class="v">CF05 · Blocado</span></div>';
+      html += '<div class="row"><span class="k">Rua / Bloco</span><span class="v">' + pad2(pos.rua) + ' / ' + pad2(pos.linha) + '</span></div>';
+      html += '<div class="row"><span class="k">Nível / Posição</span><span class="v">' + pos.nivel + ' / ' + pos.face + '</span></div>';
+    } else {
+      html += '<div class="row"><span class="k">Câmara</span><span class="v">CF03 · Rack</span></div>';
+      html += '<div class="row"><span class="k">Rua / Linha</span><span class="v">' + pad2(pos.rua) + ' / ' + pad2(pos.linha) + '</span></div>';
+      html += '<div class="row"><span class="k">Nível / Profundidade</span><span class="v">' + pos.nivel + ' / ' + pos.profundidade + '</span></div>';
+    }
+    if (occ.flutuando) {
+      html += '<div class="row" style="border-color:#ff5a3c"><span class="k" style="color:#ff8a6b">⚠ Sem apoio</span>' +
+        '<span class="v" style="color:#ff8a6b">Nível abaixo foi baixado sem atualizar este</span></div>';
+    }
+    if (occ.palete) {
+      var p = occ.palete;
+      html += '<div class="row"><span class="k">Produto</span><span class="v">' + p.produto.nome + '</span></div>';
+      html += '<div class="row"><span class="k">Embalagem</span><span class="v">' + p.produto.embalagem + '</span></div>';
+      html += '<div class="row"><span class="k">Lote</span><span class="v">' + p.lote + '</span></div>';
+      html += '<div class="row"><span class="k">Cliente</span><span class="v">' + fmtCliente(p.cliente) + '</span></div>';
+      html += '<div class="row"><span class="k">Fabricação</span><span class="v">' + fmtData(p.fabricacao) + '</span></div>';
+      html += '<div class="row"><span class="k">Vencimento</span><span class="v">' + fmtData(p.venc) + (p.dias < 0 ? ' (vencido)' : '') + '</span></div>';
+      html += '<div class="row"><span class="k">Qtd. / Peso</span><span class="v">' + p.qtd + ' · ' + fmtPeso(p.peso) + ' kg</span></div>';
+    } else {
+      html += '<p class="empty-msg">' + (occ.status === 'EB' ? 'Posição bloqueada — sem carga.' : 'Posição livre — nenhum lote alocado.') + '</p>';
+    }
+    detailContent.innerHTML = html;
+    detailPanel.classList.add('open');
+  }
+
+  document.getElementById('btn-close-detail').addEventListener('click', function () {
+    detailPanel.classList.remove('open');
+    clearSelection();
+  });
+
+  function onPointerClick(clientX, clientY) {
+    var rect = renderer.domElement.getBoundingClientRect();
+    pointer.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+    pointer.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+    raycaster.setFromCamera(pointer, camera);
+    var hits = raycaster.intersectObjects(pelletMeshes);
+    if (hits.length > 0) {
+      controls.autoRotate = false;
+      var positionId = hits[0].object.userData.positionId;
+      setSelection(positionId);
+      showDetail(positionId);
+    }
+  }
+  renderer.domElement.addEventListener('click', function (e) { onPointerClick(e.clientX, e.clientY); });
+  renderer.domElement.addEventListener('touchend', function (e) {
+    if (e.changedTouches && e.changedTouches[0]) {
+      onPointerClick(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+    }
+  });
+
+  // Ao arrastar, desliga a rotação automática
+  controls.addEventListener('start', function () { controls.autoRotate = false; });
+
+  /* ============================================================
+     5) Loop de render + resize
+     ============================================================ */
+
+  function onResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+  window.addEventListener('resize', onResize);
+
+  function animate() {
+    requestAnimationFrame(animate);
+    var now = performance.now();
+    var dt = Math.min(0.05, (now - (animate._t || now)) / 1000);
+    animate._t = now;
+    if (tourAtivo) {
+      passoTour(dt);
+    } else {
+      controls.update();
+    }
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // Some com a tela de loading e o hint
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      var loading = document.getElementById('loading');
+      loading.style.opacity = '0';
+      setTimeout(function () { loading.style.display = 'none'; }, 650);
+    }, 400);
+  });
+  setTimeout(function () {
+    var hint = document.getElementById('hint');
+    if (hint) hint.style.opacity = '0';
+  }, 6000);
+})();
+</script>
+</body>
+</html>

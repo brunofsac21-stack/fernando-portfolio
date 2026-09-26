@@ -11,3 +11,9 @@ Portfólio digital pessoal, construído como uma página única (SPA) em HTML/CS
 - HTML/CSS/JS vanilla (sem build step)
 - Three.js (robô 3D de transição entre seções)
 - Deploy: Vercel (conectado via GitHub)
+
+## Demos
+As demos interativas dos projetos ficam em `/demos` e são servidas pelo próprio Vercel:
+- `/demos/wms3d.html` — WMS 3D
+- `/demos/dpa-etiquetas.html` — DPA · Etiquetas
+- `/demos/ativos.html` — Controle de Ativos
