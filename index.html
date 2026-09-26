@@ -4,6 +4,40 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Fernando Gregório | Portfólio Agrotech</title>
+<meta name="description" content="Fernando Gregório, Desenvolvedor de Sistemas para Supply Chain e Agroindústria: arquitetura de dados, integrações em tempo real (APIs REST e Webhooks), ecossistema Microsoft (Power Platform e Azure) e IA aplicada ao desenvolvimento." />
+<link rel="canonical" href="https://fernando-portfolio-sable.vercel.app/" />
+<meta name="theme-color" content="#e8e8e5" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Fernando Gregório" />
+<meta property="og:title" content="Fernando Gregório | Portfólio Agrotech" />
+<meta property="og:description" content="Supply Chain e Agro: dados, integrações em tempo real, ecossistema Microsoft e IA aplicada. Projetos, habilidades e certificações." />
+<meta property="og:url" content="https://fernando-portfolio-sable.vercel.app/" />
+<meta property="og:locale" content="pt_BR" />
+<meta property="og:locale:alternate" content="en_US" />
+<meta property="og:locale:alternate" content="es_ES" />
+<meta property="og:image" content="https://fernando-portfolio-sable.vercel.app/og-image.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Cartão do portfólio de Fernando Gregório, Desenvolvedor de Sistemas: Supply Chain, Agroindustrial, Dados e IA" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Fernando Gregório | Portfólio Agrotech" />
+<meta name="twitter:description" content="Supply Chain e Agro: dados, integrações em tempo real, ecossistema Microsoft e IA aplicada. Projetos, habilidades e certificações." />
+<meta name="twitter:image" content="https://fernando-portfolio-sable.vercel.app/og-image.png" />
+<meta name="twitter:image:alt" content="Cartão do portfólio de Fernando Gregório, Desenvolvedor de Sistemas" />
+<script>
+/* Boot: decide o idioma e se a intro roda, antes de pintar a página */
+(function(){var d=document.documentElement,l=null,ok=/^(pt|en|es)$/;
+try{l=localStorage.getItem('lang')}catch(e){}
+if(!ok.test(l||'')){l=((navigator.languages&&navigator.languages[0])||navigator.language||'pt').slice(0,2).toLowerCase();if(!ok.test(l))l='pt'}
+window.__LANG=l;d.lang=l==='pt'?'pt-BR':l;
+var seen=false;try{seen=sessionStorage.getItem('intro-done')==='1'}catch(e){}
+var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(seen||rm)d.classList.add('no-intro');})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -215,8 +249,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 #cursor .br{position:absolute;inset:0}
 #cursor::after{content:"";position:absolute;left:50%;top:50%;width:3px;height:3px;background:var(--ink);transform:translate(-50%,-50%)}
 #cursor.hover{width:42px;height:42px}
-@media (hover:none){#cursor{display:none}}
-@media (hover:hover){body,button,a{cursor:none}}
+/* só esconde o cursor do sistema quando o script do cursor rodou e o ponteiro é fino (mouse) */
+#cursor{display:none}
+@media (pointer:fine){
+  html.has-cursor #cursor{display:block}
+  html.has-cursor body,html.has-cursor button,html.has-cursor a,html.has-cursor select{cursor:none}
+}
 
 /* =========================================================
    RESPONSIVO
@@ -240,12 +278,76 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .stage{grid-row:3}
   .footer{grid-column:1;grid-row:4}.footer span:nth-child(2){display:none}
   .footer-left{display:none}
-  .lang,.top-actions .icon-btn:nth-child(n+3){display:none}
+  .top-actions .icon-btn:nth-child(n+3){display:none}
   .panel{padding:28px 16px 20px}
   .certs{grid-template-columns:1fr}
   .tools{grid-template-columns:1fr}
   .heat{grid-template-columns:repeat(18,1fr)}
   .capmap{grid-template-columns:1fr}
+}
+
+/* =========================================================
+   ACESSIBILIDADE
+   ========================================================= */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.panel:focus{outline:none}
+.nav button:focus-visible{outline-offset:4px}
+.plist button:focus-visible,.credential-preview-card:focus-visible{outline-offset:-3px}
+.btn.dark:focus-visible{box-shadow:0 0 0 2px var(--bg)}
+
+/* =========================================================
+   SELETOR DE IDIOMA
+   ========================================================= */
+.lang{position:relative;cursor:pointer}
+.lang svg{flex:none;pointer-events:none}
+.lang select{appearance:none;-webkit-appearance:none;background:transparent;border:0;border-radius:0;color:inherit;
+  font:inherit;line-height:1.6;letter-spacing:inherit;text-transform:uppercase;height:100%;padding:0 22px 0 0;margin-right:-22px;cursor:pointer}
+.lang select:focus{outline:none}
+.lang:has(select:focus-visible){outline:2px solid var(--ink);outline-offset:3px}
+.lang:hover{border-color:var(--ink)}
+.lang option{text-transform:none;font-family:var(--sans);color:#111;background:#f4f4f1}
+
+/* contato: copiar e-mail */
+.c-row a{color:inherit;text-underline-offset:3px}
+.c-row a:hover{text-decoration:underline}
+.copy-btn{margin-left:auto;height:28px;padding:0 10px;border:1px solid var(--line);background:var(--panel-2);font-family:var(--mono);
+  font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;transition:border-color .2s}
+.copy-btn:hover{border-color:var(--ink)}
+.copy-btn.ok{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* =========================================================
+   TELA DE BOAS-VINDAS
+   ========================================================= */
+#intro{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;
+  background:var(--bg);background-image:radial-gradient(circle at 1px 1px,var(--dot) 1px,transparent 1.7px);background-size:14px 14px;
+  transition:opacity .4s ease,transform .4s ease;animation:introFailsafe .01s linear 4s forwards}
+html.no-intro #intro{display:none}
+#intro.out{opacity:0;transform:translateY(-14px);pointer-events:none}
+@keyframes introFailsafe{to{opacity:0;visibility:hidden;pointer-events:none}}
+.intro-word{display:flex;align-items:center;gap:.5em;font-family:var(--sans);font-weight:800;font-size:clamp(38px,9vw,92px);
+  letter-spacing:-.02em;line-height:1.1;color:var(--ink);white-space:nowrap}
+.intro-word .dot{font-family:var(--mono);font-weight:400;font-size:.45em;color:var(--muted)}
+#introWord.in{animation:introIn .16s ease-out}
+@keyframes introIn{from{opacity:0;transform:translateY(8px)}}
+.intro-bar{width:min(220px,55vw);height:1px;background:var(--line);position:relative;overflow:hidden}
+.intro-bar i{position:absolute;inset:0;background:var(--ink);transform-origin:left;transform:scaleX(0)}
+.intro-skip{position:absolute;bottom:calc(26px + env(safe-area-inset-bottom,0px));left:16px;right:16px;text-align:center;
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+@media (max-width:420px){
+  .topbar{padding:0 10px 0 14px}
+  .brand{gap:9px;font-size:10.5px;white-space:nowrap}
+  .lang select{font-size:10px}
+  .logo{width:30px;height:30px}
+  .lang{padding:0 10px;gap:6px}
+  .lang > svg:first-child{display:none}
+  .cta{flex-wrap:wrap}
+  .c-row{flex-wrap:wrap;font-size:12px;word-break:break-word}
+}
+@media (prefers-reduced-motion:reduce){
+  .panel,.panel.show{transition:none}
+  .rot-box .caret{animation:none}
 }
 /* ---------- Credential PDF modal (igual ao padrão real) ---------- */
 .credential-preview-card{display:flex !important;flex-direction:column;padding:0 !important}
@@ -296,139 +398,184 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 </head>
 <body>
 
+<!-- TELA DE BOAS-VINDAS (decorativa; o conteúdo real já está por baixo) -->
+<div id="intro" aria-hidden="true">
+  <div class="intro-word"><span class="dot">·</span><span id="introWord">Olá</span><span class="dot">·</span></div>
+  <div class="intro-bar"><i id="introBar"></i></div>
+  <p class="intro-skip" id="introSkip">Clique ou pressione uma tecla para pular</p>
+</div>
+<script>
+(function(){
+  var d=document.documentElement,o=document.getElementById('intro');
+  if(!o)return;
+  if(d.classList.contains('no-intro')){o.remove();return}
+  try{sessionStorage.setItem('intro-done','1')}catch(e){}
+  var L=window.__LANG||'pt';
+  var END={pt:'Bem-vindo',en:'Welcome',es:'Bienvenido'};
+  var SKIP={pt:'Clique ou pressione uma tecla para pular',en:'Click or press any key to skip',es:'Haz clic o pulsa una tecla para saltar'};
+  var words=['Olá','Hello','Hola','Bonjour','Ciao','Hallo','你好','こんにちは','안녕하세요','Привет',END[L]||END.pt];
+  var w=document.getElementById('introWord'),bar=document.getElementById('introBar');
+  document.getElementById('introSkip').textContent=SKIP[L]||SKIP.pt;
+  var STEP=160,HOLD=320,i=0,t=null,done=false;
+  function show(k){w.textContent=words[k];w.classList.remove('in');void w.offsetWidth;w.classList.add('in')}
+  function finish(){
+    if(done)return;done=true;clearTimeout(t);
+    removeEventListener('keydown',finish);
+    o.classList.add('out');setTimeout(function(){o.remove()},400);
+  }
+  function next(){i++;show(i);t=setTimeout(i<words.length-1?next:finish,i<words.length-1?STEP:HOLD)}
+  bar.style.transition='transform '+(STEP*(words.length-1)+HOLD)+'ms linear';
+  requestAnimationFrame(function(){requestAnimationFrame(function(){bar.style.transform='scaleX(1)'})});
+  show(0);t=setTimeout(next,STEP);
+  o.addEventListener('click',finish);addEventListener('keydown',finish);
+})();
+</script>
+
 <div class="shell">
   <!-- TOPO -->
   <header class="topbar">
     <a class="brand" href="#" data-go="home">
-      <img class="logo" src="data:image/png;base64,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" alt="Fernando Gregório" style="border-radius:8px" />
+      <img class="logo" src="data:image/png;base64,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" alt="Logo de Fernando Gregório: símbolo de código" style="border-radius:8px" />
       <span>FERNANDO / AGROTECH</span>
     </a>
     <div class="top-actions">
-      <div class="lang">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h9M8.5 3v2M6 5c1 4 4 7 7 8M11 5c-1 4-4 7-7 8M13 21l4-9 4 9M14.5 18h5"/></svg>
-        PORTUGUÊS
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
-      </div>
-      <a class="icon-btn" href="https://github.com/7phbkn9fs6-hub" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 19c-4 1.4-4-2-6-2.5M15 22v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1-.3-3.4 1.3a11.6 11.6 0 0 0-6 0C6.8 3.8 5.8 4.1 5.8 4.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4.4 10.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V22"/></svg></a>
-      <a class="icon-btn" href="https://www.linkedin.com/in/fernando-gregorio-1ab43b268/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg></a>
+      <label class="lang">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5h9M8.5 3v2M6 5c1 4 4 7 7 8M11 5c-1 4-4 7-7 8M13 21l4-9 4 9M14.5 18h5"/></svg>
+        <select id="langSel" aria-label="Idioma" data-i18n-aria="lang.aria">
+          <option value="pt" lang="pt-BR">Português</option>
+          <option value="en" lang="en">English</option>
+          <option value="es" lang="es">Español</option>
+        </select>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </label>
+      <a class="icon-btn" href="https://github.com/7phbkn9fs6-hub" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 19c-4 1.4-4-2-6-2.5M15 22v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1-.3-3.4 1.3a11.6 11.6 0 0 0-6 0C6.8 3.8 5.8 4.1 5.8 4.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4.4 10.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V22"/></svg></a>
+      <a class="icon-btn" href="https://www.linkedin.com/in/fernando-gregorio-1ab43b268/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg></a>
     </div>
   </header>
 
   <!-- LATERAL -->
-  <aside class="sidebar">
-    <ul class="nav" id="nav"></ul>
-  </aside>
+  <nav class="sidebar" aria-label="Seções" data-i18n-aria="nav.aria">
+    <ul class="nav" id="nav">
+      <li><button type="button" data-go="home" class="active" aria-current="page"><span data-i18n="nav.home">Início</span><span class="br" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button></li>
+      <li><button type="button" data-go="sobre"><span data-i18n="nav.sobre">Sobre</span><span class="br" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button></li>
+      <li><button type="button" data-go="projetos"><span data-i18n="nav.projetos">Projetos</span><span class="br" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button></li>
+      <li><button type="button" data-go="habilidades"><span data-i18n="nav.habilidades">Habilidades</span><span class="br" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button></li>
+      <li><button type="button" data-go="credenciais"><span data-i18n="nav.credenciais">Credenciais</span><span class="br" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button></li>
+      <li><button type="button" data-go="contato"><span data-i18n="nav.contato">Contato</span><span class="br" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button></li>
+    </ul>
+  </nav>
 
   <!-- PALCO -->
   <main class="stage">
-    <canvas id="dots"></canvas>
+    <canvas id="dots" aria-hidden="true"></canvas>
 
     <!-- INÍCIO -->
-    <section class="panel show" id="home" data-label="Início">
+    <section class="panel show" id="home" tabindex="-1" data-label="Início">
       <div class="hero">
-        <p class="eyebrow">Portfólio 2026 / Supply Chain · Agroindustrial · Dados · IA</p>
+        <p class="eyebrow" data-i18n="hero.eyebrow">Portfólio 2026 / Supply Chain · Agroindustrial · Dados · IA</p>
         <h1 class="h-xl">Fernando Gregório</h1>
-        <p class="eyebrow" style="margin-top:6px;opacity:.75">Inovação na raiz do negócio</p>
-        <div class="rotator">Eu construo <span class="rot-box"><span id="rot"></span><span class="caret"></span></span></div>
-        <p class="lead">Desenvolvedor de Sistemas especializado na arquitetura e implementação de soluções para Supply Chain/Logística e o setor Agroindustrial — combinando engenharia de dados, integrações em tempo real, o ecossistema Microsoft (Power Platform/Azure) e Inteligência Artificial aplicada ao ciclo de desenvolvimento de software.</p>
+        <p class="eyebrow" style="margin-top:6px;opacity:.75" data-i18n="hero.tagline">Inovação na raiz do negócio</p>
+        <p class="sr-only" data-i18n="hero.sr">Eu construo: Arquitetura de Dados, Integrações em Tempo Real, Ecossistema Microsoft e IA Aplicada ao SDLC.</p>
+        <div class="rotator" aria-hidden="true"><span data-i18n="hero.build">Eu construo</span> <span class="rot-box"><span id="rot">Arquitetura de Dados</span><span class="caret"></span></span></div>
+        <p class="lead" data-i18n="hero.lead">Desenvolvedor de Sistemas especializado na arquitetura e implementação de soluções para Supply Chain/Logística e o setor Agroindustrial — combinando engenharia de dados, integrações em tempo real, o ecossistema Microsoft (Power Platform/Azure) e Inteligência Artificial aplicada ao ciclo de desenvolvimento de software.</p>
         <div class="cta">
-          <button class="btn dark" data-go="projetos">Ver projetos <span>↗</span></button>
-          <button class="btn light" data-go="credenciais">Ver certificados <span>↗</span></button>
-          <button class="btn light" id="btnOpenCv">Abrir CV <span>↗</span></button>
+          <button class="btn dark" data-go="projetos"><span data-i18n="hero.cta.projects">Ver projetos</span> <span aria-hidden="true">↗</span></button>
+          <button class="btn light" data-go="credenciais"><span data-i18n="hero.cta.certs">Ver certificados</span> <span aria-hidden="true">↗</span></button>
+          <button class="btn light" id="btnOpenCv"><span data-i18n="hero.cta.cv">Abrir CV</span> <span aria-hidden="true">↗</span></button>
         </div>
       </div>
-      <canvas id="cube"></canvas>
+      <canvas id="cube" aria-hidden="true"></canvas>
       <div class="capmap" style="margin-top:48px">
         <div>
-          <span class="eyebrow">Mapa de capacidades</span>
-          <p class="cap-intro">Áreas que eu combino dentro dos projetos — um resumo rápido do que faço.</p>
+          <span class="eyebrow" data-i18n="cap.title">Mapa de capacidades</span>
+          <p class="cap-intro" data-i18n="cap.intro">Áreas que eu combino dentro dos projetos — um resumo rápido do que faço.</p>
         </div>
-        <div><span class="tiny">Dados</span><h4>Arquitetura & Engenharia de Dados</h4><p>Modelagem e análise focadas em inteligência de negócios e rastreabilidade ponta a ponta.</p><i class="dia"></i></div>
-        <div><span class="tiny">Integrações</span><h4>APIs REST & Webhooks em tempo real</h4><p>Monitoramento e visualização de fluxos logísticos e agroindustriais.</p><i class="dia"></i></div>
-        <div><span class="tiny">Plataforma</span><h4>Ecossistema Microsoft</h4><p>Soluções e automações avançadas com Power Platform e Azure.</p><i class="dia"></i></div>
-        <div><span class="tiny">IA aplicada</span><h4>IA no ciclo de desenvolvimento</h4><p>Modelos de IA no SDLC e na otimização de rotinas operacionais.</p><i class="dia"></i></div>
-        <div><span class="tiny">Visualização</span><h4>Cenas 3D orientadas a dados</h4><p>Domínio separado do render — Three.js sobre dados reais de operação.</p><i class="dia"></i></div>
+        <div><span class="tiny" data-i18n="cap.1.tag">Dados</span><h4 data-i18n="cap.1.t">Arquitetura & Engenharia de Dados</h4><p data-i18n="cap.1.d">Modelagem e análise focadas em inteligência de negócios e rastreabilidade ponta a ponta.</p><i class="dia"></i></div>
+        <div><span class="tiny" data-i18n="cap.2.tag">Integrações</span><h4 data-i18n="cap.2.t">APIs REST & Webhooks em tempo real</h4><p data-i18n="cap.2.d">Monitoramento e visualização de fluxos logísticos e agroindustriais.</p><i class="dia"></i></div>
+        <div><span class="tiny" data-i18n="cap.3.tag">Plataforma</span><h4 data-i18n="cap.3.t">Ecossistema Microsoft</h4><p data-i18n="cap.3.d">Soluções e automações avançadas com Power Platform e Azure.</p><i class="dia"></i></div>
+        <div><span class="tiny" data-i18n="cap.4.tag">IA aplicada</span><h4 data-i18n="cap.4.t">IA no ciclo de desenvolvimento</h4><p data-i18n="cap.4.d">Modelos de IA no SDLC e na otimização de rotinas operacionais.</p><i class="dia"></i></div>
+        <div><span class="tiny" data-i18n="cap.5.tag">Visualização</span><h4 data-i18n="cap.5.t">Cenas 3D orientadas a dados</h4><p data-i18n="cap.5.d">Domínio separado do render — Three.js sobre dados reais de operação.</p><i class="dia"></i></div>
       </div>
     </section>
 
     <!-- SOBRE -->
-    <section class="panel" id="sobre" data-label="Sobre">
-      <p class="eyebrow">Sobre / Contexto</p>
-      <h2 class="h-lg" style="margin-top:12px;max-width:900px">Arquitetura de dados, integrações em tempo real e IA aplicada ao SDLC.</h2>
+    <section class="panel" id="sobre" tabindex="-1" data-label="Sobre">
+      <p class="eyebrow" data-i18n="about.eyebrow">Sobre / Contexto</p>
+      <h2 class="h-lg" style="margin-top:12px;max-width:900px" data-i18n="about.title">Arquitetura de dados, integrações em tempo real e IA aplicada ao SDLC.</h2>
       <div class="about-grid">
         <div class="about-col">
           <div class="card">
-            <div class="card-h plain"><span class="t">Direção atual</span></div>
+            <div class="card-h plain"><span class="t" data-i18n="about.now">Direção atual</span></div>
             <div class="pad">
-              <h4 style="font-size:17px;margin-bottom:8px;line-height:1.3">Desenvolvedor de Sistemas especializado na arquitetura e implementação de soluções de alto impacto para Supply Chain/Logística e o setor Agroindustrial.</h4>
-              <p style="font-size:13px;color:var(--muted);line-height:1.6">Minha atuação é pautada nos princípios de melhoria contínua, utilizando a tecnologia como alavanca estratégica para elevar a eficiência operacional, a escalabilidade e os níveis de excelência dos processos.</p>
-              <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-top:10px">Minha abordagem técnica combina o desenvolvimento de software robusto com o ecossistema Microsoft (Power Platform e serviços Azure), além da integração contínua de Inteligência Artificial para otimização de tempo de resposta, automação complexa e refatoração assistida de código.</p>
+              <h4 style="font-size:17px;margin-bottom:8px;line-height:1.3" data-i18n="about.now.h">Desenvolvedor de Sistemas especializado na arquitetura e implementação de soluções de alto impacto para Supply Chain/Logística e o setor Agroindustrial.</h4>
+              <p style="font-size:13px;color:var(--muted);line-height:1.6" data-i18n="about.now.p1">Minha atuação é pautada nos princípios de melhoria contínua, utilizando a tecnologia como alavanca estratégica para elevar a eficiência operacional, a escalabilidade e os níveis de excelência dos processos.</p>
+              <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-top:10px" data-i18n="about.now.p2">Minha abordagem técnica combina o desenvolvimento de software robusto com o ecossistema Microsoft (Power Platform e serviços Azure), além da integração contínua de Inteligência Artificial para otimização de tempo de resposta, automação complexa e refatoração assistida de código.</p>
             </div>
           </div>
           <div class="card">
-            <div class="card-h plain"><span class="t">Principais competências técnicas</span></div>
+            <div class="card-h plain"><span class="t" data-i18n="about.skills">Principais competências técnicas</span></div>
             <div class="pad" style="display:flex;flex-direction:column;gap:12px">
-              <div><h5 style="font-size:13px;margin-bottom:3px">Arquitetura & Engenharia de Dados</h5><p style="font-size:12.5px;color:var(--muted);line-height:1.5">Modelagem e análise de dados focadas em inteligência de negócios e rastreabilidade de ponta a ponta.</p></div>
-              <div><h5 style="font-size:13px;margin-bottom:3px">Integrações & Processamento em Tempo Real</h5><p style="font-size:12.5px;color:var(--muted);line-height:1.5">Construção e consumo de APIs REST/Webhooks para monitoramento e visualização em tempo real de fluxos logísticos e agroindustriais.</p></div>
-              <div><h5 style="font-size:13px;margin-bottom:3px">Ecossistema Microsoft</h5><p style="font-size:12.5px;color:var(--muted);line-height:1.5">Desenvolvimento de soluções personalizadas e automações avançadas utilizando a Microsoft Power Platform.</p></div>
-              <div><h5 style="font-size:13px;margin-bottom:3px">Inteligência Artificial Aplicada</h5><p style="font-size:12.5px;color:var(--muted);line-height:1.5">Incorporação de modelos de IA no ciclo de vida de desenvolvimento de software (SDLC) e na otimização de rotinas de processos operacionais.</p></div>
+              <div><h5 style="font-size:13px;margin-bottom:3px" data-i18n="about.s1.t">Arquitetura & Engenharia de Dados</h5><p style="font-size:12.5px;color:var(--muted);line-height:1.5" data-i18n="about.s1.d">Modelagem e análise de dados focadas em inteligência de negócios e rastreabilidade de ponta a ponta.</p></div>
+              <div><h5 style="font-size:13px;margin-bottom:3px" data-i18n="about.s2.t">Integrações & Processamento em Tempo Real</h5><p style="font-size:12.5px;color:var(--muted);line-height:1.5" data-i18n="about.s2.d">Construção e consumo de APIs REST/Webhooks para monitoramento e visualização em tempo real de fluxos logísticos e agroindustriais.</p></div>
+              <div><h5 style="font-size:13px;margin-bottom:3px" data-i18n="about.s3.t">Ecossistema Microsoft</h5><p style="font-size:12.5px;color:var(--muted);line-height:1.5" data-i18n="about.s3.d">Desenvolvimento de soluções personalizadas e automações avançadas utilizando a Microsoft Power Platform.</p></div>
+              <div><h5 style="font-size:13px;margin-bottom:3px" data-i18n="about.s4.t">Inteligência Artificial Aplicada</h5><p style="font-size:12.5px;color:var(--muted);line-height:1.5" data-i18n="about.s4.d">Incorporação de modelos de IA no ciclo de vida de desenvolvimento de software (SDLC) e na otimização de rotinas de processos operacionais.</p></div>
             </div>
           </div>
           <div class="card">
-            <div class="card-h plain"><span class="t">Ferramentas do dia a dia</span></div>
+            <div class="card-h plain"><span class="t" data-i18n="about.tools">Ferramentas do dia a dia</span></div>
             <div class="pad" style="display:flex;flex-wrap:wrap;gap:6px">
               <span class="chip">Power Platform</span><span class="chip">Azure</span><span class="chip">Power BI</span><span class="chip">SAP</span><span class="chip">Sankhya</span><span class="chip">Pipefy</span><span class="chip">Excel</span><span class="chip">PowerPoint</span><span class="chip">Word</span><span class="chip">Canva</span><span class="chip">TypeScript</span><span class="chip">React</span><span class="chip">Three.js</span><span class="chip">Node.js</span><span class="chip">Supabase</span><span class="chip">PostgreSQL</span><span class="chip">Python</span><span class="chip">Claude / LLM APIs</span><span class="chip">Vercel</span><span class="chip">Git</span>
             </div>
           </div>
         </div>
         <div class="card">
-          <div class="card-h"><span class="t">Trabalho</span><span class="tiny">Histórico</span></div>
+          <div class="card-h"><span class="t" data-i18n="about.work">Trabalho</span><span class="tiny" data-i18n="about.work.tag">Histórico</span></div>
           <div class="tl">
-            <div class="tl-item"><span class="year">2026 — Atual</span><h5>Analista de Dados & Desenvolvedor de Soluções</h5><span class="tiny">Supply Chain</span>
+            <div class="tl-item"><span class="year" data-i18n="about.work.year">2026 — Atual</span><h5 data-i18n="about.work.role">Analista de Dados & Desenvolvedor de Soluções</h5><span class="tiny">Supply Chain</span>
               <ul style="margin-top:8px;padding-left:16px;display:flex;flex-direction:column;gap:7px;font-size:12.5px;color:var(--muted);line-height:1.55">
-                <li><b style="color:var(--ink)">Desenvolvimento e Arquitetura de ERP Integrado</b> — idealização e implementação de uma plataforma centralizada para consolidar e analisar dados de múltiplos sistemas (SAP, WMS e Checklists Digitais) em um único ambiente multi-tenant (multi-cliente).</li>
-                <li><b style="color:var(--ink)">Monitoramento e Visualização em Tempo Real</b> — criação de dashboards e interfaces operacionais para acompanhamento de etapas da operação, gestão de agendamentos e rastreabilidade logística.</li>
-                <li><b style="color:var(--ink)">Inovação em Armazenagem</b> — desenvolvimento de uma funcionalidade de visualização 3D do armazém para otimização de espaço e monitoramento do controle de validade e giro de estoque (FEFO).</li>
-                <li><b style="color:var(--ink)">Automação e Digitalização</b> — transformação de processos manuais em rotinas digitais integradas, otimizando o tempo de resposta da operação e a tomada de decisão estratégica.</li>
+                <li data-i18n-html="about.work.li1"><b style="color:var(--ink)">Desenvolvimento e Arquitetura de ERP Integrado</b> — idealização e implementação de uma plataforma centralizada para consolidar e analisar dados de múltiplos sistemas (SAP, WMS e Checklists Digitais) em um único ambiente multi-tenant (multi-cliente).</li>
+                <li data-i18n-html="about.work.li2"><b style="color:var(--ink)">Monitoramento e Visualização em Tempo Real</b> — criação de dashboards e interfaces operacionais para acompanhamento de etapas da operação, gestão de agendamentos e rastreabilidade logística.</li>
+                <li data-i18n-html="about.work.li3"><b style="color:var(--ink)">Inovação em Armazenagem</b> — desenvolvimento de uma funcionalidade de visualização 3D do armazém para otimização de espaço e monitoramento do controle de validade e giro de estoque (FEFO).</li>
+                <li data-i18n-html="about.work.li4"><b style="color:var(--ink)">Automação e Digitalização</b> — transformação de processos manuais em rotinas digitais integradas, otimizando o tempo de resposta da operação e a tomada de decisão estratégica.</li>
               </ul>
             </div>
           </div>
         </div>
         <div class="card">
-          <div class="card-h"><span class="t">Educação</span><span class="tiny">Formação</span></div>
+          <div class="card-h"><span class="t" data-i18n="about.edu">Educação</span><span class="tiny" data-i18n="about.edu.tag">Formação</span></div>
           <div class="tl">
-            <div class="tl-item"><span class="year">2024</span><h5>Técnico em Segurança do Trabalho</h5><span class="tiny">CPET · Diploma emitido 18/11/2024</span></div>
+            <div class="tl-item"><span class="year">2024</span><h5 data-i18n="about.edu.t">Técnico em Segurança do Trabalho</h5><span class="tiny" data-i18n="about.edu.o">CPET · Diploma emitido 18/11/2024</span></div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- PROJETOS -->
-    <section class="panel" id="projetos" data-label="Projetos">
-      <p class="eyebrow">2025–2026 / Sistemas selecionados</p>
-      <h2 class="h-lg" style="margin-top:10px">Arquivo de projetos.</h2>
+    <section class="panel" id="projetos" tabindex="-1" data-label="Projetos">
+      <p class="eyebrow" data-i18n="proj.eyebrow">2025–2026 / Sistemas selecionados</p>
+      <h2 class="h-lg" style="margin-top:10px" data-i18n="proj.title">Arquivo de projetos.</h2>
       <div class="proj-grid">
         <div class="card" style="display:flex;flex-direction:column;min-height:0">
-          <div class="card-h plain"><span class="t">Lista de projetos</span><span class="mono" style="font-size:12px"><b id="pcount"></b> projetos</span></div>
+          <div class="card-h plain"><span class="t" data-i18n="proj.list">Lista de projetos</span><span class="mono" style="font-size:12px"><b id="pcount">3</b> <span data-i18n="proj.count">projetos</span></span></div>
           <div class="plist" id="plist"></div>
         </div>
         <div class="card dossier">
           <div class="card-h plain">
-            <span class="t">Dossiê do projeto</span>
-            <div class="pager"><span class="chip" id="pstatus"></span><button id="prev" aria-label="Anterior">←</button><span class="mono" style="font-size:12px" id="pidx"></span><button id="next" aria-label="Próximo">→</button></div>
+            <span class="t" data-i18n="proj.dossier">Dossiê do projeto</span>
+            <div class="pager"><span class="chip" id="pstatus"></span><button type="button" id="prev" aria-label="Anterior" data-i18n-aria="proj.prev">←</button><span class="mono" style="font-size:12px" id="pidx"></span><button type="button" id="next" aria-label="Próximo" data-i18n-aria="proj.next">→</button></div>
           </div>
           <div class="dossier-body">
             <div class="dossier-main">
-              <span class="eyebrow" id="pyear"></span>
-              <h3 class="h-lg" style="margin-top:8px" id="ptitle"></h3>
+              <span class="eyebrow" id="pyear">2026 / Sistema</span>
+              <h3 class="h-lg" style="margin-top:8px" id="ptitle">WMS 3D — Visualização de Ocupação de Armazém</h3>
               <p style="margin-top:12px;color:var(--muted);line-height:1.5;font-size:14px" id="pdesc"></p>
-              <div class="shot"><canvas id="shotfx"></canvas><img id="pshot" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none" alt=""><div id="pshotgrad" style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.72),rgba(0,0,0,0) 55%);display:none"></div><div class="big" id="pbig" style="position:relative;z-index:1"></div></div>
+              <div class="shot"><canvas id="shotfx" aria-hidden="true"></canvas><img id="pshot" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none" alt="Captura de tela do projeto WMS 3D"><div id="pshotgrad" style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.72),rgba(0,0,0,0) 55%);display:none"></div><div class="big" id="pbig" style="position:relative;z-index:1"></div></div>
             </div>
             <div class="dossier-meta">
-              <div><span class="tiny">Progresso</span><b style="display:block;margin-top:6px" id="pprog"></b></div>
-              <div><span class="tiny">Tipo</span><b style="display:block;margin-top:6px" id="ptype"></b></div>
+              <div><span class="tiny" data-i18n="proj.m.progress">Progresso</span><b style="display:block;margin-top:6px" id="pprog"></b></div>
+              <div><span class="tiny" data-i18n="proj.m.type">Tipo</span><b style="display:block;margin-top:6px" id="ptype"></b></div>
               <div><span class="tiny">Stack</span><div class="chips" style="margin-top:8px" id="pstack"></div></div>
-              <div><span class="tiny">Acesso</span><div style="margin-top:8px"><a class="btn light" id="plink" href="#" target="_blank" rel="noopener" style="height:36px">Ver projeto ↗</a></div></div>
+              <div><span class="tiny" data-i18n="proj.m.access">Acesso</span><div style="margin-top:8px"><a class="btn light" id="plink" href="#" target="_blank" rel="noopener" style="height:36px">Ver projeto ↗</a></div></div>
             </div>
           </div>
         </div>
@@ -436,54 +583,54 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     </section>
 
     <!-- HABILIDADES -->
-    <section class="panel" id="habilidades" data-label="Habilidades">
-      <p class="eyebrow">Mapa de habilidades / Capacidades</p>
-      <h2 class="h-lg" style="margin-top:10px">Habilidades, práticas mantidas.</h2>
+    <section class="panel" id="habilidades" tabindex="-1" data-label="Habilidades">
+      <p class="eyebrow" data-i18n="skills.eyebrow">Mapa de habilidades / Capacidades</p>
+      <h2 class="h-lg" style="margin-top:10px" data-i18n="skills.title">Habilidades, práticas mantidas.</h2>
       <div class="skills-grid">
         <div style="display:flex;flex-direction:column;gap:12px">
           <div class="card lead-card hatch">
-            <span class="tag-dark">Direção central</span>
-            <h3>Arquitetura de soluções para Supply Chain e Agroindústria — dados, integrações em tempo real, ecossistema Microsoft e IA aplicada ao SDLC.</h3>
+            <span class="tag-dark" data-i18n="skills.core">Direção central</span>
+            <h3 data-i18n="skills.core.h">Arquitetura de soluções para Supply Chain e Agroindústria — dados, integrações em tempo real, ecossistema Microsoft e IA aplicada ao SDLC.</h3>
             <div class="trio">
-              <div><span class="tiny">Núcleo</span><b>Dados, APIs, Microsoft</b></div>
-              <div><span class="tiny">Suporte</span><b>IA, 3D, Automação</b></div>
-              <div><span class="tiny">Entrega</span><b>Construir, documentar, transferir</b></div>
+              <div><span class="tiny" data-i18n="skills.trio.1">Núcleo</span><b data-i18n="skills.trio.1v">Dados, APIs, Microsoft</b></div>
+              <div><span class="tiny" data-i18n="skills.trio.2">Suporte</span><b data-i18n="skills.trio.2v">IA, 3D, Automação</b></div>
+              <div><span class="tiny" data-i18n="skills.trio.3">Entrega</span><b data-i18n="skills.trio.3v">Construir, documentar, transferir</b></div>
             </div>
           </div>
           <div class="card">
-            <div class="card-h plain"><span class="t">Execução do projeto</span><span class="tiny">Ferramentas</span></div>
+            <div class="card-h plain"><span class="t" data-i18n="skills.exec">Execução do projeto</span><span class="tiny" data-i18n="skills.exec.tag">Ferramentas</span></div>
             <div class="pad">
               <div class="tool-group">
                 <span class="tiny">Microsoft 365</span>
                 <div class="tools">
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="2" width="14" height="16" rx="1"/><path d="M6 7h8M6 10h8M6 13h5"/></svg><span>Word</span></div>
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="14" height="14" rx="1"/><path d="M3 8h14M3 13h14M8 3v14M13 3v14"/></svg><span>Excel</span></div>
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="16" height="11" rx="1"/><path d="M6 12V9M10 12V7M14 12v-4"/></svg><span>PowerPoint</span></div>
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="5" r="2"/><circle cx="15" cy="5" r="2"/><circle cx="10" cy="15" r="2"/><path d="M6.6 6.6 8.6 13M13.4 6.6 11.4 13"/></svg><span>SharePoint</span></div>
+                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="2" width="14" height="16" rx="1"/><path d="M6 7h8M6 10h8M6 13h5"/></svg><span>Word</span></div>
+                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="1"/><path d="M3 8h14M3 13h14M8 3v14M13 3v14"/></svg><span>Excel</span></div>
+                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="4" width="16" height="11" rx="1"/><path d="M6 12V9M10 12V7M14 12v-4"/></svg><span>PowerPoint</span></div>
+                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="5" cy="5" r="2"/><circle cx="15" cy="5" r="2"/><circle cx="10" cy="15" r="2"/><path d="M6.6 6.6 8.6 13M13.4 6.6 11.4 13"/></svg><span>SharePoint</span></div>
                 </div>
               </div>
               <div class="tool-group">
                 <span class="tiny">Power Platform & Cloud</span>
                 <div class="tools">
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16V10M9.5 16V6M15 16V3M4 16h11"/></svg><span>Power BI</span></div>
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 10a6 6 0 0 1 11-3.5M16 10a6 6 0 0 1-11 3.5"/><path d="M13 4.2 15 6.5l-2.5 1M7 15.8l-2-2.3 2.5-1"/></svg><span>Power Automate</span></div>
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="2" width="8" height="16" rx="1.5"/><path d="M8 5.5h4M8 8.5h4M8 11.5h2"/></svg><span>Power Apps</span></div>
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 14.5a4 4 0 0 1 .3-8A5 5 0 0 1 16 8.3 3.4 3.4 0 0 1 15.4 14.5H6Z"/></svg><span>Azure</span></div>
+                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 16V10M9.5 16V6M15 16V3M4 16h11"/></svg><span>Power BI</span></div>
+                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 10a6 6 0 0 1 11-3.5M16 10a6 6 0 0 1-11 3.5"/><path d="M13 4.2 15 6.5l-2.5 1M7 15.8l-2-2.3 2.5-1"/></svg><span>Power Automate</span></div>
+                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="6" y="2" width="8" height="16" rx="1.5"/><path d="M8 5.5h4M8 8.5h4M8 11.5h2"/></svg><span>Power Apps</span></div>
+                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 14.5a4 4 0 0 1 .3-8A5 5 0 0 1 16 8.3 3.4 3.4 0 0 1 15.4 14.5H6Z"/></svg><span>Azure</span></div>
                 </div>
               </div>
               <div class="tool-group">
-                <span class="tiny">ERP & Gestão</span>
+                <span class="tiny" data-i18n="skills.g.erp">ERP & Gestão</span>
                 <div class="tools">
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="10" cy="4.5" rx="6" ry="2"/><path d="M4 4.5v11a6 2 0 0 0 12 0v-11"/><path d="M4 10a6 2 0 0 0 12 0"/></svg><span>SAP</span></div>
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 3 3 6.5 10 10l7-3.5L10 3Z"/><path d="M3 10l7 3.5L17 10M3 13.5 10 17l7-3.5"/></svg><span>Sankhya</span></div>
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="2.5" width="6" height="6"/><rect x="11.5" y="2.5" width="6" height="6"/><rect x="2.5" y="11.5" width="6" height="6"/><rect x="11.5" y="11.5" width="6" height="6"/></svg><span>TOTVS</span></div>
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3h14l-5 8v5l-4-2v-3L3 3Z"/></svg><span>Pipefy</span></div>
+                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><ellipse cx="10" cy="4.5" rx="6" ry="2"/><path d="M4 4.5v11a6 2 0 0 0 12 0v-11"/><path d="M4 10a6 2 0 0 0 12 0"/></svg><span>SAP</span></div>
+                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M10 3 3 6.5 10 10l7-3.5L10 3Z"/><path d="M3 10l7 3.5L17 10M3 13.5 10 17l7-3.5"/></svg><span>Sankhya</span></div>
+                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2.5" y="2.5" width="6" height="6"/><rect x="11.5" y="2.5" width="6" height="6"/><rect x="2.5" y="11.5" width="6" height="6"/><rect x="11.5" y="11.5" width="6" height="6"/></svg><span>TOTVS</span></div>
+                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 3h14l-5 8v5l-4-2v-3L3 3Z"/></svg><span>Pipefy</span></div>
                 </div>
               </div>
               <div class="tool-group">
-                <span class="tiny">Apresentação & Design</span>
+                <span class="tiny" data-i18n="skills.g.design">Apresentação & Design</span>
                 <div class="tools">
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7.5"/><circle cx="7.3" cy="8" r="1.1" fill="currentColor" stroke="none"/><circle cx="12.7" cy="8" r="1.1" fill="currentColor" stroke="none"/><circle cx="10" cy="13" r="1.1" fill="currentColor" stroke="none"/></svg><span>Canva</span></div>
+                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><circle cx="7.3" cy="8" r="1.1" fill="currentColor" stroke="none"/><circle cx="12.7" cy="8" r="1.1" fill="currentColor" stroke="none"/><circle cx="10" cy="13" r="1.1" fill="currentColor" stroke="none"/></svg><span>Canva</span></div>
                 </div>
               </div>
             </div>
@@ -494,31 +641,31 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     </section>
 
     <!-- CREDENCIAIS -->
-    <section class="panel" id="credenciais" data-label="Credenciais">
-      <p class="eyebrow">Credenciais / Arquivo PDF</p>
-      <h2 class="h-lg" style="margin-top:10px;max-width:820px">Credenciais, certificados e registros.</h2>
+    <section class="panel" id="credenciais" tabindex="-1" data-label="Credenciais">
+      <p class="eyebrow" data-i18n="cred.eyebrow">Credenciais / Arquivo PDF</p>
+      <h2 class="h-lg" style="margin-top:10px;max-width:820px" data-i18n="cred.title">Credenciais, certificados e registros.</h2>
       <div class="cred-grid">
         <div class="card" style="display:flex;flex-direction:column;justify-content:space-between">
-          <div><div class="card-h plain"><span class="t">Conjunto de documentos</span></div>
-          <div class="pad"><h4 style="font-size:20px;line-height:1.15">Formação, competências e certificações concluídas.</h4><p style="font-size:13px;color:var(--muted);margin-top:10px;line-height:1.5">10 certificações e 1 diploma, todos concluídos, com data real — clique num card pra ver o certificado.</p></div></div>
-          <div class="stats pad" style="padding:0;margin:14px"><div><span class="tiny">Certificações</span><b>10</b></div><div><span class="tiny">Diplomas</span><b>01</b></div><div><span class="tiny">Arquivos anexados</span><b>11</b></div><div><span class="tiny">Áreas</span><b>05</b></div></div>
+          <div><div class="card-h plain"><span class="t" data-i18n="cred.set">Conjunto de documentos</span></div>
+          <div class="pad"><h4 style="font-size:20px;line-height:1.15" data-i18n="cred.set.h">Formação, competências e certificações concluídas.</h4><p style="font-size:13px;color:var(--muted);margin-top:10px;line-height:1.5" data-i18n="cred.set.p">10 certificações e 1 diploma, todos concluídos, com data real — clique num card pra ver o certificado.</p></div></div>
+          <div class="stats pad" style="padding:0;margin:14px"><div><span class="tiny" data-i18n="cred.st.1">Certificações</span><b>10</b></div><div><span class="tiny" data-i18n="cred.st.2">Diplomas</span><b>01</b></div><div><span class="tiny" data-i18n="cred.st.3">Arquivos anexados</span><b>11</b></div><div><span class="tiny" data-i18n="cred.st.4">Áreas</span><b>05</b></div></div>
         </div>
         <div class="card">
-          <div class="card-h plain"><span class="t">Certificados</span><span>✓</span></div>
+          <div class="card-h plain"><span class="t" data-i18n="cred.certs">Certificados</span><span>✓</span></div>
           <div class="certs" id="certs"></div>
         </div>
       </div>
     </section>
 
     <!-- CONTATO -->
-    <section class="panel" id="contato" data-label="Contato">
+    <section class="panel" id="contato" tabindex="-1" data-label="Contato">
       <div>
-        <p class="eyebrow">Contato</p>
-        <h2 class="h-xl" style="margin-top:14px">Vamos construir algo mais afiado.</h2>
+        <p class="eyebrow" data-i18n="contact.eyebrow">Contato</p>
+        <h2 class="h-xl" style="margin-top:14px" data-i18n="contact.title">Vamos construir algo mais afiado.</h2>
       </div>
       <div class="card contact-card">
-        <div class="c-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="m3 7 9 6 9-6"/></svg>fernandofsac@outlook.com.br</div>
-        <div class="c-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>+55 61 99609-4836</div>
+        <div class="c-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="m3 7 9 6 9-6"/></svg><a href="mailto:fernandofsac@outlook.com.br">fernandofsac@outlook.com.br</a><button type="button" class="copy-btn" id="copyEmail" data-email="fernandofsac@outlook.com.br"><span data-i18n="contact.copy">Copiar e-mail</span></button><span class="sr-only" aria-live="polite" id="copyStatus"></span></div>
+        <div class="c-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><a href="tel:+5561996094836">+55 61 99609-4836</a></div>
         <div class="socials">
           <a class="btn dark" href="https://github.com/7phbkn9fs6-hub" target="_blank" rel="noopener">GitHub</a><a class="btn dark" href="https://www.linkedin.com/in/fernando-gregorio-1ab43b268/" target="_blank" rel="noopener">LinkedIn</a><a class="btn dark" href="https://wa.me/5561996094836" target="_blank" rel="noopener">WhatsApp</a>
         </div>
@@ -527,12 +674,487 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   </main>
 
   <div class="footer-left"></div>
-  <footer class="footer"><span>Desenvolvedor Full-stack</span><span>Agrotech / Automação / IA</span><span>Fernando Gregório</span></footer>
+  <footer class="footer"><span data-i18n="footer.1">Desenvolvedor Full-stack</span><span data-i18n="footer.2">Agrotech / Automação / IA</span><span>Fernando Gregório</span></footer>
 </div>
 
-<div id="wipe"><span id="wipeLabel"></span></div>
-<div id="cursor"><span class="br"><i></i><i></i><i></i><i></i></span></div>
+<div id="wipe" aria-hidden="true"><span id="wipeLabel"></span></div>
+<div id="cursor" aria-hidden="true"><span class="br"><i></i><i></i><i></i><i></i></span></div>
 
+<script>
+/* =========================================================
+   IDIOMAS: dicionário próprio (sem tradutor automático).
+   PT é o texto que já está no HTML e nos dados; EN/ES ficam aqui.
+   Chave que faltar cai no texto em PT.
+   ========================================================= */
+(function(){
+var T={
+"en": {
+"hero.eyebrow": "Portfolio 2026 / Supply Chain · Agribusiness · Data · AI",
+"hero.tagline": "Innovation at the root of the business",
+"hero.lead": "Systems Developer specialized in designing and implementing solutions for Supply Chain/Logistics and the agribusiness sector — combining data engineering, real-time integrations, the Microsoft ecosystem (Power Platform/Azure) and Artificial Intelligence applied to the software development lifecycle.",
+"cap.title": "Capability map",
+"cap.intro": "Areas I combine within my projects — a quick summary of what I do.",
+"cap.1.tag": "Data",
+"cap.1.t": "Data Architecture & Engineering",
+"cap.1.d": "Modeling and analysis focused on business intelligence and end-to-end traceability.",
+"cap.2.tag": "Integrations",
+"cap.2.t": "Real-time REST APIs & Webhooks",
+"cap.2.d": "Monitoring and visualization of logistics and agribusiness flows.",
+"cap.3.tag": "Platform",
+"cap.3.t": "Microsoft Ecosystem",
+"cap.3.d": "Advanced solutions and automations with Power Platform and Azure.",
+"cap.4.tag": "Applied AI",
+"cap.4.t": "AI in the development lifecycle",
+"cap.4.d": "AI models in the SDLC and in optimizing operational routines.",
+"cap.5.tag": "Visualization",
+"cap.5.t": "Data-driven 3D scenes",
+"cap.5.d": "Domain decoupled from rendering — Three.js on real operational data.",
+"about.eyebrow": "About / Context",
+"about.title": "Data architecture, real-time integrations and AI applied to the SDLC.",
+"about.now": "Current focus",
+"about.now.h": "Systems Developer specialized in designing and implementing high-impact solutions for Supply Chain/Logistics and the agribusiness sector.",
+"about.now.p1": "My work is guided by continuous improvement, using technology as a strategic lever to raise operational efficiency, scalability and process excellence.",
+"about.now.p2": "My technical approach combines robust software development with the Microsoft ecosystem (Power Platform and Azure services), plus the continuous use of Artificial Intelligence to shorten response times, handle complex automation and support AI-assisted code refactoring.",
+"about.skills": "Core technical skills",
+"about.s1.t": "Data Architecture & Engineering",
+"about.s1.d": "Data modeling and analysis focused on business intelligence and end-to-end traceability.",
+"about.s2.t": "Integrations & Real-Time Processing",
+"about.s2.d": "Building and consuming REST APIs/Webhooks for real-time monitoring and visualization of logistics and agribusiness flows.",
+"about.s3.t": "Microsoft Ecosystem",
+"about.s3.d": "Custom solutions and advanced automations built on Microsoft Power Platform.",
+"about.s4.t": "Applied Artificial Intelligence",
+"about.s4.d": "Bringing AI models into the software development lifecycle (SDLC) and into optimizing operational process routines.",
+"about.tools": "Everyday tools",
+"about.work": "Work",
+"about.work.tag": "History",
+"about.work.year": "2026 — Present",
+"about.work.role": "Data Analyst & Solutions Developer",
+"about.edu": "Education",
+"about.edu.tag": "Background",
+"about.edu.t": "Occupational Safety Technician",
+"about.edu.o": "CPET · Diploma issued 11/18/2024",
+"proj.eyebrow": "2025–2026 / Selected systems",
+"proj.title": "Project archive.",
+"proj.list": "Project list",
+"proj.dossier": "Project dossier",
+"proj.m.progress": "Progress",
+"proj.m.type": "Type",
+"proj.m.access": "Access",
+"skills.eyebrow": "Skills map / Capabilities",
+"skills.title": "Skills, kept in practice.",
+"skills.core": "Core direction",
+"skills.core.h": "Solution architecture for Supply Chain and Agribusiness — data, real-time integrations, the Microsoft ecosystem and AI applied to the SDLC.",
+"skills.trio.1": "Core",
+"skills.trio.1v": "Data, APIs, Microsoft",
+"skills.trio.2": "Support",
+"skills.trio.2v": "AI, 3D, Automation",
+"skills.trio.3": "Delivery",
+"skills.trio.3v": "Build, document, hand over",
+"skills.exec": "Project execution",
+"skills.exec.tag": "Tools",
+"skills.g.erp": "ERP & Management",
+"skills.g.design": "Presentation & Design",
+"cred.eyebrow": "Credentials / PDF archive",
+"cred.title": "Credentials, certificates and records.",
+"cred.set": "Document set",
+"cred.set.h": "Training, skills and completed certifications.",
+"cred.set.p": "10 certifications and 1 diploma, all completed, with real dates — click a card to view the certificate.",
+"cred.st.1": "Certifications",
+"cred.st.2": "Diplomas",
+"cred.st.3": "Attached files",
+"cred.st.4": "Areas",
+"cred.certs": "Certificates",
+"contact.eyebrow": "Contact",
+"contact.title": "Let's build something sharper.",
+"footer.1": "Full-stack Developer",
+"footer.2": "Agrotech / Automation / AI",
+"meta.title": "Fernando Gregório | Agrotech Portfolio",
+"lang.aria": "Language",
+"nav.aria": "Sections",
+"nav.home": "Home",
+"nav.sobre": "About",
+"nav.projetos": "Projects",
+"nav.habilidades": "Skills",
+"nav.credenciais": "Credentials",
+"nav.contato": "Contact",
+"hero.build": "I build",
+"hero.sr": "I build: Data Architecture, Real-Time Integrations, Microsoft Ecosystem and AI Applied to the SDLC.",
+"hero.cta.projects": "View projects",
+"hero.cta.certs": "View certificates",
+"hero.cta.cv": "Open CV",
+"about.work.li1": "<b style=\"color:var(--ink)\">Integrated ERP Development &amp; Architecture</b> — conceived and built a centralized platform to consolidate and analyze data from multiple systems (SAP, WMS and Digital Checklists) in a single multi-tenant (multi-client) environment.",
+"about.work.li2": "<b style=\"color:var(--ink)\">Real-Time Monitoring &amp; Visualization</b> — dashboards and operational interfaces to track operation stages, manage scheduling and ensure logistics traceability.",
+"about.work.li3": "<b style=\"color:var(--ink)\">Warehouse Innovation</b> — a 3D warehouse visualization feature to optimize space and monitor expiry control and stock turnover (FEFO).",
+"about.work.li4": "<b style=\"color:var(--ink)\">Automation &amp; Digitalization</b> — turning manual processes into integrated digital routines, speeding up operational response and strategic decision-making.",
+"proj.count": "projects",
+"proj.prev": "Previous",
+"proj.next": "Next",
+"proj.i": "Project {n} of {t}",
+"proj.soon": "Coming soon",
+"proj.view": "View project",
+"proj.shotAlt": "Screenshot of the project {t}",
+"contact.copy": "Copy email",
+"contact.copied": "Email copied ✓",
+"contact.copyFail": "Couldn't copy",
+"rotate": [
+"Data Architecture",
+"Real-Time Integrations",
+"Microsoft Ecosystem",
+"AI Applied to the SDLC"
+],
+"proj.0.year": "2026 / System",
+"proj.0.title": "WMS 3D — Warehouse Occupancy Visualization",
+"proj.0.status": "Active",
+"proj.0.prog": "Live demo",
+"proj.0.type": "3D Visualization + Domain",
+"proj.0.desc": "3D engine that represents the physical occupancy of a warehouse integrated with WMS/SAP: the floor plan becomes a 2D grid transformed into world coordinates — each rack becomes an address with level, depth and side, colored by status, product or expiry date. Layered architecture: pure domain, data, camera interaction and rendering.",
+"proj.0.linkLabel": "View interactive demo",
+"proj.1.year": "2025 / System",
+"proj.1.title": "DPA — Label Lookup and Printing",
+"proj.1.big": "DPA\nLABELS",
+"proj.1.status": "Active",
+"proj.1.prog": "Live demo",
+"proj.1.type": "Automation + Industrial printing",
+"proj.1.desc": "Label hub integrated with the WMS: lookup by lot or by address, printing of location labels (full pallet) or individual labels (one sack/bag), plus the original treated-seed module — recipe registration, antidotes and automatic layout generation at two scales, all integrated with Zebra printers via Browser Print.",
+"proj.1.linkLabel": "View interactive demo",
+"proj.2.year": "2025 / System",
+"proj.2.title": "Asset Control",
+"proj.2.status": "Active",
+"proj.2.prog": "Live demo",
+"proj.2.type": "Registration + Tracking",
+"proj.2.stack": [
+"React",
+"Barcode"
+],
+"proj.2.desc": "Asset registration and tracking by asset tag, with owner and unit pulled from an HR database — look up a code, transfer it to another owner or register a new asset, with a full movement history.",
+"proj.2.linkLabel": "View interactive demo",
+"skill.0.t": "Data Architecture & Engineering",
+"skill.0.d": "Data modeling and analysis focused on business intelligence and end-to-end traceability.",
+"skill.0.c": [
+"Data modeling",
+"BI",
+"Traceability"
+],
+"skill.1.t": "Integrations & Real-Time Processing",
+"skill.1.d": "Building and consuming REST APIs/Webhooks for real-time monitoring and visualization of logistics and agribusiness flows.",
+"skill.1.c": [
+"REST API",
+"Webhooks",
+"Real time"
+],
+"skill.2.t": "Microsoft Ecosystem",
+"skill.2.d": "Custom solutions and advanced automations built on Microsoft Power Platform.",
+"skill.3.t": "Applied Artificial Intelligence",
+"skill.3.d": "Bringing AI models into the software development lifecycle (SDLC) and into optimizing operational process routines.",
+"skill.3.c": [
+"AI in the SDLC",
+"Assisted automation",
+"Assisted refactoring"
+],
+"skill.4.t": "Data Analysis & BI",
+"skill.4.d": "Power BI dashboards built from real operations and logistics data.",
+"skill.4.c": [
+"Power BI",
+"Excel",
+"Data analysis"
+],
+"skill.5.d": "Supply chain analysis, warehouse occupancy and logistics planning in the agribusiness sector.",
+"skill.5.c": [
+"WMS",
+"Supply Chain",
+"Agribusiness"
+],
+"skill.6.t": "3D & Data Visualization",
+"skill.6.d": "3D scenes driven by real operational data, with decoupled domain, camera and rendering.",
+"skill.7.t": "Full-stack Development",
+"skill.7.d": "Internal systems, dashboards and product interfaces, from front end to database.",
+"skill.8.t": "Process Automation",
+"skill.8.d": "Industrial printing, document generation and integrations that eliminate manual work.",
+"cert.cat.Certificação": "Certification",
+"cert.cat.Diploma": "Diploma",
+"cert.CERT-02.t": "Lean Six Sigma — White Belt",
+"cert.CERT-02b.t": "Lean Six Sigma — Yellow Belt",
+"cert.CERT-03.t": "Internal IMS Auditor (ISO 9001 + 14001 + 45001)",
+"cert.CERT-04.t": "Total Quality Management",
+"cert.CERT-05.t": "Complete Office 2016 Suite",
+"cert.CERT-06.t": "Advanced Excel 2016",
+"cert.CERT-07.t": "Data Analysis in Power BI",
+"cert.CERT-08.t": "Power Apps — Fundamentals",
+"cert.CERT-09.t": "SharePoint Online — Fundamentals",
+"cert.DIP-01.t": "Occupational Safety Technician",
+"cert.pdf": "PDF preview",
+"cert.img": "Preview",
+"cert.soon": "File coming soon",
+"cert.empty": "No certificates published yet — coming soon.",
+"cv.cat": "Résumé",
+"cv.t": "Fernando Gregório Campos — Résumé 2026",
+"cv.o": "Updated with real projects and certifications",
+"m.loading": "Loading PDF…",
+"m.fail": "Could not load the PDF.",
+"m.close": "Close",
+"m.zoomIn": "Zoom in",
+"m.zoomOut": "Zoom out",
+"m.reset": "reset",
+"m.resetAria": "Reset zoom",
+"m.image": "Image",
+"m.dlPdf": "Download PDF ↓",
+"m.dlImg": "Download image ↓",
+"m.dlBusy": "Preparing…",
+"m.dlFail": "Download failed — try again"
+},
+"es": {
+"hero.eyebrow": "Portafolio 2026 / Supply Chain · Agroindustria · Datos · IA",
+"hero.tagline": "Innovación en la raíz del negocio",
+"hero.lead": "Desarrollador de Sistemas especializado en la arquitectura e implementación de soluciones para Supply Chain/Logística y el sector agroindustrial — combinando ingeniería de datos, integraciones en tiempo real, el ecosistema Microsoft (Power Platform/Azure) e Inteligencia Artificial aplicada al ciclo de desarrollo de software.",
+"cap.title": "Mapa de capacidades",
+"cap.intro": "Áreas que combino dentro de los proyectos — un resumen rápido de lo que hago.",
+"cap.1.tag": "Datos",
+"cap.1.t": "Arquitectura e Ingeniería de Datos",
+"cap.1.d": "Modelado y análisis enfocados en inteligencia de negocios y trazabilidad de punta a punta.",
+"cap.2.tag": "Integraciones",
+"cap.2.t": "API REST y Webhooks en tiempo real",
+"cap.2.d": "Monitoreo y visualización de flujos logísticos y agroindustriales.",
+"cap.3.tag": "Plataforma",
+"cap.3.t": "Ecosistema Microsoft",
+"cap.3.d": "Soluciones y automatizaciones avanzadas con Power Platform y Azure.",
+"cap.4.tag": "IA aplicada",
+"cap.4.t": "IA en el ciclo de desarrollo",
+"cap.4.d": "Modelos de IA en el SDLC y en la optimización de rutinas operativas.",
+"cap.5.tag": "Visualización",
+"cap.5.t": "Escenas 3D basadas en datos",
+"cap.5.d": "Dominio separado del render — Three.js sobre datos reales de operación.",
+"about.eyebrow": "Sobre mí / Contexto",
+"about.title": "Arquitectura de datos, integraciones en tiempo real e IA aplicada al SDLC.",
+"about.now": "Enfoque actual",
+"about.now.h": "Desarrollador de Sistemas especializado en la arquitectura e implementación de soluciones de alto impacto para Supply Chain/Logística y el sector agroindustrial.",
+"about.now.p1": "Mi trabajo se guía por los principios de mejora continua, usando la tecnología como palanca estratégica para elevar la eficiencia operativa, la escalabilidad y la excelencia de los procesos.",
+"about.now.p2": "Mi enfoque técnico combina el desarrollo de software robusto con el ecosistema Microsoft (Power Platform y servicios Azure), además de la integración continua de Inteligencia Artificial para optimizar tiempos de respuesta, automatizaciones complejas y la refactorización asistida de código.",
+"about.skills": "Principales competencias técnicas",
+"about.s1.t": "Arquitectura e Ingeniería de Datos",
+"about.s1.d": "Modelado y análisis de datos enfocados en inteligencia de negocios y trazabilidad de punta a punta.",
+"about.s2.t": "Integraciones y Procesamiento en Tiempo Real",
+"about.s2.d": "Construcción y consumo de API REST/Webhooks para monitoreo y visualización en tiempo real de flujos logísticos y agroindustriales.",
+"about.s3.t": "Ecosistema Microsoft",
+"about.s3.d": "Desarrollo de soluciones personalizadas y automatizaciones avanzadas con Microsoft Power Platform.",
+"about.s4.t": "Inteligencia Artificial Aplicada",
+"about.s4.d": "Incorporación de modelos de IA en el ciclo de vida de desarrollo de software (SDLC) y en la optimización de rutinas de procesos operativos.",
+"about.tools": "Herramientas del día a día",
+"about.work": "Trabajo",
+"about.work.tag": "Historial",
+"about.work.year": "2026 — Actual",
+"about.work.role": "Analista de Datos y Desarrollador de Soluciones",
+"about.edu": "Educación",
+"about.edu.tag": "Formación",
+"about.edu.t": "Técnico en Seguridad Laboral",
+"about.edu.o": "CPET · Diploma emitido el 18/11/2024",
+"proj.eyebrow": "2025–2026 / Sistemas seleccionados",
+"proj.title": "Archivo de proyectos.",
+"proj.list": "Lista de proyectos",
+"proj.dossier": "Dosier del proyecto",
+"proj.m.progress": "Progreso",
+"proj.m.type": "Tipo",
+"proj.m.access": "Acceso",
+"skills.eyebrow": "Mapa de habilidades / Capacidades",
+"skills.title": "Habilidades, siempre en práctica.",
+"skills.core": "Dirección central",
+"skills.core.h": "Arquitectura de soluciones para Supply Chain y Agroindustria — datos, integraciones en tiempo real, ecosistema Microsoft e IA aplicada al SDLC.",
+"skills.trio.1": "Núcleo",
+"skills.trio.1v": "Datos, APIs, Microsoft",
+"skills.trio.2": "Soporte",
+"skills.trio.2v": "IA, 3D, Automatización",
+"skills.trio.3": "Entrega",
+"skills.trio.3v": "Construir, documentar, transferir",
+"skills.exec": "Ejecución del proyecto",
+"skills.exec.tag": "Herramientas",
+"skills.g.erp": "ERP y Gestión",
+"skills.g.design": "Presentación y Diseño",
+"cred.eyebrow": "Credenciales / Archivo PDF",
+"cred.title": "Credenciales, certificados y registros.",
+"cred.set": "Conjunto de documentos",
+"cred.set.h": "Formación, competencias y certificaciones concluidas.",
+"cred.set.p": "10 certificaciones y 1 diploma, todos concluidos y con fecha real — haz clic en una tarjeta para ver el certificado.",
+"cred.st.1": "Certificaciones",
+"cred.st.2": "Diplomas",
+"cred.st.3": "Archivos adjuntos",
+"cred.st.4": "Áreas",
+"cred.certs": "Certificados",
+"contact.eyebrow": "Contacto",
+"contact.title": "Construyamos algo más afilado.",
+"footer.1": "Desarrollador Full-stack",
+"footer.2": "Agrotech / Automatización / IA",
+"meta.title": "Fernando Gregório | Portafolio Agrotech",
+"lang.aria": "Idioma",
+"nav.aria": "Secciones",
+"nav.home": "Inicio",
+"nav.sobre": "Sobre mí",
+"nav.projetos": "Proyectos",
+"nav.habilidades": "Habilidades",
+"nav.credenciais": "Credenciales",
+"nav.contato": "Contacto",
+"hero.build": "Construyo",
+"hero.sr": "Construyo: Arquitectura de Datos, Integraciones en Tiempo Real, Ecosistema Microsoft e IA Aplicada al SDLC.",
+"hero.cta.projects": "Ver proyectos",
+"hero.cta.certs": "Ver certificados",
+"hero.cta.cv": "Abrir CV",
+"about.work.li1": "<b style=\"color:var(--ink)\">Desarrollo y Arquitectura de ERP Integrado</b> — concepción e implementación de una plataforma centralizada para consolidar y analizar datos de múltiples sistemas (SAP, WMS y Checklists Digitales) en un único entorno multi-tenant (multicliente).",
+"about.work.li2": "<b style=\"color:var(--ink)\">Monitoreo y Visualización en Tiempo Real</b> — creación de dashboards e interfaces operativas para seguir las etapas de la operación, gestionar agendamientos y asegurar la trazabilidad logística.",
+"about.work.li3": "<b style=\"color:var(--ink)\">Innovación en Almacenamiento</b> — desarrollo de una visualización 3D del almacén para optimizar el espacio y monitorear el control de vencimientos y la rotación de inventario (FEFO).",
+"about.work.li4": "<b style=\"color:var(--ink)\">Automatización y Digitalización</b> — transformación de procesos manuales en rutinas digitales integradas, agilizando la respuesta de la operación y la toma de decisiones estratégicas.",
+"proj.count": "proyectos",
+"proj.prev": "Anterior",
+"proj.next": "Siguiente",
+"proj.i": "Proyecto {n} de {t}",
+"proj.soon": "Próximamente",
+"proj.view": "Ver proyecto",
+"proj.shotAlt": "Captura de pantalla del proyecto {t}",
+"contact.copy": "Copiar correo",
+"contact.copied": "Correo copiado ✓",
+"contact.copyFail": "No se pudo copiar",
+"rotate": [
+"Arquitectura de Datos",
+"Integraciones en Tiempo Real",
+"Ecosistema Microsoft",
+"IA Aplicada al SDLC"
+],
+"proj.0.year": "2026 / Sistema",
+"proj.0.title": "WMS 3D — Visualización de Ocupación de Almacén",
+"proj.0.status": "Activo",
+"proj.0.prog": "Demo publicada",
+"proj.0.type": "Visualización 3D + Dominio",
+"proj.0.desc": "Motor 3D que representa la ocupación física de un almacén integrado a WMS/SAP: la planta se convierte en una grilla 2D transformada en coordenadas de mundo — cada rack pasa a ser una dirección con nivel, profundidad y cara, coloreada por estado, producto o vencimiento. Arquitectura en capas: dominio puro, datos, interacción de cámara y render.",
+"proj.0.linkLabel": "Ver demo interactiva",
+"proj.1.year": "2025 / Sistema",
+"proj.1.title": "DPA — Consulta y Emisión de Etiquetas",
+"proj.1.big": "DPA\nETIQ",
+"proj.1.status": "Activo",
+"proj.1.prog": "Demo publicada",
+"proj.1.type": "Automatización + Impresión industrial",
+"proj.1.desc": "Central de etiquetas integrada al WMS: consulta por lote o por dirección, emisión de etiqueta de ubicación (pallet completo) o individual (un saco/bag), además del módulo original de semillas tratadas — registro de receta, antídotos y generación automática del diseño en dos escalas, todo integrado a impresoras Zebra vía Browser Print.",
+"proj.1.linkLabel": "Ver demo interactiva",
+"proj.2.year": "2025 / Sistema",
+"proj.2.title": "Control de Activos",
+"proj.2.status": "Activo",
+"proj.2.prog": "Demo publicada",
+"proj.2.type": "Registro + Rastreo",
+"proj.2.stack": [
+"React",
+"Código de barras"
+],
+"proj.2.desc": "Registro y rastreo de activos por código patrimonial, con responsable y unidad obtenidos de una base de RR. HH. — consulta el código, transfiérelo a otro responsable o registra un activo nuevo, con historial de movimientos.",
+"proj.2.linkLabel": "Ver demo interactiva",
+"skill.0.t": "Arquitectura e Ingeniería de Datos",
+"skill.0.d": "Modelado y análisis de datos enfocados en inteligencia de negocios y trazabilidad de punta a punta.",
+"skill.0.c": [
+"Modelado de datos",
+"BI",
+"Trazabilidad"
+],
+"skill.1.t": "Integraciones y Procesamiento en Tiempo Real",
+"skill.1.d": "Construcción y consumo de API REST/Webhooks para monitoreo y visualización en tiempo real de flujos logísticos y agroindustriales.",
+"skill.1.c": [
+"API REST",
+"Webhooks",
+"Tiempo real"
+],
+"skill.2.t": "Ecosistema Microsoft",
+"skill.2.d": "Desarrollo de soluciones personalizadas y automatizaciones avanzadas con Microsoft Power Platform.",
+"skill.3.t": "Inteligencia Artificial Aplicada",
+"skill.3.d": "Incorporación de modelos de IA en el ciclo de vida de desarrollo de software (SDLC) y en la optimización de rutinas de procesos operativos.",
+"skill.3.c": [
+"IA en el SDLC",
+"Automatización asistida",
+"Refactorización asistida"
+],
+"skill.4.t": "Análisis de Datos y BI",
+"skill.4.d": "Dashboards en Power BI construidos a partir de datos reales de operación y logística.",
+"skill.4.c": [
+"Power BI",
+"Excel",
+"Análisis de datos"
+],
+"skill.5.d": "Análisis de la cadena de suministro, ocupación de almacén y planificación logística en el sector agroindustrial.",
+"skill.5.c": [
+"WMS",
+"Supply Chain",
+"Agroindustria"
+],
+"skill.6.t": "Visualización 3D y Datos",
+"skill.6.d": "Escenas 3D basadas en datos reales de operación, con dominio, cámara y render desacoplados.",
+"skill.7.t": "Desarrollo Full-stack",
+"skill.7.d": "Sistemas internos, paneles e interfaces de producto, del front a la base de datos.",
+"skill.8.t": "Automatización de Procesos",
+"skill.8.d": "Impresión industrial, generación de documentos e integraciones que eliminan el trabajo manual.",
+"cert.cat.Certificação": "Certificación",
+"cert.cat.Diploma": "Diploma",
+"cert.CERT-02.t": "Lean Seis Sigma — White Belt",
+"cert.CERT-02b.t": "Lean Seis Sigma — Yellow Belt",
+"cert.CERT-03.t": "Auditor Interno del SGI (ISO 9001 + 14001 + 45001)",
+"cert.CERT-04.t": "Gestión de la Calidad Total",
+"cert.CERT-05.t": "Paquete Office 2016 Completo",
+"cert.CERT-06.t": "Excel 2016 Avanzado",
+"cert.CERT-07.t": "Análisis de Datos en Power BI",
+"cert.CERT-08.t": "Power Apps — Formación Básica",
+"cert.CERT-09.t": "SharePoint Online — Formación Básica",
+"cert.DIP-01.t": "Técnico en Seguridad Laboral",
+"cert.pdf": "Vista previa en PDF",
+"cert.img": "Vista previa",
+"cert.soon": "Archivo próximamente",
+"cert.empty": "Aún no hay certificados publicados — próximamente.",
+"cv.cat": "Currículum",
+"cv.t": "Fernando Gregório Campos — CV 2026",
+"cv.o": "Actualizado con proyectos y certificaciones reales",
+"m.loading": "Cargando PDF…",
+"m.fail": "No se pudo cargar el PDF.",
+"m.close": "Cerrar",
+"m.zoomIn": "Acercar",
+"m.zoomOut": "Alejar",
+"m.reset": "restablecer",
+"m.resetAria": "Restablecer zoom",
+"m.image": "Imagen",
+"m.dlPdf": "Descargar PDF ↓",
+"m.dlImg": "Descargar imagen ↓",
+"m.dlBusy": "Preparando…",
+"m.dlFail": "Falló la descarga — inténtalo de nuevo"
+}
+};
+var LANGS=['pt','en','es'],cur=LANGS.indexOf(window.__LANG)>=0?window.__LANG:'pt',hooks=[];
+var ptTitle=document.title;
+function tr(k,pt,vars){
+  var v=cur!=='pt'&&T[cur]?T[cur][k]:undefined;
+  if(v==null)v=pt;
+  if(vars&&typeof v==='string')v=v.replace(/\{(\w+)\}/g,function(_,n){return vars[n]!=null?vars[n]:''});
+  return v;
+}
+function apply(){
+  var dict=cur!=='pt'?T[cur]:{};
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    if(el.__pt==null)el.__pt=el.textContent;
+    var v=dict[el.dataset.i18n];el.textContent=v!=null?v:el.__pt;
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(function(el){
+    if(el.__pt==null)el.__pt=el.innerHTML;
+    var v=dict[el.dataset.i18nHtml];el.innerHTML=v!=null?v:el.__pt;
+  });
+  document.querySelectorAll('[data-i18n-aria]').forEach(function(el){
+    if(el.__ptAria==null)el.__ptAria=el.getAttribute('aria-label')||'';
+    var v=dict[el.dataset.i18nAria];el.setAttribute('aria-label',v!=null?v:el.__ptAria);
+  });
+  document.documentElement.lang=cur==='pt'?'pt-BR':cur;
+  document.title=tr('meta.title',ptTitle);
+  var sel=document.getElementById('langSel');if(sel)sel.value=cur;
+  hooks.forEach(function(fn){try{fn(cur)}catch(e){console.error(e)}});
+}
+function setLang(l,save){
+  cur=LANGS.indexOf(l)>=0?l:'pt';
+  if(save){try{localStorage.setItem('lang',cur)}catch(e){}}
+  apply();
+}
+window.I18N={tr:tr,setLang:setLang,on:function(fn){hooks.push(fn)},get lang(){return cur}};
+var sel=document.getElementById('langSel');
+if(sel)sel.addEventListener('change',function(e){setLang(e.target.value,true)});
+apply();
+})();
+</script>
 <script>
 /* =========================================================
    DADOS — edite aqui o seu conteúdo
@@ -603,37 +1225,43 @@ const CERTS = [
    NAV + TRANSIÇÃO
    ========================================================= */
 const panels=[...document.querySelectorAll('.panel')];
-const nav=document.getElementById('nav');
-panels.forEach(p=>{
-  const li=document.createElement('li');
-  li.innerHTML=`<button data-go="${p.id}">${p.dataset.label}<span class="br"><i></i><i></i><i></i><i></i></span></button>`;
-  nav.appendChild(li);
-});
+const tr=(k,pt,v)=>window.I18N?I18N.tr(k,pt,v):pt;
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
 let current='home',busy=false;
-function go(id){
-  if(id===current||busy) return; busy=true;
-  const wipe=document.getElementById('wipe');
-  document.getElementById('wipeLabel').textContent=document.getElementById(id).dataset.label;
-  wipe.classList.add('on');
-  setTimeout(()=>{
+function go(id,focusPanel){
+  if(id===current||busy) return;
+  const swap=()=>{
     panels.forEach(p=>p.classList.toggle('show',p.id===id));
-    document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.go===id));
+    document.querySelectorAll('#nav button').forEach(b=>{
+      const on=b.dataset.go===id;b.classList.toggle('active',on);
+      if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');
+    });
     current=id;
-    setTimeout(()=>{wipe.classList.remove('on');busy=false},380);
-  },300);
+    if(focusPanel)document.getElementById(id).focus({preventScroll:true});
+  };
+  if(reduceMotion.matches){swap();return}
+  busy=true;
+  const wipe=document.getElementById('wipe');
+  document.getElementById('wipeLabel').textContent=tr('nav.'+id,document.getElementById(id).dataset.label);
+  wipe.classList.add('on');
+  setTimeout(()=>{swap();setTimeout(()=>{wipe.classList.remove('on');busy=false},380)},300);
 }
-document.addEventListener('click',e=>{const t=e.target.closest('[data-go]');if(t){e.preventDefault();go(t.dataset.go)}});
-document.querySelector('#nav button').classList.add('active');
+/* e.detail===0 → ativado pelo teclado; fora do menu, o foco vai para a seção nova */
+document.addEventListener('click',e=>{const t=e.target.closest('[data-go]');if(t){e.preventDefault();go(t.dataset.go,e.detail===0&&!t.closest('#nav'))}});
 
 /* =========================================================
    TEXTO ROTATIVO (efeito de digitação)
    ========================================================= */
-(()=>{const el=document.getElementById('rot');let i=0,j=0,del=false;
-  (function tick(){const w=ROTATE[i];el.textContent=w.slice(0,j);
+(()=>{const el=document.getElementById('rot');let i=0,j=0,del=false,lang=null;
+  if(reduceMotion.matches){const set=()=>{el.textContent=tr('rotate',ROTATE)[0]};set();if(window.I18N)I18N.on(set);return}
+  (function tick(){
+    const list=tr('rotate',ROTATE),L=window.I18N?I18N.lang:'pt';
+    if(L!==lang){lang=L;j=0;del=false;i=i%list.length}
+    const w=list[i];el.textContent=w.slice(0,j);
     if(!del&&j<w.length){j++;setTimeout(tick,70)}
     else if(!del){del=true;setTimeout(tick,1600)}
     else if(j>0){j--;setTimeout(tick,35)}
-    else{del=false;i=(i+1)%ROTATE.length;setTimeout(tick,250)}})();})();
+    else{del=false;i=(i+1)%list.length;setTimeout(tick,250)}})();})();
 
 /* =========================================================
    CAMPO DE PONTOS 3D (onda + reação ao mouse)
@@ -698,8 +1326,9 @@ requestAnimationFrame(loop);
 /* =========================================================
    CURSOR DE MIRA
    ========================================================= */
+if(matchMedia('(pointer: fine)').matches)document.documentElement.classList.add('has-cursor');
 const cur=document.getElementById('cursor');let cx=0,cy=0,tx=0,ty=0;
-addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY;cur.classList.toggle('hover',!!e.target.closest('button,a,.capmap>div'))});
+addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY;cur.classList.toggle('hover',!!e.target.closest('button,a,label,select,.capmap>div'))});
 (function c(){cx+=(tx-cx)*.25;cy+=(ty-cy)*.25;cur.style.left=cx+'px';cur.style.top=cy+'px';requestAnimationFrame(c)})();
 
 /* =========================================================
@@ -707,40 +1336,55 @@ addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY;cur.classList.toggle(
    ========================================================= */
 // projetos
 let pi=0;const plist=document.getElementById('plist');
+const PF=(i,f)=>tr('proj.'+i+'.'+f,PROJECTS[i][f]);
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 document.getElementById('pcount').textContent=PROJECTS.length;
-PROJECTS.forEach((p,i)=>plist.insertAdjacentHTML('beforeend',`<button data-i="${i}"><span class="tiny">${p.year}</span><b>${p.title}</b><span class="tiny">${p.prog}</span></button>`));
+function renderPlist(){
+  plist.innerHTML=PROJECTS.map((p,i)=>`<button type="button" data-i="${i}" aria-pressed="false"><span class="tiny">${esc(PF(i,'year'))}</span><b>${esc(PF(i,'title'))}</b><span class="tiny">${esc(PF(i,'prog'))}</span></button>`).join('');
+}
+renderPlist();
 plist.addEventListener('click',e=>{const b=e.target.closest('button');if(b)showP(+b.dataset.i)});
 function showP(i){pi=(i+PROJECTS.length)%PROJECTS.length;const p=PROJECTS[pi];
-  [...plist.children].forEach((b,k)=>b.classList.toggle('on',k===pi));
-  pyear.textContent=p.year;ptitle.textContent=p.title;pdesc.textContent=p.desc;pbig.innerHTML=p.big.replace('\n','<br>');
-  pprog.textContent=p.prog;ptype.textContent=p.type;pstatus.textContent=p.status;
-  pidx.textContent=`Projeto ${pi+1} de ${PROJECTS.length}`;
-  pstack.innerHTML=p.stack.map(s=>`<span class="chip">${s}</span>`).join('');
-  if(p.link){plink.href=p.link;plink.innerHTML=(p.linkLabel||'Ver projeto')+' ↗';plink.style.opacity=1;plink.style.pointerEvents='auto';}
-  else{plink.href='#';plink.innerHTML='Em breve';plink.style.opacity=.5;plink.style.pointerEvents='none';}
+  [...plist.children].forEach((b,k)=>{b.classList.toggle('on',k===pi);b.setAttribute('aria-pressed',k===pi)});
+  pyear.textContent=PF(pi,'year');ptitle.textContent=PF(pi,'title');pdesc.textContent=PF(pi,'desc');
+  pbig.innerHTML=esc(PF(pi,'big')).replace('\n','<br>');
+  pprog.textContent=PF(pi,'prog');ptype.textContent=PF(pi,'type');pstatus.textContent=PF(pi,'status');
+  pidx.textContent=tr('proj.i','Projeto {n} de {t}',{n:pi+1,t:PROJECTS.length});
+  pstack.innerHTML=PF(pi,'stack').map(s=>`<span class="chip">${esc(s)}</span>`).join('');
+  if(p.link){plink.href=p.link;plink.textContent=(p.linkLabel?PF(pi,'linkLabel'):tr('proj.view','Ver projeto'))+' ↗';plink.style.opacity=1;plink.style.pointerEvents='auto';plink.removeAttribute('aria-disabled');}
+  else{plink.href='#';plink.textContent=tr('proj.soon','Em breve');plink.style.opacity=.5;plink.style.pointerEvents='none';plink.setAttribute('aria-disabled','true');}
+  pshot.alt=tr('proj.shotAlt','Captura de tela do projeto {t}',{t:PF(pi,'title')});
   if(p.img){pshot.src=p.img;pshot.style.display='block';pshotgrad.style.display='block';fx.style.display='none';}
   else{pshot.style.display='none';pshotgrad.style.display='none';fx.style.display='block';}
 }
 prev.onclick=()=>showP(pi-1);next.onclick=()=>showP(pi+1);showP(0);
 
 // skills
-skillList.innerHTML=SKILLS.map(s=>`<div class="skill-row"><h4>${s.t}</h4><p>${s.d}</p><div class="chips">${s.c.map(c=>`<span class="chip">${c}</span>`).join('')}</div></div>`).join('');
+function renderSkills(){
+  skillList.innerHTML=SKILLS.map((s,i)=>`<div class="skill-row"><h4>${esc(tr('skill.'+i+'.t',s.t))}</h4><p>${esc(tr('skill.'+i+'.d',s.d))}</p><div class="chips">${tr('skill.'+i+'.c',s.c).map(c=>`<span class="chip">${esc(c)}</span>`).join('')}</div></div>`).join('');
+}
+renderSkills();
 
 // certs
-certs.innerHTML=CERTS.length?CERTS.map((c,i)=>{
+const certL=c=>Object.assign({},c,{cat:tr('cert.cat.'+c.cat,c.cat),t:tr('cert.'+c.id+'.t',c.t)});
+function renderCerts(){
+certs.innerHTML=CERTS.length?CERTS.map((c0,i)=>{
+  const c=certL(c0);
   const arquivo = CERT_FILES[c.id];
   if (!arquivo) {
-    return `<div class="cert"><div class="tiny top"><span>${c.id}</span><span>Arquivo em breve</span></div>
+    return `<div class="cert"><div class="tiny top"><span>${c.id}</span><span>${tr('cert.soon','Arquivo em breve')}</span></div>
 <div class="paper"><i class="b"></i><i class="s"></i><i></i><i></i><i></i><i class="s"></i><i></i></div>
 <div><span class="tiny">${c.cat}</span><h5>${c.t}</h5><p>${c.o}</p></div></div>`;
   }
   return `<button type="button" class="cert credential-preview-card" data-cert-index="${i}" style="text-align:left;width:100%;border:1px solid var(--line);background:var(--panel-2);font:inherit;color:inherit;cursor:pointer">
-<div class="cred-top-row"><span>${c.id}</span><span>${PDF_FILES[c.id]?'Pré-visualização em PDF':'Pré-visualização'} ↗</span></div>
+<div class="cred-top-row"><span>${c.id}</span><span>${PDF_FILES[c.id]?tr('cert.pdf','Pré-visualização em PDF'):tr('cert.img','Pré-visualização')} ↗</span></div>
 <div class="cred-body-row">
   <div class="credential-thumb"><img src="${arquivo}" alt="${c.t}" loading="lazy"></div>
   <div class="cred-text"><span class="tiny">${c.cat}</span><h5>${c.t}</h5><p>${c.o}</p></div>
 </div></button>`;
-}).join(''):'<p class="tiny" style="grid-column:1/-1;padding:24px;text-align:center">Nenhum certificado publicado ainda — em breve.</p>';
+}).join(''):'<p class="tiny" style="grid-column:1/-1;padding:24px;text-align:center">'+tr('cert.empty','Nenhum certificado publicado ainda — em breve.')+'</p>';
+}
+renderCerts();
 
 /* ============================================================
    MODAL DE CREDENCIAL — igual ao padrão descrito: miniatura leve →
@@ -821,22 +1465,22 @@ async function openCredentialModal(cert) {
       <div class="cv-modal-head">
         <div class="cv-meta"><span class="cv-code">${cert.id} / ${cert.cat}</span><span class="cv-title">${cert.t}</span></div>
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-          <span class="cv-status-badge">${isPdf ? 'PDF' : 'Imagem'}</span>
+          <span class="cv-status-badge">${isPdf ? 'PDF' : tr('m.image','Imagem')}</span>
           ${isPdf ? `<div class="cv-zoom-bar">
-            <button type="button" id="cvZoomOut" aria-label="Diminuir zoom">−</button>
+            <button type="button" id="cvZoomOut" aria-label="${tr('m.zoomOut','Diminuir zoom')}">−</button>
             <span class="cv-pct" id="cvZoomPct">100%</span>
-            <button type="button" id="cvZoomIn" aria-label="Aumentar zoom">+</button>
-            <button type="button" id="cvZoomReset" aria-label="Redefinir zoom" style="width:auto;padding:0 8px;font-size:10px">redefinir</button>
+            <button type="button" id="cvZoomIn" aria-label="${tr('m.zoomIn','Aumentar zoom')}">+</button>
+            <button type="button" id="cvZoomReset" aria-label="${tr('m.resetAria','Redefinir zoom')}" style="width:auto;padding:0 8px;font-size:10px">${tr('m.reset','redefinir')}</button>
           </div>` : ''}
-          <button type="button" class="cv-modal-close" id="cvModalClose" aria-label="Fechar">✕</button>
+          <button type="button" class="cv-modal-close" id="cvModalClose" aria-label="${tr('m.close','Fechar')}">✕</button>
         </div>
       </div>
       <div class="cv-modal-frame">
-        <div class="cv-pdf-pages" id="cvPages">${isPdf ? '<p class="cv-loading">Carregando PDF…</p>' : `<img src="${CERT_FILES[cert.id]}" alt="${cert.t}">`}</div>
+        <div class="cv-pdf-pages" id="cvPages">${isPdf ? '<p class="cv-loading">'+tr('m.loading','Carregando PDF…')+'</p>' : `<img src="${CERT_FILES[cert.id]}" alt="${cert.t}">`}</div>
       </div>
       <div class="cv-modal-foot">
         <span class="tiny" style="text-transform:none;letter-spacing:0">${cert.o}</span>
-        <button type="button" class="cv-download-link" id="cvDownloadBtn" data-cert-id="${cert.id}" data-is-pdf="${isPdf?'1':'0'}">Baixar ${isPdf ? 'PDF' : 'imagem'} ↓</button>
+        <button type="button" class="cv-download-link" id="cvDownloadBtn" data-cert-id="${cert.id}" data-is-pdf="${isPdf?'1':'0'}">${isPdf ? tr('m.dlPdf','Baixar PDF ↓') : tr('m.dlImg','Baixar imagem ↓')}</button>
       </div>
     </section>`;
   document.body.appendChild(backdrop);
@@ -872,7 +1516,7 @@ async function openCredentialModal(cert) {
         renderAllPdfPages(pagesEl, pctEl);
       });
     } catch (err) {
-      document.getElementById('cvPages').innerHTML = '<p class="cv-loading">Não foi possível carregar o PDF.</p>';
+      document.getElementById('cvPages').innerHTML = '<p class="cv-loading">'+tr('m.fail','Não foi possível carregar o PDF.')+'</p>';
     }
   }
 }
@@ -886,34 +1530,52 @@ async function baixarCredencial(certId, isPdf) {
   const btn = document.getElementById('cvDownloadBtn');
   const original = btn.textContent;
   try {
-    const dl = await claude.use('downloads');
-    if (!dl) { btn.textContent = 'Download indisponível aqui'; return; }
     const cert = CERTS.find(c => c.id === certId);
     const titulo = certId === 'CV' ? 'Fernando-Gregorio-Campos-CV-2026' : cert.t;
     const b64 = b64PayloadOf(isPdf ? PDF_FILES[certId] : CERT_FILES[certId]);
-    const bytes = b64ToUint8Array(b64);
-    const mime = isPdf ? 'application/pdf' : 'image/jpeg';
-    const blob = new Blob([bytes], { type: mime });
+    const blob = new Blob([b64ToUint8Array(b64)], { type: isPdf ? 'application/pdf' : 'image/jpeg' });
     const ext = isPdf ? 'pdf' : 'jpg';
-    const filename = `${certId === 'CV' ? titulo : certId + '-' + titulo.replace(/[^a-z0-9]+/gi, '-')}.${ext}`.toLowerCase();
-    btn.textContent = 'Enviando…';
-    await dl.save({ filename, data: blob });
-    btn.textContent = original;
+    const filename = `${certId === 'CV' ? titulo : certId + '-' + titulo.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/gi, '-')}.${ext}`.toLowerCase();
+    const dl = (window.claude && typeof window.claude.use === 'function') ? await window.claude.use('downloads') : null;
+    if (dl) { btn.textContent = tr('m.dlBusy','Preparando…'); await dl.save({ filename, data: blob }); btn.textContent = original; return; }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
   } catch (err) {
-    btn.textContent = err && err.code === 'declined' ? original : 'Falha no download — tenta de novo';
+    btn.textContent = err && err.code === 'declined' ? original : tr('m.dlFail','Falha no download — tenta de novo');
     setTimeout(() => { btn.textContent = original; }, 2500);
   }
 }
 
 document.getElementById('btnOpenCv').addEventListener('click', () => {
-  openCredentialModal({ id: 'CV', cat: 'Currículo', t: 'Fernando Gregório Campos — CV 2026', o: 'Atualizado com projetos e certificações reais' });
+  openCredentialModal({ id: 'CV', cat: tr('cv.cat','Currículo'), t: tr('cv.t','Fernando Gregório Campos — CV 2026'), o: tr('cv.o','Atualizado com projetos e certificações reais') });
 });
 document.getElementById('certs').addEventListener('click', (e) => {
   const btn = e.target.closest('.credential-preview-card');
   if (!btn) return;
   const cert = CERTS[Number(btn.dataset.certIndex)];
-  if (cert) openCredentialModal(cert);
+  if (cert) openCredentialModal(certL(cert));
 });
+
+/* =========================================================
+   CONTATO: copiar e-mail
+   ========================================================= */
+(()=>{const b=document.getElementById('copyEmail');if(!b)return;const st=document.getElementById('copyStatus');let tm;
+  b.addEventListener('click',async()=>{
+    const email=b.dataset.email;let ok=false;
+    try{await navigator.clipboard.writeText(email);ok=true}catch(e){
+      try{const t=document.createElement('textarea');t.value=email;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();ok=document.execCommand('copy');t.remove()}catch(e2){}
+    }
+    const lbl=b.querySelector('[data-i18n]');
+    lbl.textContent=ok?tr('contact.copied','E-mail copiado ✓'):tr('contact.copyFail','Não foi possível copiar');
+    st.textContent=lbl.textContent;b.classList.toggle('ok',ok);
+    clearTimeout(tm);tm=setTimeout(()=>{lbl.textContent=tr('contact.copy','Copiar e-mail');b.classList.remove('ok');st.textContent=''},1800);
+  });
+})();
+
+/* re-renderiza o conteúdo gerado por script quando o idioma muda */
+if(window.I18N)I18N.on(()=>{renderPlist();showP(pi);renderSkills();renderCerts()});
 </script>
 </body>
 </html>
