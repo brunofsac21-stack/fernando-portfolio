@@ -349,6 +349,31 @@ html.no-intro #intro{display:none}
   .panel,.panel.show{transition:none}
   .rot-box .caret{animation:none}
 }
+
+/* =========================================================
+   LOGO LOOP (rolagem lateral infinita dos chips de habilidades)
+   ========================================================= */
+.skills-grid{grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr)}
+@media (max-width:1000px){.skills-grid{grid-template-columns:minmax(0,1fr)}}
+.skill-row{min-width:0}
+.logo-loop{--logo-loop-duration:24s;--logo-loop-gap:8px;position:relative;width:100%;min-width:0;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent)}
+.logo-loop-track{display:flex;width:max-content;will-change:transform;backface-visibility:hidden;
+  animation:logo-loop-scroll var(--logo-loop-duration) linear infinite}
+.logo-loop-set{display:flex;gap:var(--logo-loop-gap);padding-right:var(--logo-loop-gap)}
+.logo-loop--reverse .logo-loop-track{animation-direction:reverse}
+.logo-loop:hover .logo-loop-track{animation-play-state:paused}
+@keyframes logo-loop-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.logo-loop-item{display:inline-flex;align-items:center;gap:7px;flex-shrink:0;height:34px;padding:7px 9px;
+  border:1px solid var(--line);background:rgba(244,244,241,.7);font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;list-style:none;
+  transition:background .17s,transform .17s,border-color .17s}
+.logo-loop-item:hover{transform:translateY(-1px);background:#fff;border-color:var(--ink)}
+.logo-loop-item img,.logo-loop-item svg{width:16px;height:16px;flex:none;object-fit:contain;color:var(--ink)}
+.chips--static{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:0}
+.tool-box img{width:17px;height:17px;flex:none;object-fit:contain}
+@media (prefers-reduced-motion:reduce){.logo-loop-track{animation:none}}
 /* ---------- Credential PDF modal (igual ao padrão real) ---------- */
 .credential-preview-card{display:flex !important;flex-direction:column;padding:0 !important}
 .cred-top-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 12px;
@@ -603,34 +628,34 @@ html.no-intro #intro{display:none}
               <div class="tool-group">
                 <span class="tiny">Microsoft 365</span>
                 <div class="tools">
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="2" width="14" height="16" rx="1"/><path d="M6 7h8M6 10h8M6 13h5"/></svg><span>Word</span></div>
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="1"/><path d="M3 8h14M3 13h14M8 3v14M13 3v14"/></svg><span>Excel</span></div>
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="4" width="16" height="11" rx="1"/><path d="M6 12V9M10 12V7M14 12v-4"/></svg><span>PowerPoint</span></div>
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="5" cy="5" r="2"/><circle cx="15" cy="5" r="2"/><circle cx="10" cy="15" r="2"/><path d="M6.6 6.6 8.6 13M13.4 6.6 11.4 13"/></svg><span>SharePoint</span></div>
+                  <div class="tool-box"><img src="/icons/word.svg" alt="" width="17" height="17" loading="lazy" decoding="async"><span>Word</span></div>
+                  <div class="tool-box"><img src="/icons/excel.svg" alt="" width="17" height="17" loading="lazy" decoding="async"><span>Excel</span></div>
+                  <div class="tool-box"><img src="/icons/powerpoint.svg" alt="" width="17" height="17" loading="lazy" decoding="async"><span>PowerPoint</span></div>
+                  <div class="tool-box"><img src="/icons/sharepoint.svg" alt="" width="17" height="17" loading="lazy" decoding="async"><span>SharePoint</span></div>
                 </div>
               </div>
               <div class="tool-group">
                 <span class="tiny">Power Platform & Cloud</span>
                 <div class="tools">
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 16V10M9.5 16V6M15 16V3M4 16h11"/></svg><span>Power BI</span></div>
+                  <div class="tool-box"><img src="/icons/power-bi.svg" alt="" width="17" height="17" loading="lazy" decoding="async"><span>Power BI</span></div>
                   <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 10a6 6 0 0 1 11-3.5M16 10a6 6 0 0 1-11 3.5"/><path d="M13 4.2 15 6.5l-2.5 1M7 15.8l-2-2.3 2.5-1"/></svg><span>Power Automate</span></div>
                   <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="6" y="2" width="8" height="16" rx="1.5"/><path d="M8 5.5h4M8 8.5h4M8 11.5h2"/></svg><span>Power Apps</span></div>
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 14.5a4 4 0 0 1 .3-8A5 5 0 0 1 16 8.3 3.4 3.4 0 0 1 15.4 14.5H6Z"/></svg><span>Azure</span></div>
+                  <div class="tool-box"><img src="/icons/azure.svg" alt="" width="17" height="17" loading="lazy" decoding="async"><span>Azure</span></div>
                 </div>
               </div>
               <div class="tool-group">
                 <span class="tiny" data-i18n="skills.g.erp">ERP & Gestão</span>
                 <div class="tools">
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><ellipse cx="10" cy="4.5" rx="6" ry="2"/><path d="M4 4.5v11a6 2 0 0 0 12 0v-11"/><path d="M4 10a6 2 0 0 0 12 0"/></svg><span>SAP</span></div>
+                  <div class="tool-box"><img src="/icons/sap.svg" alt="" width="17" height="17" loading="lazy" decoding="async"><span>SAP</span></div>
                   <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M10 3 3 6.5 10 10l7-3.5L10 3Z"/><path d="M3 10l7 3.5L17 10M3 13.5 10 17l7-3.5"/></svg><span>Sankhya</span></div>
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2.5" y="2.5" width="6" height="6"/><rect x="11.5" y="2.5" width="6" height="6"/><rect x="2.5" y="11.5" width="6" height="6"/><rect x="11.5" y="11.5" width="6" height="6"/></svg><span>TOTVS</span></div>
+                  <div class="tool-box"><img src="/icons/totvs.svg" alt="" width="17" height="17" loading="lazy" decoding="async"><span>TOTVS</span></div>
                   <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 3h14l-5 8v5l-4-2v-3L3 3Z"/></svg><span>Pipefy</span></div>
                 </div>
               </div>
               <div class="tool-group">
                 <span class="tiny" data-i18n="skills.g.design">Apresentação & Design</span>
                 <div class="tools">
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><circle cx="7.3" cy="8" r="1.1" fill="currentColor" stroke="none"/><circle cx="12.7" cy="8" r="1.1" fill="currentColor" stroke="none"/><circle cx="10" cy="13" r="1.1" fill="currentColor" stroke="none"/></svg><span>Canva</span></div>
+                  <div class="tool-box"><img src="/icons/canva.svg" alt="" width="17" height="17" loading="lazy" decoding="async"><span>Canva</span></div>
                 </div>
               </div>
             </div>
@@ -1360,8 +1385,52 @@ function showP(i){pi=(i+PROJECTS.length)%PROJECTS.length;const p=PROJECTS[pi];
 prev.onclick=()=>showP(pi-1);next.onclick=()=>showP(pi+1);showP(0);
 
 // skills
+
+/* =========================================================
+   LOGO LOOP — chips com logo real rolando em loop infinito.
+   A lista é renderizada 2x (as duas metades são iguais) e a animação anda -50%.
+   Leitor de tela lê só a lista oculta .sr-only (cada item uma vez); a faixa animada é aria-hidden.
+   ========================================================= */
+const ICON_DIR='/icons/';
+const SKILL_ICONS={
+  'Power BI':'power-bi','Excel':'excel','Azure':'azure','Three.js':'threejs','React':'react','Next.js':'nextjs',
+  'TypeScript':'typescript','Node.js':'nodejs','Python':'python','Google API':'google',
+  /* conceitos, não ferramentas: ícone genérico (Lucide) */
+  'Modelagem de dados':'lucide-database','BI':'lucide-chart-column','Rastreabilidade':'lucide-route',
+  'API REST':'lucide-braces','Webhooks':'lucide-webhook','Tempo real':'lucide-activity',
+  'IA no SDLC':'lucide-sparkles','Automação assistida':'lucide-bot','Refatoração assistida':'lucide-code',
+  'Análise de dados':'lucide-chart-line','WMS':'lucide-warehouse','Supply Chain':'lucide-truck',
+  'Agroindustrial':'lucide-sprout','Data viz':'lucide-chart-pie','Zebra ZPL':'lucide-printer','Power Platform':'lucide-layers'
+};
+/* sem logo oficial disponível: mesmo SVG genérico do painel de ferramentas */
+const SKILL_SVG={"Power Automate": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" aria-hidden=\"true\"><path d=\"M4 10a6 6 0 0 1 11-3.5M16 10a6 6 0 0 1-11 3.5\"/><path d=\"M13 4.2 15 6.5l-2.5 1M7 15.8l-2-2.3 2.5-1\"/></svg>", "Power Apps": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" aria-hidden=\"true\"><rect x=\"6\" y=\"2\" width=\"8\" height=\"16\" rx=\"1.5\"/><path d=\"M8 5.5h4M8 8.5h4M8 11.5h2\"/></svg>"};
+function chipIcon(key){
+  if(SKILL_SVG[key])return SKILL_SVG[key];
+  const f=SKILL_ICONS[key];
+  return f?`<img src="${ICON_DIR}${f}.svg" alt="" width="16" height="16" loading="lazy" decoding="async" onerror="this.remove()">`:'';
+}
+/* keys = nomes em PT (definem o ícone); labels = texto no idioma atual */
+function logoLoop(keys,labels,reverse){
+  const chip=(k,i,tag)=>`<${tag} class="logo-loop-item">${chipIcon(k)}<span>${esc(labels[i])}</span></${tag}>`;
+  if(reduceMotion.matches)return `<ul class="chips--static">${keys.map((k,i)=>chip(k,i,'li')).join('')}</ul>`;
+  const reps=Math.max(1,Math.ceil(8/keys.length));   /* lista curta → repete até ~8 itens por metade */
+  let set='';for(let r=0;r<reps;r++)set+=keys.map((k,i)=>chip(k,i,'span')).join('');
+  return `<div class="logo-loop${reverse?' logo-loop--reverse':''}">`
+    +`<ul class="sr-only">${labels.map(l=>`<li>${esc(l)}</li>`).join('')}</ul>`
+    +`<div class="logo-loop-track" aria-hidden="true"><div class="logo-loop-set">${set}</div><div class="logo-loop-set">${set}</div></div></div>`;
+}
+/* velocidade igual em todas as linhas: duração proporcional à largura de uma metade */
+function sizeLoops(){
+  document.querySelectorAll('.logo-loop').forEach(l=>{
+    const w=l.querySelector('.logo-loop-set').offsetWidth;
+    if(w)l.style.setProperty('--logo-loop-duration',(w/40).toFixed(1)+'s');
+  });
+}
+{let t;addEventListener('resize',()=>{clearTimeout(t);t=setTimeout(sizeLoops,150)})}
+document.fonts&&document.fonts.ready.then(sizeLoops);
 function renderSkills(){
-  skillList.innerHTML=SKILLS.map((s,i)=>`<div class="skill-row"><h4>${esc(tr('skill.'+i+'.t',s.t))}</h4><p>${esc(tr('skill.'+i+'.d',s.d))}</p><div class="chips">${tr('skill.'+i+'.c',s.c).map(c=>`<span class="chip">${esc(c)}</span>`).join('')}</div></div>`).join('');
+  skillList.innerHTML=SKILLS.map((s,i)=>`<div class="skill-row"><h4>${esc(tr('skill.'+i+'.t',s.t))}</h4><p>${esc(tr('skill.'+i+'.d',s.d))}</p>${logoLoop(s.c,tr('skill.'+i+'.c',s.c),i%2===1)}</div>`).join('');
+  sizeLoops();
 }
 renderSkills();
 
