@@ -638,8 +638,8 @@ html.no-intro #intro{display:none}
                 <span class="tiny">Power Platform & Cloud</span>
                 <div class="tools">
                   <div class="tool-box"><img src="/icons/power-bi.svg" alt="" width="17" height="17" loading="lazy" decoding="async"><span>Power BI</span></div>
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 10a6 6 0 0 1 11-3.5M16 10a6 6 0 0 1-11 3.5"/><path d="M13 4.2 15 6.5l-2.5 1M7 15.8l-2-2.3 2.5-1"/></svg><span>Power Automate</span></div>
-                  <div class="tool-box"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="6" y="2" width="8" height="16" rx="1.5"/><path d="M8 5.5h4M8 8.5h4M8 11.5h2"/></svg><span>Power Apps</span></div>
+                  <div class="tool-box"><img src="/icons/power-automate.svg" alt="" width="17" height="17" loading="lazy" decoding="async"><span>Power Automate</span></div>
+                  <div class="tool-box"><img src="/icons/power-apps.svg" alt="" width="17" height="17" loading="lazy" decoding="async"><span>Power Apps</span></div>
                   <div class="tool-box"><img src="/icons/azure.svg" alt="" width="17" height="17" loading="lazy" decoding="async"><span>Azure</span></div>
                 </div>
               </div>
@@ -1400,10 +1400,11 @@ const SKILL_ICONS={
   'API REST':'lucide-braces','Webhooks':'lucide-webhook','Tempo real':'lucide-activity',
   'IA no SDLC':'lucide-sparkles','Automação assistida':'lucide-bot','Refatoração assistida':'lucide-code',
   'Análise de dados':'lucide-chart-line','WMS':'lucide-warehouse','Supply Chain':'lucide-truck',
-  'Agroindustrial':'lucide-sprout','Data viz':'lucide-chart-pie','Zebra ZPL':'lucide-printer','Power Platform':'lucide-layers'
+  'Agroindustrial':'lucide-sprout','Data viz':'lucide-chart-pie','Zebra ZPL':'lucide-printer',
+  'Power Platform':'power-platform','Power Automate':'power-automate','Power Apps':'power-apps'
 };
-/* sem logo oficial disponível: mesmo SVG genérico do painel de ferramentas */
-const SKILL_SVG={"Power Automate": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" aria-hidden=\"true\"><path d=\"M4 10a6 6 0 0 1 11-3.5M16 10a6 6 0 0 1-11 3.5\"/><path d=\"M13 4.2 15 6.5l-2.5 1M7 15.8l-2-2.3 2.5-1\"/></svg>", "Power Apps": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" aria-hidden=\"true\"><rect x=\"6\" y=\"2\" width=\"8\" height=\"16\" rx=\"1.5\"/><path d=\"M8 5.5h4M8 8.5h4M8 11.5h2\"/></svg>"};
+/* ferramentas sem logo oficial disponível podem receber um SVG inline aqui */
+const SKILL_SVG={};
 function chipIcon(key){
   if(SKILL_SVG[key])return SKILL_SVG[key];
   const f=SKILL_ICONS[key];
