@@ -374,6 +374,75 @@ html.no-intro #intro{display:none}
 .chips--static{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:0}
 .tool-box img{width:17px;height:17px;flex:none;object-fit:contain}
 @media (prefers-reduced-motion:reduce){.logo-loop-track{animation:none}}
+
+/* =========================================================
+   LIVRO DE VISITAS
+   ========================================================= */
+#guestbook [hidden]{display:none!important}
+.gb-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:12px;margin-top:22px;align-items:start}
+@media (max-width:1000px){.gb-grid{grid-template-columns:minmax(0,1fr)}}
+.gb-h{font-size:22px;font-weight:800;line-height:1.15;letter-spacing:-.01em}
+.gb-help{font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:8px}
+#gbForm{display:flex;flex-direction:column;gap:14px;margin-top:18px}
+.gb-field{display:flex;flex-direction:column;gap:6px}
+.gb-label-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.gb-input{width:100%;border:1px solid var(--line);background:var(--panel-2);padding:10px 12px;font:inherit;font-size:14px;color:var(--ink);border-radius:0}
+.gb-input:hover{border-color:var(--muted)}
+.gb-input:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+textarea.gb-input{resize:vertical;min-height:120px;line-height:1.5}
+.gb-input[aria-invalid="true"]{border-color:#b42318}
+.gb-err{font-family:var(--mono);font-size:10.5px;letter-spacing:.02em;color:#b42318}
+.gb-err:empty{display:none}
+.gb-count.over{color:#b42318;font-weight:700}
+.gb-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+#gbSend{align-self:flex-start}
+#gbSend svg{width:15px;height:15px;flex:none}
+#gbSend[disabled]{opacity:.6;cursor:progress}
+.gb-turnstile{min-height:65px}
+.gb-turnstile:empty{min-height:0}
+.gb-status{font-family:var(--mono);font-size:11px;line-height:1.5}
+.gb-status:empty{display:none}
+.gb-status.ok{color:#1f6b2a}.gb-status.err{color:#b42318}
+.gb-admin{display:flex;align-items:center;gap:10px}
+.gb-link{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px;color:var(--muted)}
+.gb-link:hover{color:var(--ink)}
+.gb-stats{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line)}
+.gb-stats div{padding:12px 14px;min-width:0}
+.gb-stats div+div{border-left:1px solid var(--line)}
+.gb-stats b{display:block;font-size:20px;margin-top:4px;font-family:var(--mono)}
+.gb-list{max-height:max(380px,calc(100vh - 330px));overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:10px;
+  scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.gb-list::-webkit-scrollbar{width:6px}.gb-list::-webkit-scrollbar-thumb{background:var(--line)}
+.gb-msg{border:1px solid var(--line);background:var(--panel-2);padding:14px;border-radius:4px;flex:none}
+.gb-msg header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.gb-name{display:block;font-size:15px;font-weight:700;overflow-wrap:anywhere}
+.gb-meta{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.gb-text{font-size:13.5px;line-height:1.55;margin-top:10px;white-space:pre-wrap;overflow-wrap:anywhere}
+.gb-reply{display:flex;gap:10px;margin:12px 0 0 6px;padding:4px 0 2px 12px;border-left:2px solid var(--ink)}
+.gb-reply > svg{width:15px;height:15px;flex:none;margin-top:1px}
+.gb-reply > div{min-width:0;flex:1}
+.gb-reply .gb-meta{margin-top:0}
+.gb-reply .gb-text{margin-top:6px}
+.gb-actions{display:flex;gap:6px;flex:none}
+.gb-icon{width:30px;height:30px;border:1px solid var(--line);display:grid;place-items:center;background:var(--panel);transition:border-color .2s}
+.gb-icon:hover{border-color:var(--ink)}
+.gb-icon svg{width:15px;height:15px}
+.gb-reply-form{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.gb-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn.sm{height:34px;padding:0 12px;font-size:11px}
+.gb-empty{padding:40px 16px;text-align:center;color:var(--muted);font-size:14px;line-height:1.5}
+.gb-skel{flex:none;height:96px;border:1px solid var(--line);border-radius:4px;
+  background:linear-gradient(90deg,var(--panel-2) 0 40%,#fbfbf9 50%,var(--panel-2) 60%);background-size:300% 100%;animation:gbSkel 1.3s linear infinite}
+@keyframes gbSkel{from{background-position:100% 0}to{background-position:0 0}}
+.gb-more{padding:0 10px 10px;display:flex;justify-content:center}
+.gb-more:has([hidden]){padding:0}
+.gb-modal{position:fixed;inset:0;z-index:600;background:rgba(17,17,17,.55);display:grid;place-items:center;padding:16px}
+.gb-modal[hidden]{display:none}
+.gb-modal-card{width:min(380px,100%);padding:20px;background:var(--panel);display:flex;flex-direction:column;gap:6px}
+.gb-modal-card .gb-row{margin-top:8px}
+.gb-modal,.gb-modal *{cursor:auto}
+.gb-modal button{cursor:pointer}
+@media (prefers-reduced-motion:reduce){.gb-skel{animation:none}}
 /* ---------- Credential PDF modal (igual ao padrão real) ---------- */
 .credential-preview-card{display:flex !important;flex-direction:column;padding:0 !important}
 .cred-top-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 12px;
@@ -486,7 +555,7 @@ html.no-intro #intro{display:none}
       <li><button type="button" data-go="projetos"><span data-i18n="nav.projetos">Projetos</span><span class="br" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button></li>
       <li><button type="button" data-go="habilidades"><span data-i18n="nav.habilidades">Habilidades</span><span class="br" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button></li>
       <li><button type="button" data-go="credenciais"><span data-i18n="nav.credenciais">Credenciais</span><span class="br" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button></li>
-      <li><button type="button" data-go="contato"><span data-i18n="nav.contato">Contato</span><span class="br" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button></li>
+      <li><button type="button" data-go="guestbook"><span data-i18n="nav.guestbook">Livro de visitas</span><span class="br" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button></li><li><button type="button" data-go="contato"><span data-i18n="nav.contato">Contato</span><span class="br" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button></li>
     </ul>
   </nav>
 
@@ -682,6 +751,48 @@ html.no-intro #intro{display:none}
       </div>
     </section>
 
+    <!-- LIVRO DE VISITAS -->
+    <section class="panel" id="guestbook" data-label="Livro de visitas" tabindex="-1">
+      <p class="eyebrow" data-i18n="gb.eyebrow">Livro de visitas / Mensagens</p>
+      <h2 class="h-lg" style="margin-top:10px;max-width:900px" data-i18n="gb.title">Deixe uma mensagem, crítica ou sugestão.</h2>
+      <div class="gb-grid">
+        <div class="card">
+          <div class="card-h plain"><span class="t" data-i18n="gb.form.tag">Notas públicas</span>
+            <span class="gb-admin" id="gbAdmin" hidden><span class="tiny" data-i18n="gb.admin.on">Modo admin</span><button type="button" class="gb-link" id="gbLogout" data-i18n="gb.admin.off">Sair</button></span></div>
+          <div class="pad">
+            <h3 class="gb-h" data-i18n="gb.form.title">Escreva algo útil, perspicaz ou gentil.</h3>
+            <p class="gb-help" data-i18n="gb.form.help">As mensagens aparecem aqui após o envio. Posso responder pelo meu próprio navegador depois de desbloquear o modo administrador.</p>
+            <form id="gbForm" novalidate>
+              <div class="gb-field">
+                <label for="gbName" class="tiny" data-i18n="gb.form.name">Nome</label>
+                <input class="gb-input" id="gbName" name="name" autocomplete="name" required aria-describedby="gbNameErr">
+                <p class="gb-err" id="gbNameErr"></p>
+              </div>
+              <div class="gb-field">
+                <div class="gb-label-row"><label for="gbMsg" class="tiny" data-i18n="gb.form.message">Mensagem</label><span class="tiny gb-count" id="gbCount">0/500</span></div>
+                <textarea class="gb-input" id="gbMsg" name="message" rows="5" required aria-describedby="gbMsgErr gbCount"></textarea>
+                <p class="gb-err" id="gbMsgErr"></p>
+              </div>
+              <div class="gb-hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+              <button class="btn dark" type="submit" id="gbSend"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg><span data-i18n="gb.form.send">Enviar mensagem</span></button>
+              <div class="gb-turnstile" id="gbTurnstile"></div>
+              <p class="gb-status" id="gbStatus" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+        </div>
+        <div class="card gb-forum">
+          <div class="gb-stats">
+            <div><span class="tiny" data-i18n="gb.stats.forum">Fórum de mensagens</span><b id="gbTotalMsgs">—</b></div>
+            <div><span class="tiny" data-i18n="gb.stats.replies">Respostas</span><b id="gbTotalReplies">—</b></div>
+          </div>
+          <div class="gb-list" id="gbList" aria-busy="true" aria-live="polite">
+            <div class="gb-skel"></div><div class="gb-skel"></div><div class="gb-skel"></div>
+          </div>
+          <div class="gb-more"><button type="button" class="btn light sm" id="gbMore" hidden data-i18n="gb.more">Carregar mais</button></div>
+        </div>
+      </div>
+    </section>
+
     <!-- CONTATO -->
     <section class="panel" id="contato" tabindex="-1" data-label="Contato">
       <div>
@@ -702,6 +813,21 @@ html.no-intro #intro{display:none}
   <footer class="footer"><span data-i18n="footer.1">Desenvolvedor Full-stack</span><span data-i18n="footer.2">Agrotech / Automação / IA</span><span>Fernando Gregório</span></footer>
 </div>
 
+<div class="gb-modal" id="gbModal" hidden>
+  <form class="card gb-modal-card" id="gbUnlock" role="dialog" aria-modal="true" aria-labelledby="gbModalTitle">
+    <p class="tiny" data-i18n="gb.admin.tag">Livro de visitas</p>
+    <h3 id="gbModalTitle" class="gb-h" data-i18n="gb.admin.title">Desbloquear modo administrador</h3>
+    <div class="gb-field" style="margin-top:14px">
+      <label for="gbPass" class="tiny" data-i18n="gb.admin.pass">Senha</label>
+      <input class="gb-input" id="gbPass" type="password" autocomplete="current-password" required>
+    </div>
+    <p class="gb-status" id="gbModalStatus" role="status" aria-live="polite"></p>
+    <div class="gb-row">
+      <button class="btn dark sm" type="submit" data-i18n="gb.admin.unlock">Desbloquear</button>
+      <button class="btn light sm" type="button" id="gbModalCancel" data-i18n="gb.cancel">Cancelar</button>
+    </div>
+  </form>
+</div>
 <div id="wipe" aria-hidden="true"><span id="wipeLabel"></span></div>
 <div id="cursor" aria-hidden="true"><span class="br"><i></i><i></i><i></i><i></i></span></div>
 
@@ -925,7 +1051,53 @@ var T={
 "m.dlPdf": "Download PDF ↓",
 "m.dlImg": "Download image ↓",
 "m.dlBusy": "Preparing…",
-"m.dlFail": "Download failed — try again"
+"m.dlFail": "Download failed — try again",
+"nav.guestbook": "Guestbook",
+"gb.eyebrow": "Guestbook / Messages",
+"gb.title": "Leave a message, critique or suggestion.",
+"gb.form.tag": "Public notes",
+"gb.form.title": "Write something useful, insightful or kind.",
+"gb.form.help": "Messages show up here once sent. I can reply from my own browser after unlocking admin mode.",
+"gb.form.name": "Name",
+"gb.form.message": "Message",
+"gb.form.send": "Send message",
+"gb.form.sending": "Sending…",
+"gb.stats.forum": "Message board",
+"gb.stats.replies": "Replies",
+"gb.more": "Load more",
+"gb.n.one": "{n} message",
+"gb.n.many": "{n} messages",
+"gb.empty": "No messages yet. Be the first!",
+"gb.loadErr": "Could not load the messages.",
+"gb.retry": "Try again",
+"gb.replied": "Fernando replied",
+"gb.reply": "Reply",
+"gb.editReply": "Edit reply",
+"gb.delReply": "Delete reply",
+"gb.delMsg": "Delete message",
+"gb.save": "Save reply",
+"gb.cancel": "Cancel",
+"gb.confirmDelMsg": "Delete this message? It will be hidden from the board.",
+"gb.confirmDelReply": "Delete this reply?",
+"gb.replyLabel": "Reply to {name}",
+"gb.err.nameLen": "Use 2 to 40 characters.",
+"gb.err.msgLen": "Use 3 to 500 characters.",
+"gb.err.links": "Links are not allowed.",
+"gb.err.blocked": "Please rephrase without offensive words.",
+"gb.err.captcha": "Complete the anti-spam check below.",
+"gb.err.captchaFail": "Anti-spam check failed. Please try again.",
+"gb.err.rate": "Please wait {s}s before sending another message.",
+"gb.err.generic": "Something went wrong. Please try again in a moment.",
+"gb.err.noCaptcha": "Anti-spam is not configured yet — sending is temporarily unavailable.",
+"gb.ok": "Message sent — thank you!",
+"gb.admin.on": "Admin mode",
+"gb.admin.off": "Exit",
+"gb.admin.tag": "Guestbook",
+"gb.admin.title": "Unlock admin mode",
+"gb.admin.pass": "Password",
+"gb.admin.unlock": "Unlock",
+"gb.admin.wrong": "Wrong password.",
+"gb.admin.expired": "Admin session expired. Unlock again."
 },
 "es": {
 "hero.eyebrow": "Portafolio 2026 / Supply Chain · Agroindustria · Datos · IA",
@@ -1139,7 +1311,53 @@ var T={
 "m.dlPdf": "Descargar PDF ↓",
 "m.dlImg": "Descargar imagen ↓",
 "m.dlBusy": "Preparando…",
-"m.dlFail": "Falló la descarga — inténtalo de nuevo"
+"m.dlFail": "Falló la descarga — inténtalo de nuevo",
+"nav.guestbook": "Libro de visitas",
+"gb.eyebrow": "Libro de visitas / Mensajes",
+"gb.title": "Deja un mensaje, crítica o sugerencia.",
+"gb.form.tag": "Notas públicas",
+"gb.form.title": "Escribe algo útil, perspicaz o amable.",
+"gb.form.help": "Los mensajes aparecen aquí después del envío. Puedo responder desde mi propio navegador tras desbloquear el modo administrador.",
+"gb.form.name": "Nombre",
+"gb.form.message": "Mensaje",
+"gb.form.send": "Enviar mensaje",
+"gb.form.sending": "Enviando…",
+"gb.stats.forum": "Foro de mensajes",
+"gb.stats.replies": "Respuestas",
+"gb.more": "Cargar más",
+"gb.n.one": "{n} mensaje",
+"gb.n.many": "{n} mensajes",
+"gb.empty": "Aún no hay mensajes. ¡Sé el primero!",
+"gb.loadErr": "No se pudieron cargar los mensajes.",
+"gb.retry": "Intentar de nuevo",
+"gb.replied": "Fernando respondió",
+"gb.reply": "Responder",
+"gb.editReply": "Editar respuesta",
+"gb.delReply": "Borrar respuesta",
+"gb.delMsg": "Eliminar mensaje",
+"gb.save": "Guardar respuesta",
+"gb.cancel": "Cancelar",
+"gb.confirmDelMsg": "¿Eliminar este mensaje? Se ocultará del foro.",
+"gb.confirmDelReply": "¿Borrar esta respuesta?",
+"gb.replyLabel": "Respuesta a {name}",
+"gb.err.nameLen": "Usa de 2 a 40 caracteres.",
+"gb.err.msgLen": "Usa de 3 a 500 caracteres.",
+"gb.err.links": "No se permiten enlaces.",
+"gb.err.blocked": "Reformula sin palabras ofensivas.",
+"gb.err.captcha": "Completa la verificación anti-spam de abajo.",
+"gb.err.captchaFail": "La verificación anti-spam falló. Inténtalo de nuevo.",
+"gb.err.rate": "Espera {s}s antes de enviar otro mensaje.",
+"gb.err.generic": "Algo salió mal. Inténtalo de nuevo en un momento.",
+"gb.err.noCaptcha": "El anti-spam aún no está configurado: el envío no está disponible por ahora.",
+"gb.ok": "¡Mensaje enviado, gracias!",
+"gb.admin.on": "Modo admin",
+"gb.admin.off": "Salir",
+"gb.admin.tag": "Libro de visitas",
+"gb.admin.title": "Desbloquear modo administrador",
+"gb.admin.pass": "Contraseña",
+"gb.admin.unlock": "Desbloquear",
+"gb.admin.wrong": "Contraseña incorrecta.",
+"gb.admin.expired": "La sesión de administrador expiró. Desbloquea de nuevo."
 }
 };
 var LANGS=['pt','en','es'],cur=LANGS.indexOf(window.__LANG)>=0?window.__LANG:'pt',hooks=[];
@@ -1253,7 +1471,7 @@ const panels=[...document.querySelectorAll('.panel')];
 const tr=(k,pt,v)=>window.I18N?I18N.tr(k,pt,v):pt;
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
 let current='home',busy=false;
-function go(id,focusPanel){
+function go(id,focusPanel,instant){
   if(id===current||busy) return;
   const swap=()=>{
     panels.forEach(p=>p.classList.toggle('show',p.id===id));
@@ -1263,8 +1481,13 @@ function go(id,focusPanel){
     });
     current=id;
     if(focusPanel)document.getElementById(id).focus({preventScroll:true});
+    if(/^https?:$/.test(location.protocol)){
+      const path=id==='guestbook'?'/guestbook':'/';
+      if(location.pathname!==path)history.replaceState(null,'',path+location.search+location.hash);
+    }
+    if(id==='guestbook'&&window.gbOpen)window.gbOpen();
   };
-  if(reduceMotion.matches){swap();return}
+  if(reduceMotion.matches||instant){swap();return}
   busy=true;
   const wipe=document.getElementById('wipe');
   document.getElementById('wipeLabel').textContent=tr('nav.'+id,document.getElementById(id).dataset.label);
@@ -1646,6 +1869,283 @@ document.getElementById('certs').addEventListener('click', (e) => {
 
 /* re-renderiza o conteúdo gerado por script quando o idioma muda */
 if(window.I18N)I18N.on(()=>{renderPlist();showP(pi);renderSkills();renderCerts()});
+</script>
+<script>
+/* =========================================================
+   LIVRO DE VISITAS (cliente)
+   Usa tr() e esc() do script principal. Tudo que vem do servidor é escapado.
+   ========================================================= */
+(() => {
+  const API = '/api/guestbook';
+  const MAX = 500;
+  const $ = id => document.getElementById(id);
+  const list = $('gbList'), form = $('gbForm'), nameEl = $('gbName'), msgEl = $('gbMsg'), countEl = $('gbCount');
+  const sendBtn = $('gbSend'), status = $('gbStatus'), moreBtn = $('gbMore');
+  const modal = $('gbModal'), passEl = $('gbPass'), modalStatus = $('gbModalStatus');
+  const st = { items: [], next: null, totals: { messages: 0, replies: 0 }, admin: false, siteKey: null,
+               opened: false, loading: false, error: false, token: null, widget: null, editing: null };
+
+  const SVG = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+  const ICON = {
+    comment: SVG('<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>'),
+    replied: SVG('<path d="M20 20v-7a4 4 0 0 0-4-4H4"/><path d="M9 14 4 9l5-5"/>'),
+    trash: SVG('<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>'),
+  };
+  const len = s => [...s].length;
+  const lang = () => (window.I18N ? I18N.lang : 'pt');
+  const locale = () => ({ pt: 'pt-BR', en: 'en-US', es: 'es-ES' }[lang()] || 'pt-BR');
+
+  function fmtDate(iso) {
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return '';
+    const date = new Intl.DateTimeFormat(locale(), { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+    const time = new Intl.DateTimeFormat(locale(), { hour: '2-digit', minute: '2-digit' }).format(d);
+    return `${date}, ${time}`;
+  }
+  const plural = n => tr(n === 1 ? 'gb.n.one' : 'gb.n.many', n === 1 ? '{n} mensagem' : '{n} mensagens', { n: n.toLocaleString(locale()) });
+
+  /* ---------------- render ---------------- */
+  function renderStats() {
+    $('gbTotalMsgs').textContent = st.opened && !st.error ? plural(st.totals.messages) : '—';
+    $('gbTotalReplies').textContent = st.opened && !st.error ? st.totals.replies.toLocaleString(locale()) : '—';
+    $('gbAdmin').hidden = !st.admin;
+  }
+  function cardHTML(m) {
+    const actions = st.admin ? `<div class="gb-actions">
+        <button type="button" class="gb-icon" data-act="reply" aria-label="${esc(m.reply ? tr('gb.editReply', 'Editar resposta') : tr('gb.reply', 'Responder'))}" title="${esc(m.reply ? tr('gb.editReply', 'Editar resposta') : tr('gb.reply', 'Responder'))}">${ICON.comment}</button>
+        <button type="button" class="gb-icon" data-act="delete" aria-label="${esc(tr('gb.delMsg', 'Excluir mensagem'))}" title="${esc(tr('gb.delMsg', 'Excluir mensagem'))}">${ICON.trash}</button>
+      </div>` : '';
+    const reply = m.reply ? `<div class="gb-reply">${ICON.replied}<div>
+        <span class="gb-meta">${esc(tr('gb.replied', 'Fernando respondeu'))} / <time datetime="${esc(m.replied_at || '')}">${esc(fmtDate(m.replied_at))}</time></span>
+        <p class="gb-text">${esc(m.reply)}</p>
+        ${st.admin ? `<div class="gb-row" style="margin-top:6px"><button type="button" class="gb-link" data-act="reply">${esc(tr('gb.editReply', 'Editar resposta'))}</button><button type="button" class="gb-link" data-act="del-reply">${esc(tr('gb.delReply', 'Excluir resposta'))}</button></div>` : ''}
+      </div></div>` : '';
+    const editing = st.admin && st.editing === m.id ? `<div class="gb-reply-form">
+        <label class="sr-only" for="gbReply-${m.id}">${esc(tr('gb.replyLabel', 'Resposta para {name}', { name: m.name }))}</label>
+        <textarea class="gb-input" id="gbReply-${m.id}" rows="3" maxlength="1000">${esc(m.reply || '')}</textarea>
+        <div class="gb-row"><button type="button" class="btn dark sm" data-act="save-reply">${esc(tr('gb.save', 'Salvar resposta'))}</button>
+        <button type="button" class="btn light sm" data-act="cancel-reply">${esc(tr('gb.cancel', 'Cancelar'))}</button></div>
+      </div>` : '';
+    return `<article class="gb-msg" data-id="${esc(m.id)}"><header><div>
+        <b class="gb-name">${esc(m.name)}</b>
+        <time class="gb-meta" datetime="${esc(m.created_at)}">${esc(fmtDate(m.created_at))}</time>
+      </div>${actions}</header>
+      <p class="gb-text">${esc(m.message)}</p>${reply}${editing}</article>`;
+  }
+  function renderList() {
+    list.setAttribute('aria-busy', String(st.loading && !st.items.length));
+    if (st.error && !st.items.length) {
+      list.innerHTML = `<div class="gb-empty">${esc(tr('gb.loadErr', 'Não foi possível carregar as mensagens.'))}<br><br><button type="button" class="btn light sm" data-act="retry">${esc(tr('gb.retry', 'Tentar de novo'))}</button></div>`;
+    } else if (st.loading && !st.items.length) {
+      list.innerHTML = '<div class="gb-skel"></div><div class="gb-skel"></div><div class="gb-skel"></div>';
+    } else if (!st.items.length) {
+      list.innerHTML = `<p class="gb-empty">${esc(tr('gb.empty', 'Nenhuma mensagem ainda. Seja o primeiro!'))}</p>`;
+    } else {
+      list.innerHTML = st.items.map(cardHTML).join('');
+    }
+    moreBtn.hidden = !st.next;
+    moreBtn.disabled = st.loading;
+    renderStats();
+  }
+  function setStatus(el, msg, kind) { el.textContent = msg || ''; el.className = 'gb-status' + (kind ? ' ' + kind : ''); }
+
+  /* ---------------- API ---------------- */
+  async function api(path, opts = {}) {
+    const r = await fetch(API + path, {
+      method: opts.method || 'GET', credentials: 'same-origin',
+      headers: opts.body !== undefined ? { 'Content-Type': 'application/json' } : undefined,
+      body: opts.body !== undefined ? JSON.stringify(opts.body) : undefined,
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw Object.assign(new Error(data.error || 'http_' + r.status), { status: r.status, data });
+    return data;
+  }
+
+  async function load(more) {
+    if (st.loading) return;
+    st.loading = true; if (!more) st.error = false; renderList();
+    try {
+      const data = await api(more && st.next ? '?cursor=' + encodeURIComponent(st.next) : '');
+      st.items = more ? st.items.concat(data.items.filter(n => !st.items.some(o => o.id === n.id))) : data.items;
+      st.next = data.nextCursor;
+      if (data.totals) st.totals = data.totals;
+      st.admin = !!data.admin;
+      if (!st.siteKey && data.siteKey) { st.siteKey = data.siteKey; initTurnstile(); }
+      if (!data.siteKey && !more) setStatus(status, tr('gb.err.noCaptcha', 'O anti-spam ainda não foi configurado: o envio está indisponível por enquanto.'), 'err');
+    } catch (e) {
+      if (!more) st.error = true;
+    } finally {
+      st.loading = false; renderList();
+    }
+  }
+
+  /* ---------------- Turnstile ---------------- */
+  function initTurnstile() {
+    const render = () => {
+      if (st.widget !== null || !window.turnstile) return;
+      st.widget = turnstile.render('#gbTurnstile', {
+        sitekey: st.siteKey, theme: 'light', language: lang() === 'pt' ? 'pt-br' : lang(), size: 'flexible',
+        callback: t => { st.token = t; if (status.classList.contains('err')) setStatus(status, ''); },
+        'expired-callback': () => { st.token = null; },
+        'error-callback': () => { st.token = null; },
+      });
+    };
+    if (window.turnstile) return render();
+    window.gbTurnstileReady = render;
+    const sc = document.createElement('script');
+    sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=gbTurnstileReady';
+    sc.async = true; sc.defer = true;
+    document.head.appendChild(sc);
+  }
+  const resetTurnstile = () => { st.token = null; if (window.turnstile && st.widget !== null) turnstile.reset(st.widget); };
+
+  /* ---------------- formulário ---------------- */
+  function updateCount() {
+    const n = len(msgEl.value.trim());
+    countEl.textContent = `${n}/${MAX}`;
+    countEl.classList.toggle('over', n > MAX);
+  }
+  msgEl.addEventListener('input', updateCount);
+  function fieldError(input, errEl, msg) {
+    errEl.textContent = msg || '';
+    if (msg) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid');
+  }
+  const errText = code => ({
+    length: null, links: tr('gb.err.links', 'Links não são permitidos.'), blocked: tr('gb.err.blocked', 'Reescreva sem palavras ofensivas.'),
+  }[code]);
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const name = nameEl.value.trim().replace(/\s+/g, ' '), message = msgEl.value.trim();
+    const nameErr = len(name) < 2 || len(name) > 40 ? tr('gb.err.nameLen', 'Use de 2 a 40 caracteres.') : '';
+    const msgErr = len(message) < 3 || len(message) > MAX ? tr('gb.err.msgLen', 'Use de 3 a 500 caracteres.') : '';
+    fieldError(nameEl, $('gbNameErr'), nameErr);
+    fieldError(msgEl, $('gbMsgErr'), msgErr);
+    if (nameErr || msgErr) { (nameErr ? nameEl : msgEl).focus(); return; }
+    if (!st.siteKey) return setStatus(status, tr('gb.err.noCaptcha', 'O anti-spam ainda não foi configurado: o envio está indisponível por enquanto.'), 'err');
+    if (!st.token) return setStatus(status, tr('gb.err.captcha', 'Conclua a verificação anti-spam abaixo.'), 'err');
+
+    const label = sendBtn.querySelector('[data-i18n]');
+    sendBtn.disabled = true; label.textContent = tr('gb.form.sending', 'Enviando…'); setStatus(status, '');
+    try {
+      const { item } = await api('', { method: 'POST', body: { name, message, token: st.token, website: form.website.value } });
+      st.items.unshift(item); st.totals.messages++;
+      form.reset(); updateCount(); renderList(); list.scrollTop = 0;
+      setStatus(status, tr('gb.ok', 'Mensagem enviada — obrigado!'), 'ok');
+    } catch (err) {
+      const d = err.data || {};
+      if (d.error === 'validation' && d.fields) {
+        if (d.fields.name) fieldError(nameEl, $('gbNameErr'), errText(d.fields.name) || tr('gb.err.nameLen', 'Use de 2 a 40 caracteres.'));
+        if (d.fields.message) fieldError(msgEl, $('gbMsgErr'), errText(d.fields.message) || tr('gb.err.msgLen', 'Use de 3 a 500 caracteres.'));
+      } else if (d.error === 'rate_limited') setStatus(status, tr('gb.err.rate', 'Aguarde {s}s para enviar outra mensagem.', { s: d.retryAfter || 60 }), 'err');
+      else if (d.error === 'captcha_required' || d.error === 'captcha_failed') setStatus(status, tr('gb.err.captchaFail', 'A verificação anti-spam falhou. Tente de novo.'), 'err');
+      else setStatus(status, tr('gb.err.generic', 'Algo deu errado. Tente de novo em instantes.'), 'err');
+    } finally {
+      sendBtn.disabled = false; label.textContent = tr('gb.form.send', 'Enviar mensagem');
+      resetTurnstile();
+    }
+  });
+  [nameEl, msgEl].forEach(el => el.addEventListener('input', () => el.getAttribute('aria-invalid') && fieldError(el, $(el === nameEl ? 'gbNameErr' : 'gbMsgErr'), '')));
+
+  /* ---------------- ações (admin) ---------------- */
+  function adminLost(err) {
+    if (err.status !== 401) return false;
+    st.admin = false; st.editing = null; renderList();
+    setStatus(status, tr('gb.admin.expired', 'A sessão de admin expirou. Desbloqueie de novo.'), 'err');
+    return true;
+  }
+  list.addEventListener('click', async e => {
+    const b = e.target.closest('[data-act]'); if (!b) return;
+    const act = b.dataset.act;
+    if (act === 'retry') return load(false);
+    const card = b.closest('.gb-msg'); if (!card) return;
+    const id = card.dataset.id, m = st.items.find(x => x.id === id); if (!m) return;
+    try {
+      if (act === 'reply') {
+        st.editing = st.editing === id ? null : id; renderList();
+        const ta = $('gbReply-' + id); if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+      } else if (act === 'cancel-reply') {
+        st.editing = null; renderList();
+      } else if (act === 'save-reply') {
+        const text = $('gbReply-' + id).value.trim(); if (!text) return;
+        b.disabled = true;
+        const { item } = await api(`/${id}/reply`, { method: 'POST', body: { reply: text } });
+        if (!m.reply) st.totals.replies++;
+        Object.assign(m, item); st.editing = null; renderList();
+      } else if (act === 'del-reply') {
+        if (!confirm(tr('gb.confirmDelReply', 'Excluir esta resposta?'))) return;
+        const { item } = await api(`/${id}/reply`, { method: 'DELETE', body: {} });
+        if (m.reply) st.totals.replies--;
+        Object.assign(m, item); renderList();
+      } else if (act === 'delete') {
+        if (!confirm(tr('gb.confirmDelMsg', 'Excluir esta mensagem? Ela deixa de aparecer no fórum.'))) return;
+        await api(`/${id}`, { method: 'DELETE', body: {} });
+        st.items = st.items.filter(x => x.id !== id);
+        st.totals.messages--; if (m.reply) st.totals.replies--;
+        renderList();
+      }
+    } catch (err) {
+      b.disabled = false;
+      if (!adminLost(err)) setStatus(status, tr('gb.err.generic', 'Algo deu errado. Tente de novo em instantes.'), 'err');
+    }
+  });
+  moreBtn.addEventListener('click', () => load(true));
+
+  /* ---------------- desbloqueio do admin ---------------- */
+  let lastFocus = null;
+  function openModal() {
+    if (st.admin) return;
+    lastFocus = document.activeElement; modal.hidden = false; setStatus(modalStatus, ''); passEl.value = '';
+    passEl.focus();
+  }
+  function closeModal() { modal.hidden = true; if (lastFocus) lastFocus.focus(); }
+  $('gbModalCancel').addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  modal.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Tab') { // mantém o foco dentro do modal
+      const f = [...modal.querySelectorAll('input,button')]; const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+  $('gbUnlock').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = e.submitter || $('gbUnlock').querySelector('[type=submit]'); btn.disabled = true;
+    try {
+      await api('/admin/unlock', { method: 'POST', body: { password: passEl.value } });
+      st.admin = true; closeModal(); renderList();
+    } catch (err) {
+      setStatus(modalStatus, err.status === 401 ? tr('gb.admin.wrong', 'Senha incorreta.') : tr('gb.err.generic', 'Algo deu errado. Tente de novo em instantes.'), 'err');
+      passEl.select();
+    } finally { btn.disabled = false; }
+  });
+  $('gbLogout').addEventListener('click', async () => {
+    try { await api('/admin/unlock', { method: 'DELETE', body: {} }); } catch (e) {}
+    st.admin = false; st.editing = null; renderList();
+  });
+  addEventListener('keydown', e => {
+    if (e.ctrlKey && e.shiftKey && !e.altKey && e.key.toLowerCase() === 'a') {
+      e.preventDefault(); go('guestbook'); openModal();
+    }
+  });
+
+  /* ---------------- abertura do painel ---------------- */
+  window.gbOpen = () => { if (!st.opened) { st.opened = true; load(false); } };
+  if (window.I18N) I18N.on(() => { if (st.opened) renderList(); });
+
+  const params = new URLSearchParams(location.search);
+  if (location.pathname.replace(/\/+$/, '') === '/guestbook' || params.get('admin') === '1') {
+    go('guestbook', false, true);
+    if (params.get('admin') === '1') {
+      params.delete('admin');
+      const q = params.toString();
+      history.replaceState(null, '', location.pathname + (q ? '?' + q : '') + location.hash);
+      openModal();
+    }
+  }
+})();
+
 </script>
 </body>
 </html>

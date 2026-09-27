@@ -23,3 +23,11 @@ Aparece uma vez por aba (`sessionStorage` → `intro-done`), pode ser pulada com
 
 ## Deploy
 Vercel, conectado ao GitHub (push na `main` publica automaticamente).
+
+## Livro de visitas (/guestbook)
+- Front-end: painel "Livro de visitas" no `index.html`; `/guestbook` abre direto nele (`vercel.json`).
+- API (Funções Serverless do Vercel, sem dependências): `api/guestbook/*`, helpers em `api/_lib/guestbook.js`.
+- Banco: Supabase, tabela `guestbook_messages` (`supabase/guestbook.sql`), com RLS.
+- Anti-spam: Cloudflare Turnstile + campo invisível + 1 mensagem por minuto por IP + filtro de links/palavrões.
+- Modo admin: `?admin=1` na URL ou `Ctrl+Shift+A`; senha em `ADMIN_SECRET`. Excluir apenas oculta (`is_hidden = true`).
+- Variáveis de ambiente: veja `.env.example`. Depois de alterar uma variável no Vercel, é preciso publicar de novo.
