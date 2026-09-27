@@ -7,7 +7,7 @@ const COOKIE = 'gb_admin';
 const COOKIE_MAX_AGE = 7 * 24 * 60 * 60; // 7 dias
 
 function env(name) {
-  const v = process.env[name];
+  const v = (process.env[name] || '').trim();   // tolera quebra de linha colada junto no painel do Vercel
   if (!v) throw Object.assign(new Error(`Variável de ambiente ausente: ${name}`), { status: 500, expose: false });
   return v;
 }

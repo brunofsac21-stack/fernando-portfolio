@@ -382,7 +382,9 @@ html.no-intro #intro{display:none}
 .gb-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:12px;margin-top:22px;align-items:start}
 @media (max-width:1000px){.gb-grid{grid-template-columns:minmax(0,1fr)}}
 .gb-h{font-size:22px;font-weight:800;line-height:1.15;letter-spacing:-.01em}
-.gb-help{font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:8px}
+.gb-help{font-size:13.5px;color:var(--muted);line-height:1.6;margin-top:10px}
+.gb-help a{color:var(--ink);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.gb-input::placeholder{color:#8a8a86;opacity:1}
 #gbForm{display:flex;flex-direction:column;gap:14px;margin-top:18px}
 .gb-field{display:flex;flex-direction:column;gap:6px}
 .gb-label-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
@@ -753,15 +755,15 @@ textarea.gb-input{resize:vertical;min-height:120px;line-height:1.5}
 
     <!-- LIVRO DE VISITAS -->
     <section class="panel" id="guestbook" data-label="Livro de visitas" tabindex="-1">
-      <p class="eyebrow" data-i18n="gb.eyebrow">Livro de visitas / Mensagens</p>
-      <h2 class="h-lg" style="margin-top:10px;max-width:900px" data-i18n="gb.title">Deixe uma mensagem, crítica ou sugestão.</h2>
+      <p class="eyebrow" data-i18n="gb.eyebrow">Livro de visitas / Recados</p>
+      <h2 class="h-lg" style="margin-top:10px;max-width:900px" data-i18n="gb.title">Que bom ter você por aqui.</h2>
       <div class="gb-grid">
         <div class="card">
-          <div class="card-h plain"><span class="t" data-i18n="gb.form.tag">Notas públicas</span>
+          <div class="card-h plain"><span class="t" data-i18n="gb.form.tag">Deixe sua marca</span>
             <span class="gb-admin" id="gbAdmin" hidden><span class="tiny" data-i18n="gb.admin.on">Modo admin</span><button type="button" class="gb-link" id="gbLogout" data-i18n="gb.admin.off">Sair</button></span></div>
           <div class="pad">
-            <h3 class="gb-h" data-i18n="gb.form.title">Escreva algo útil, perspicaz ou gentil.</h3>
-            <p class="gb-help" data-i18n="gb.form.help">As mensagens aparecem aqui após o envio. Posso responder pelo meu próprio navegador depois de desbloquear o modo administrador.</p>
+            <h3 class="gb-h" data-i18n="gb.form.title">Obrigado pela visita!</h3>
+            <p class="gb-help" data-i18n-html="gb.form.help">Espero que tenha gostado dos meus trabalhos. Deixe um recado para marcar sua passagem por aqui. Se quiser conversar sobre algum projeto ou tirar dúvidas, fale comigo pelo <a href="/" data-go="contato">Contato</a>.</p>
             <form id="gbForm" novalidate>
               <div class="gb-field">
                 <label for="gbName" class="tiny" data-i18n="gb.form.name">Nome</label>
@@ -769,12 +771,12 @@ textarea.gb-input{resize:vertical;min-height:120px;line-height:1.5}
                 <p class="gb-err" id="gbNameErr"></p>
               </div>
               <div class="gb-field">
-                <div class="gb-label-row"><label for="gbMsg" class="tiny" data-i18n="gb.form.message">Mensagem</label><span class="tiny gb-count" id="gbCount">0/500</span></div>
+                <div class="gb-label-row"><label for="gbMsg" class="tiny" data-i18n="gb.form.message">Recado</label><span class="tiny gb-count" id="gbCount">0/500</span></div>
                 <textarea class="gb-input" id="gbMsg" name="message" rows="5" required aria-describedby="gbMsgErr gbCount"></textarea>
                 <p class="gb-err" id="gbMsgErr"></p>
               </div>
               <div class="gb-hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
-              <button class="btn dark" type="submit" id="gbSend"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg><span data-i18n="gb.form.send">Enviar mensagem</span></button>
+              <button class="btn dark" type="submit" id="gbSend"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg><span data-i18n="gb.form.send">Deixar recado</span></button>
               <div class="gb-turnstile" id="gbTurnstile"></div>
               <p class="gb-status" id="gbStatus" role="status" aria-live="polite"></p>
             </form>
@@ -782,7 +784,7 @@ textarea.gb-input{resize:vertical;min-height:120px;line-height:1.5}
         </div>
         <div class="card gb-forum">
           <div class="gb-stats">
-            <div><span class="tiny" data-i18n="gb.stats.forum">Fórum de mensagens</span><b id="gbTotalMsgs">—</b></div>
+            <div><span class="tiny" data-i18n="gb.stats.forum">Recados</span><b id="gbTotalMsgs">—</b></div>
             <div><span class="tiny" data-i18n="gb.stats.replies">Respostas</span><b id="gbTotalReplies">—</b></div>
           </div>
           <div class="gb-list" id="gbList" aria-busy="true" aria-live="polite">
@@ -1052,23 +1054,25 @@ var T={
 "m.dlImg": "Download image ↓",
 "m.dlBusy": "Preparing…",
 "m.dlFail": "Download failed — try again",
+"gb.ph.msg": "A hello, your impressions of the portfolio, a suggestion…",
+"gb.ph.name": "What should I call you?",
+"gb.form.help": "I hope you enjoyed my work. Leave a note to mark your visit. If you would like to talk about a project or have any questions, reach me through <a href=\"/\" data-go=\"contato\">Contact</a>.",
 "nav.guestbook": "Guestbook",
-"gb.eyebrow": "Guestbook / Messages",
-"gb.title": "Leave a message, critique or suggestion.",
-"gb.form.tag": "Public notes",
-"gb.form.title": "Write something useful, insightful or kind.",
-"gb.form.help": "Messages show up here once sent. I can reply from my own browser after unlocking admin mode.",
+"gb.eyebrow": "Guestbook / Notes",
+"gb.title": "So glad you stopped by.",
+"gb.form.tag": "Leave your mark",
+"gb.form.title": "Thanks for visiting!",
 "gb.form.name": "Name",
-"gb.form.message": "Message",
-"gb.form.send": "Send message",
+"gb.form.message": "Your note",
+"gb.form.send": "Leave a note",
 "gb.form.sending": "Sending…",
-"gb.stats.forum": "Message board",
+"gb.stats.forum": "Notes",
 "gb.stats.replies": "Replies",
 "gb.more": "Load more",
-"gb.n.one": "{n} message",
-"gb.n.many": "{n} messages",
-"gb.empty": "No messages yet. Be the first!",
-"gb.loadErr": "Could not load the messages.",
+"gb.n.one": "{n} note",
+"gb.n.many": "{n} notes",
+"gb.empty": "No notes here yet. How about leaving the first one?",
+"gb.loadErr": "Could not load the notes.",
 "gb.retry": "Try again",
 "gb.replied": "Fernando replied",
 "gb.reply": "Reply",
@@ -1086,10 +1090,10 @@ var T={
 "gb.err.blocked": "Please rephrase without offensive words.",
 "gb.err.captcha": "Complete the anti-spam check below.",
 "gb.err.captchaFail": "Anti-spam check failed. Please try again.",
-"gb.err.rate": "Please wait {s}s before sending another message.",
+"gb.err.rate": "Please wait {s}s before leaving another note.",
 "gb.err.generic": "Something went wrong. Please try again in a moment.",
 "gb.err.noCaptcha": "Anti-spam is not configured yet — sending is temporarily unavailable.",
-"gb.ok": "Message sent — thank you!",
+"gb.ok": "Note received! Thanks for visiting 🙌",
 "gb.admin.on": "Admin mode",
 "gb.admin.off": "Exit",
 "gb.admin.tag": "Guestbook",
@@ -1312,22 +1316,24 @@ var T={
 "m.dlImg": "Descargar imagen ↓",
 "m.dlBusy": "Preparando…",
 "m.dlFail": "Falló la descarga — inténtalo de nuevo",
+"gb.ph.msg": "Un saludo, una impresión sobre el portafolio, una sugerencia…",
+"gb.ph.name": "¿Cómo te llamo?",
+"gb.form.help": "Espero que te hayan gustado mis trabajos. Deja un mensaje para marcar tu paso por aquí. Si quieres hablar de algún proyecto o tienes dudas, escríbeme por <a href=\"/\" data-go=\"contato\">Contacto</a>.",
 "nav.guestbook": "Libro de visitas",
 "gb.eyebrow": "Libro de visitas / Mensajes",
-"gb.title": "Deja un mensaje, crítica o sugerencia.",
-"gb.form.tag": "Notas públicas",
-"gb.form.title": "Escribe algo útil, perspicaz o amable.",
-"gb.form.help": "Los mensajes aparecen aquí después del envío. Puedo responder desde mi propio navegador tras desbloquear el modo administrador.",
+"gb.title": "Qué bueno tenerte por aquí.",
+"gb.form.tag": "Deja tu huella",
+"gb.form.title": "¡Gracias por la visita!",
 "gb.form.name": "Nombre",
 "gb.form.message": "Mensaje",
-"gb.form.send": "Enviar mensaje",
+"gb.form.send": "Dejar mensaje",
 "gb.form.sending": "Enviando…",
-"gb.stats.forum": "Foro de mensajes",
+"gb.stats.forum": "Mensajes",
 "gb.stats.replies": "Respuestas",
 "gb.more": "Cargar más",
 "gb.n.one": "{n} mensaje",
 "gb.n.many": "{n} mensajes",
-"gb.empty": "Aún no hay mensajes. ¡Sé el primero!",
+"gb.empty": "Aún no hay mensajes por aquí. ¿Qué tal dejar el primero?",
 "gb.loadErr": "No se pudieron cargar los mensajes.",
 "gb.retry": "Intentar de nuevo",
 "gb.replied": "Fernando respondió",
@@ -1346,10 +1352,10 @@ var T={
 "gb.err.blocked": "Reformula sin palabras ofensivas.",
 "gb.err.captcha": "Completa la verificación anti-spam de abajo.",
 "gb.err.captchaFail": "La verificación anti-spam falló. Inténtalo de nuevo.",
-"gb.err.rate": "Espera {s}s antes de enviar otro mensaje.",
+"gb.err.rate": "Espera {s}s antes de dejar otro mensaje.",
 "gb.err.generic": "Algo salió mal. Inténtalo de nuevo en un momento.",
 "gb.err.noCaptcha": "El anti-spam aún no está configurado: el envío no está disponible por ahora.",
-"gb.ok": "¡Mensaje enviado, gracias!",
+"gb.ok": "¡Mensaje recibido! Gracias por la visita 🙌",
 "gb.admin.on": "Modo admin",
 "gb.admin.off": "Salir",
 "gb.admin.tag": "Libro de visitas",
@@ -1902,7 +1908,7 @@ if(window.I18N)I18N.on(()=>{renderPlist();showP(pi);renderSkills();renderCerts()
     const time = new Intl.DateTimeFormat(locale(), { hour: '2-digit', minute: '2-digit' }).format(d);
     return `${date}, ${time}`;
   }
-  const plural = n => tr(n === 1 ? 'gb.n.one' : 'gb.n.many', n === 1 ? '{n} mensagem' : '{n} mensagens', { n: n.toLocaleString(locale()) });
+  const plural = n => tr(n === 1 ? 'gb.n.one' : 'gb.n.many', n === 1 ? '{n} recado' : '{n} recados', { n: n.toLocaleString(locale()) });
 
   /* ---------------- render ---------------- */
   function renderStats() {
@@ -1935,11 +1941,11 @@ if(window.I18N)I18N.on(()=>{renderPlist();showP(pi);renderSkills();renderCerts()
   function renderList() {
     list.setAttribute('aria-busy', String(st.loading && !st.items.length));
     if (st.error && !st.items.length) {
-      list.innerHTML = `<div class="gb-empty">${esc(tr('gb.loadErr', 'Não foi possível carregar as mensagens.'))}<br><br><button type="button" class="btn light sm" data-act="retry">${esc(tr('gb.retry', 'Tentar de novo'))}</button></div>`;
+      list.innerHTML = `<div class="gb-empty">${esc(tr('gb.loadErr', 'Não foi possível carregar os recados.'))}<br><br><button type="button" class="btn light sm" data-act="retry">${esc(tr('gb.retry', 'Tentar de novo'))}</button></div>`;
     } else if (st.loading && !st.items.length) {
       list.innerHTML = '<div class="gb-skel"></div><div class="gb-skel"></div><div class="gb-skel"></div>';
     } else if (!st.items.length) {
-      list.innerHTML = `<p class="gb-empty">${esc(tr('gb.empty', 'Nenhuma mensagem ainda. Seja o primeiro!'))}</p>`;
+      list.innerHTML = `<p class="gb-empty">${esc(tr('gb.empty', 'Ainda não tem recados por aqui. Que tal deixar o primeiro?'))}</p>`;
     } else {
       list.innerHTML = st.items.map(cardHTML).join('');
     }
@@ -2031,17 +2037,17 @@ if(window.I18N)I18N.on(()=>{renderPlist();showP(pi);renderSkills();renderCerts()
       const { item } = await api('', { method: 'POST', body: { name, message, token: st.token, website: form.website.value } });
       st.items.unshift(item); st.totals.messages++;
       form.reset(); updateCount(); renderList(); list.scrollTop = 0;
-      setStatus(status, tr('gb.ok', 'Mensagem enviada — obrigado!'), 'ok');
+      setStatus(status, tr('gb.ok', 'Recado recebido! Obrigado pela visita 🙌'), 'ok');
     } catch (err) {
       const d = err.data || {};
       if (d.error === 'validation' && d.fields) {
         if (d.fields.name) fieldError(nameEl, $('gbNameErr'), errText(d.fields.name) || tr('gb.err.nameLen', 'Use de 2 a 40 caracteres.'));
         if (d.fields.message) fieldError(msgEl, $('gbMsgErr'), errText(d.fields.message) || tr('gb.err.msgLen', 'Use de 3 a 500 caracteres.'));
-      } else if (d.error === 'rate_limited') setStatus(status, tr('gb.err.rate', 'Aguarde {s}s para enviar outra mensagem.', { s: d.retryAfter || 60 }), 'err');
+      } else if (d.error === 'rate_limited') setStatus(status, tr('gb.err.rate', 'Aguarde {s}s para deixar outro recado.', { s: d.retryAfter || 60 }), 'err');
       else if (d.error === 'captcha_required' || d.error === 'captcha_failed') setStatus(status, tr('gb.err.captchaFail', 'A verificação anti-spam falhou. Tente de novo.'), 'err');
       else setStatus(status, tr('gb.err.generic', 'Algo deu errado. Tente de novo em instantes.'), 'err');
     } finally {
-      sendBtn.disabled = false; label.textContent = tr('gb.form.send', 'Enviar mensagem');
+      sendBtn.disabled = false; label.textContent = tr('gb.form.send', 'Deixar recado');
       resetTurnstile();
     }
   });
@@ -2131,8 +2137,13 @@ if(window.I18N)I18N.on(()=>{renderPlist();showP(pi);renderSkills();renderCerts()
   });
 
   /* ---------------- abertura do painel ---------------- */
+  function setPlaceholders() {
+    nameEl.placeholder = tr('gb.ph.name', 'Como posso te chamar?');
+    msgEl.placeholder = tr('gb.ph.msg', 'Um oi, uma impressão sobre o portfólio, uma sugestão…');
+  }
+  setPlaceholders();
   window.gbOpen = () => { if (!st.opened) { st.opened = true; load(false); } };
-  if (window.I18N) I18N.on(() => { if (st.opened) renderList(); });
+  if (window.I18N) I18N.on(() => { setPlaceholders(); if (st.opened) renderList(); });
 
   const params = new URLSearchParams(location.search);
   if (location.pathname.replace(/\/+$/, '') === '/guestbook' || params.get('admin') === '1') {

@@ -15,7 +15,7 @@ module.exports = gb.handler({
       items,
       nextCursor: rows.length > PAGE ? items[items.length - 1].created_at : null,
       ...(totals ? { totals } : {}),
-      siteKey: process.env.TURNSTILE_SITE_KEY || null,
+      siteKey: (process.env.TURNSTILE_SITE_KEY || '').trim() || null,
       admin: gb.isAdmin(req),
     });
   },
