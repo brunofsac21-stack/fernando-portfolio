@@ -12,6 +12,11 @@ Início, Sobre, Projetos, Habilidades, Credenciais e Contato.
 - Para adicionar um texto: coloque `data-i18n="minha.chave"` no elemento e crie `"minha.chave"` em `T.en` e `T.es`. Se faltar a chave, o site mostra o texto em PT.
 - A escolha fica salva em `localStorage` (`lang`). Na primeira visita vale o idioma do navegador (pt, en ou es; qualquer outro cai em PT).
 
+## Lente de código
+- Botão de lupa no topo (só com mouse): o cursor vira lupa e um clique abre um círculo que mostra o código real da página por trás do que está sob o mouse, no tema Dark+ do VS Code.
+- Linguagem pelo elemento: JavaScript para o que é interativo (o trecho do script que o usa, com a linha no centro), HTML para texto e imagem, CSS para blocos e cartões (as regras que se aplicam a ele).
+- Outro clique fecha; Esc sai do modo. Código em `<style id="codelens-css">` e `<script id="codelens-js">` no `index.html`.
+
 ## Tela de boas-vindas
 Aparece uma vez por aba (`sessionStorage` → `intro-done`), pode ser pulada com clique ou tecla e não aparece com `prefers-reduced-motion: reduce`.
 

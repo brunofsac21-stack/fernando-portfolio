@@ -491,6 +491,36 @@ textarea.gb-input{resize:vertical;min-height:120px;line-height:1.5}
 .cv-modal-backdrop button, .cv-modal-backdrop a{cursor:pointer}
 .cv-loading{padding:60px 20px;text-align:center;color:var(--color-smoke);font-family:var(--font-nbarchitekt);font-size:12px}
 </style>
+<style id="codelens-css">
+/* =========================================================
+   LENTE DE CÓDIGO: cursor de lupa e um círculo que mostra o
+   código por trás do que está sob o mouse (HTML, CSS ou JS).
+   Cores do tema Dark+ do VS Code.
+   ========================================================= */
+html.cl-on,html.cl-on *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='13' cy='13' r='9' fill='rgba(255,255,255,.35)' stroke='%23111' stroke-width='2.6'/%3E%3Cpath d='m20 20 8 8' stroke='%23111' stroke-width='3.4' stroke-linecap='round'/%3E%3Cpath d='M10.5 10 8 13l2.5 3M15.5 10 18 13l-2.5 3' fill='none' stroke='%23111' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 13 13,zoom-in!important}
+html.cl-open,html.cl-open *{cursor:none!important}
+html.cl-on #cursor{display:none!important}
+#codeLensBtn[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.cl-layer{position:fixed;inset:0;z-index:9000;pointer-events:none;display:none;background:#1e1e1e;font:12px/18px var(--mono);color:#d4d4d4;clip-path:circle(0 at 50% 50%)}
+.cl-open .cl-layer{display:block}
+.cl-code{position:absolute;white-space:pre;tab-size:2}
+.cl-code .ln{display:inline-block;width:3.2em;padding-right:1.2em;text-align:right;color:#858585;user-select:none}
+.cl-code .hit{background:rgba(255,255,255,.07);display:inline-block;min-width:100%}
+.cl-ring{position:fixed;z-index:9001;pointer-events:none;display:none;border-radius:50%;border:2px solid rgba(255,255,255,.9);box-shadow:0 0 0 1px rgba(0,0,0,.6),0 18px 50px rgba(0,0,0,.45),inset 0 0 24px rgba(0,0,0,.55)}
+.cl-open .cl-ring{display:block}
+.cl-tag{position:absolute;left:50%;bottom:-15px;transform:translateX(-50%);display:flex;align-items:center;gap:7px;white-space:nowrap;padding:5px 11px;border-radius:999px;background:#252526;border:1px solid #3c3c3c;color:#ccc;font:600 11px/1 var(--mono);letter-spacing:.03em;box-shadow:0 6px 16px rgba(0,0,0,.35)}
+.cl-tag i{width:9px;height:9px;border-radius:50%;flex:none}
+.cl-tag b{color:#fff;font-weight:700}
+.cl-tag span{color:#9d9d9d;font-weight:500}
+.cl-hint{position:fixed;left:50%;bottom:58px;transform:translateX(-50%);z-index:9002;display:none;padding:9px 14px;border-radius:999px;background:var(--ink);color:var(--bg);font:600 11px/1.2 var(--mono);letter-spacing:.04em;box-shadow:0 8px 24px rgba(0,0,0,.25);pointer-events:none}
+.cl-on .cl-hint{display:block}
+.cl-open .cl-hint{display:none}
+/* tokens (VS Code Dark+) */
+.t-k{color:#569cd6}.t-c{color:#c586c0}.t-s{color:#ce9178}.t-n{color:#b5cea8}.t-f{color:#dcdcaa}.t-m{color:#6a9955;font-style:italic}
+.t-v{color:#9cdcfe}.t-tag{color:#569cd6}.t-a{color:#9cdcfe}.t-p{color:#808080}.t-sel{color:#d7ba7d}.t-pr{color:#9cdcfe}.t-val{color:#ce9178}
+@media (hover:none),(pointer:coarse){#codeLensBtn{display:none!important}}
+@media (prefers-reduced-motion:reduce){.cl-layer,.cl-ring{transition:none!important}}
+</style>
 </head>
 <body>
 
@@ -546,6 +576,7 @@ textarea.gb-input{resize:vertical;min-height:120px;line-height:1.5}
       </label>
       <a class="icon-btn" href="https://github.com/7phbkn9fs6-hub" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 19c-4 1.4-4-2-6-2.5M15 22v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1-.3-3.4 1.3a11.6 11.6 0 0 0-6 0C6.8 3.8 5.8 4.1 5.8 4.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4.4 10.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V22"/></svg></a>
       <a class="icon-btn" href="https://www.linkedin.com/in/fernando-gregorio-1ab43b268/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg></a>
+      <button type="button" class="icon-btn" id="codeLensBtn" aria-pressed="false" aria-label="Ver o código por trás (lente)" title="Ver o código por trás (lente)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7"/><path d="m21 21-5.5-5.5"/><path d="m8.5 8.5-2 2 2 2M12.5 8.5l2 2-2 2"/></svg></button>
     </div>
   </header>
 
@@ -2179,6 +2210,222 @@ if(window.I18N)I18N.on(()=>{renderPlist();showP(pi);renderSkills();renderCerts()
   }
 })();
 
+</script>
+<script id="codelens-js">
+/* =========================================================
+   LENTE DE CÓDIGO
+   Botão </> liga o modo: o cursor vira lupa. Um clique abre o
+   círculo, que mostra o código real desta página por trás do
+   elemento sob o mouse: JavaScript para o que é interativo,
+   HTML para texto e imagem, CSS para blocos e cartões.
+   Mover o mouse dentro do elemento percorre o código dele.
+   Outro clique fecha; Esc sai do modo.
+   ========================================================= */
+(function(){
+  const btn=document.getElementById('codeLensBtn');
+  if(!btn)return;
+  const R=150;                                   // raio da lente (px)
+  const LANG={js:{name:'JavaScript',color:'#f1e05a'},html:{name:'HTML',color:'#e34c26'},css:{name:'CSS',color:'#663399'}};
+  const TXT={
+    pt:{on:'Clique para abrir a lente · Esc para sair',open:'Mova o mouse · clique para fechar',aria:'Ver o código por trás (lente)'},
+    en:{on:'Click to open the lens · Esc to exit',open:'Move the mouse · click to close',aria:'See the code behind (lens)'},
+    es:{on:'Haz clic para abrir la lupa · Esc para salir',open:'Mueve el ratón · clic para cerrar',aria:'Ver el código detrás (lupa)'}
+  };
+  const t=k=>(TXT[(window.I18N&&I18N.lang)||'pt']||TXT.pt)[k];
+  const root=document.documentElement;
+  const layer=document.createElement('div');layer.className='cl-layer';layer.setAttribute('aria-hidden','true');
+  const code=document.createElement('div');code.className='cl-code';layer.appendChild(code);
+  const ring=document.createElement('div');ring.className='cl-ring';ring.setAttribute('aria-hidden','true');
+  ring.style.width=ring.style.height=R*2+'px';
+  const tag=document.createElement('div');tag.className='cl-tag';ring.appendChild(tag);
+  const hint=document.createElement('div');hint.className='cl-hint';hint.setAttribute('role','status');
+  document.body.append(layer,ring,hint);
+
+  let on=false,open=false,mx=0,my=0,target=null,snip=null,raf=0;
+
+  // ------------------------------------------------ fonte do JS desta página
+  const SCRIPT_LINES=[...document.scripts].filter(s=>!s.src&&s.id!=="codelens-js").flatMap(s=>s.textContent.split('\n'))
+    .map(l=>l.length>150?l.slice(0,150)+' …':l);
+
+  // ------------------------------------------------ realce de sintaxe
+  const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  const span=(c,s)=>`<span class="${c}">${esc(s)}</span>`;
+  const JS_RE=/(\/\/.*$|\/\*.*?\*\/)|('(?:\\.|[^'\\])*'|"(?:\\.|[^"\\])*"|`(?:\\.|[^`\\])*`)|\b(const|let|var|function|return|if|else|for|of|in|new|try|catch|await|async|this|typeof|switch|case|break)\b|\b(true|false|null|undefined)\b|\b(\d+(?:\.\d+)?)\b|([A-Za-z_$][\w$]*)(?=\s*\()|(=>)/g;
+  function hlJS(l){let o='',i=0;l.replace(JS_RE,(m,cm,st,kw,lit,num,fn,arrow,idx)=>{o+=esc(l.slice(i,idx));
+    o+=cm?span('t-m',m):st?span('t-s',m):kw?span(/^(return|if|else|for|of|in|try|catch|await|switch|case|break)$/.test(kw)?'t-c':'t-k',m):lit?span('t-k',m):num?span('t-n',m):fn?span('t-f',m):span('t-k',m);
+    i=idx+m.length;return m});return o+esc(l.slice(i))}
+  // Um só passe sobre o texto cru, para um realce não pegar o HTML de outro.
+  const HTML_RE=/(<\/?)([\w-]+)|([\w:-]+)(=)("[^"]*")|(\/?>)/g;
+  function hlHTML(l){let o='',i=0;l.replace(HTML_RE,(m,open,name,attr,eq,val,close,idx)=>{o+=esc(l.slice(i,idx));
+    o+=open?span('t-p',open)+span('t-tag',name):attr?span('t-a',attr)+span('t-p',eq)+span('t-s',val):span('t-p',close);
+    i=idx+m.length;return m});return o+esc(l.slice(i))}
+  function hlCSS(l){
+    if(/^\s*\/\*/.test(l))return span('t-m',l);
+    const m=l.match(/^(\s+)([\w-]+)(\s*:\s*)(.*?)(;?)$/);
+    if(m)return esc(m[1])+span('t-pr',m[2])+esc(m[3])+span('t-val',m[4])+esc(m[5]);
+    const s=l.match(/^(\s*)(.*?)(\s*\{\s*)$/);
+    if(s)return esc(s[1])+(s[2].startsWith('@')?span('t-c',s[2]):span('t-sel',s[2]))+esc(s[3]);
+    return esc(l)}
+  const HL={js:hlJS,html:hlHTML,css:hlCSS};
+
+  // ------------------------------------------------ código de cada linguagem
+  const INTERACTIVE='button,a,select,input,textarea,label,[data-go],[data-i],[role="button"]';
+  const TEXTUAL=/^(H[1-6]|P|SPAN|B|STRONG|EM|SMALL|LI|IMG|SVG|PATH|TIME|CODE|I)$/;
+
+  function describe(el){
+    let s=el.tagName.toLowerCase();
+    if(el.id)s+='#'+el.id;else if(el.classList.length)s+='.'+[...el.classList].slice(0,2).join('.');
+    return s;
+  }
+  /** HTML indentado de `el`; `mark.hit` recebe a linha onde começa `mark.el`. */
+  function htmlOf(el,mark){
+    const out=[];
+    (function walk(n,d){
+      if(out.length>60)return;
+      if(mark&&n===mark.el)mark.hit=out.length;
+      const pad='  '.repeat(d);
+      if(n.nodeType===3){const x=n.textContent.replace(/\s+/g,' ').trim();if(x)out.push(pad+(x.length>70?x.slice(0,70)+'…':x));return}
+      if(n.nodeType!==1||n.id==='codelens-js')return;
+      const name=n.tagName.toLowerCase();
+      const attrs=[...n.attributes].map(a=>{let v=a.value;if(v.startsWith('data:'))v=v.slice(0,v.indexOf(',')+1)+'…';if(v.length>48)v=v.slice(0,48)+'…';return ` ${a.name}="${v}"`}).join('');
+      const kids=[...n.childNodes].filter(c=>c.nodeType===1||(c.nodeType===3&&c.textContent.trim()));
+      if(!kids.length){out.push(`${pad}<${name}${attrs}></${name}>`);return}
+      if(kids.length===1&&kids[0].nodeType===3&&kids[0].textContent.trim().length<50){out.push(`${pad}<${name}${attrs}>${kids[0].textContent.trim()}</${name}>`);return}
+      out.push(`${pad}<${name}${attrs}>`);
+      if(d<5)kids.forEach(c=>walk(c,d+1));else out.push(pad+'  …');
+      out.push(`${pad}</${name}>`);
+    })(el,0);
+    return out;
+  }
+  /** Separa declarações por ";" fora de parênteses e aspas (url("data:…;base64") tem ";"). */
+  function splitDecls(s){
+    const out=[];let cur='',depth=0,q='';
+    for(const ch of s){
+      if(q){cur+=ch;if(ch===q)q='';continue}
+      if(ch==='"'||ch==="'"){q=ch;cur+=ch;continue}
+      if(ch==='(')depth++;else if(ch===')')depth--;
+      if(ch===';'&&depth===0){out.push(cur);cur='';continue}
+      cur+=ch;
+    }
+    if(cur.trim())out.push(cur);
+    return out;
+  }
+  function cssOf(el){
+    const out=[];
+    const add=(rule,media)=>{
+      let sel=rule.selectorText;if(!sel)return;
+      try{if(!el.matches(sel))return}catch(e){return}
+      const parts=sel.split(',').map(x=>x.trim()).filter(x=>{try{return el.matches(x)}catch(e){return false}});
+      if(parts.length&&parts.every(x=>/^(\*|html|body)$/.test(x)))return; // regras genéricas não dizem nada do elemento
+      const ind=media?'  ':'';
+      if(media)out.push('@media '+media+' {');
+      out.push(ind+(parts.join(', ')||sel)+' {');
+      // cssText mantém as propriedades como foram escritas (border, não border-top-width…).
+      for(const d of splitDecls(rule.style.cssText)){let x=d.trim();if(!x)continue;if(x.length>70)x=x.slice(0,70)+'…';out.push(ind+'  '+x+';')}
+      out.push(ind+'}');if(media)out.push('}');out.push('');
+    };
+    for(const sh of document.styleSheets){
+      let rules;try{rules=sh.cssRules}catch(e){continue}
+      if(!rules||(sh.ownerNode&&sh.ownerNode.id==='codelens-css'))continue;
+      for(const r of rules){
+        if(r.type===1)add(r);
+        else if(r.type===4&&matchMedia(r.conditionText||r.media.mediaText).matches)for(const x of r.cssRules)if(x.type===1)add(x,r.conditionText||r.media.mediaText);
+      }
+      if(out.length>70)break;
+    }
+    return out;
+  }
+  function jsOf(el){
+    // Procura no JS da página uma referência ao elemento (ou a um pai próximo).
+    // Ordem: id do próprio elemento, atributos de ação (dele e dos pais), ids dos pais.
+    const keys=[],ids=[];
+    for(let n=el,d=0;n&&n!==document.body&&d<5;n=n.parentElement,d++){
+      if(n.id)(d===0?keys:ids).push(n.id);
+      for(const a of ['data-go','data-i','data-mode','data-tab'])if(n.hasAttribute(a))keys.push(a);
+    }
+    keys.push(...ids);
+    for(const k of keys){
+      const re=new RegExp('(getElementById\\([\'"]'+k+'[\'"]\\)|[\'"#.\\[]'+k+'\\b|\\b'+k+'\\.(on|add|inner|text|href|style|class|value))');
+      const i=SCRIPT_LINES.findIndex(l=>re.test(l)&&!/^\s*"[\w.-]+":/.test(l));
+      if(i>=0){
+        let start=i;for(let j=i;j>=Math.max(0,i-14);j--){if(/^\s*(function |const \w+\s*=\s*(\(|function)|\(function|document\.addEventListener|\w+\.on\w+\s*=)/.test(SCRIPT_LINES[j])){start=j;break}}
+        start=Math.max(0,Math.min(start,i-2));
+        return {lines:SCRIPT_LINES.slice(start,start+34),hit:i-start,first:start+1,key:k};
+      }
+    }
+    return null;
+  }
+  function snippetFor(el){
+    const inter=el.closest(INTERACTIVE);
+    // JS só para o que é interativo ou tem o próprio id usado no script.
+    if(inter||(el.id&&!TEXTUAL.test(el.tagName))){
+      const j=jsOf(inter||el);
+      if(j)return {lang:'js',lines:j.lines,hit:j.hit,first:j.first,where:j.key};
+    }
+    if(!TEXTUAL.test(el.tagName)){
+      const c=cssOf(el);
+      if(c.length)return {lang:'css',lines:c,hit:-1,first:1,where:describe(el)};
+    }
+    // HTML: mostra o bloco em volta (o pai), com a linha do elemento no centro da lente.
+    const self=el.closest('svg')||el;
+    let ctx=self;
+    while(ctx.parentElement&&ctx.parentElement!==document.body&&htmlOf(ctx).length<10)ctx=ctx.parentElement;
+    const mark={el:self,hit:0};
+    const h=htmlOf(ctx,mark);
+    return {lang:'html',lines:h,hit:mark.hit,first:1,where:describe(self)};
+  }
+
+  // ------------------------------------------------ desenho
+  function paint(){
+    raf=0;
+    if(!open)return;
+    layer.style.clipPath=`circle(${R}px at ${mx}px ${my}px)`;
+    ring.style.transform=`translate(${mx-R}px,${my-R}px)`;
+    const el=document.elementFromPoint(mx,my);
+    if(el&&el!==target&&!ring.contains(el)){
+      target=el;snip=snippetFor(el);
+      code.innerHTML=snip.lines.map((l,k)=>`<span class="${k===snip.hit?'hit':''}"><span class="ln">${snip.first+k}</span>${HL[snip.lang](l)}</span>`).join('\n');
+      const L=LANG[snip.lang];
+      tag.innerHTML=`<i style="background:${L.color}"></i><b>${L.name}</b><span>${snip.where.replace(/[<>&]/g,'')}</span>`;
+    }
+    if(!target)return;
+    // O código fica "atrás" do elemento: mover o mouse de cima a baixo nele percorre as linhas.
+    if(snip.lang!=='css'){ // a linha do elemento fica no centro da lente
+      code.style.transform=`translate(${mx-R+18}px,${my-snip.hit*18-9}px)`;return;
+    }
+    const r=target.getBoundingClientRect();
+    const h=code.offsetHeight;
+    const f=r.height>0?Math.min(1,Math.max(0,(my-r.top)/r.height)):0;
+    const scroll=Math.max(0,h-(R*2-30))*f;
+    code.style.transform=`translate(${mx-R+18}px,${my-R+22-scroll}px)`;
+  }
+  const req=()=>{if(!raf)raf=requestAnimationFrame(paint)};
+
+  function setHint(){hint.textContent=open?t('open'):t('on')}
+  function setMode(v){
+    on=v;open=false;target=null;
+    root.classList.toggle('cl-on',on);root.classList.remove('cl-open');
+    btn.setAttribute('aria-pressed',String(on));setHint();
+  }
+  function setOpen(v){
+    open=v;target=null;root.classList.toggle('cl-open',open);setHint();
+    if(open)req();
+  }
+
+  btn.setAttribute('aria-label',t('aria'));btn.title=t('aria');
+  if(window.I18N)I18N.on(()=>{btn.setAttribute('aria-label',t('aria'));btn.title=t('aria');setHint()});
+  btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();setMode(!on)});
+
+  addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(open)req()},{passive:true});
+  addEventListener('scroll',()=>{if(open){target=null;req()}},{passive:true,capture:true});
+  // No modo lente, o clique abre/fecha o círculo e não aciona a página.
+  addEventListener('click',e=>{
+    if(!on||btn.contains(e.target))return;
+    e.preventDefault();e.stopPropagation();
+    mx=e.clientX;my=e.clientY;setOpen(!open);
+  },true);
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&on){setMode(false);btn.focus()}});
+})();
 </script>
 </body>
 </html>
